@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
+import Layout from './components/Layout';
 
 import {
   Home,
@@ -33,11 +34,13 @@ export default function App() {
 
         {/* メイン表示エリア */}
         <main className="ml-0 sm:ml-56 h-full overflow-y-auto w-full px-6 py-6">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            {/* 必要なら他のルートも追加！ */}
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Layout />}>  ← 共通レイアウトを使う！
+           <Route index element={<HomePage />} />  ← "/"にアクセスしたらHomePage
+           <Route path="favorites" element={<FavoritesPage />} /> ← /favoritesにアクセスしたらFavoritesPage
+          </Route>
+        </Routes>
+
         </main>
       </div>
     </Router>
