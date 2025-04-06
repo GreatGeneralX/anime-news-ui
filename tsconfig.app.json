@@ -1,29 +1,20 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['"Noto Sans JP"', 'sans-serif'],
-      },
-      colors: {
-        primary: '#ff66cc',
-        secondary: '#66ccff',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-      },
-      animation: {
-        fadeIn: 'fadeIn 0.5s ease-out forwards',
-      },
-    },
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "lib": ["DOM", "DOM.Iterable", "ES2015"], // ←ここにES2015追加！
+    "jsx": "react-jsx", // ←これも追加！
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true
   },
-  plugins: [],
-};
+  "include": ["src"]
+}
+
 

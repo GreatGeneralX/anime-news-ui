@@ -11,7 +11,7 @@ import {
   Bookmark,
   BookmarkCheck,
   Menu,
-  X,
+  X
 } from 'lucide-react';
 
 interface Article {
@@ -59,14 +59,18 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen bg-white text-black dark:bg-zinc-900 dark:text-white">
-      {/* サイドバー */}
-      <aside
-        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6
-        transform transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-        md:translate-x-0`}
+      {/* モバイルメニュー開閉ボタン */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="md:hidden fixed top-4 left-4 z-50 bg-white dark:bg-zinc-900 p-2 rounded-md shadow-md"
       >
-        <div className="space-y-4">
+        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* サイドバー */}
+      <aside className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transform transition-transform duration-300 z-40
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
+        <div className="space-y-4 mt-10 md:mt-0">
           <div className="flex items-center gap-3 text-sm"><Home size={18} />ニュース</div>
           <div className="flex items-center gap-3 text-sm"><ShoppingBag size={18} />ショップ</div>
           <div className="flex items-center gap-3 text-sm"><User size={18} />アカウント</div>
@@ -74,16 +78,7 @@ export default function App() {
         </div>
       </aside>
 
-      {/* ハンバーガー & コンテンツ */}
       <main className="flex-1 md:ml-56 px-6 py-6">
-        {/* モバイル用ハンバーガーボタン */}
-        <button
-          className="md:hidden mb-4 p-2 border rounded-md"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-
         <header className="mb-6">
           <h1 className="text-3xl font-bold mb-4">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
