@@ -1,3 +1,4 @@
+// App.tsx
 import { useState, useEffect } from 'react';
 import {
   Home,
@@ -31,7 +32,7 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
   title: `ダミー記事タイトル ${i + 1}`,
   date: '2025-04-06',
   summary: 'これはダミー記事の要約です。ここには記事の簡単な説明が表示されます。',
-  thumbnail: `https://placehold.co/600x400?text=Article${i + 1}`,
+  thumbnail: `https://placehold.co/600x600?text=Article${i + 1}`,
 }));
 
 export default function App() {
@@ -59,8 +60,7 @@ export default function App() {
 
   return (
     <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen relative">
-
-      {/* ハンバーガー（スマホ用） */}
+      {/* ハンバーガー */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -70,11 +70,9 @@ export default function App() {
 
       {/* サイドバー */}
       <aside
-        className={`fixed top-0 left-0 h-full w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6
-        pt-16 sm:pt-6 transform transition-transform duration-300 ease-in-out
-         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
+        className={`fixed ${sidebarOpen ? 'top-16' : 'top-0'} left-0 h-full w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
       >
-
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-sm"><Home size={18} />ニュース</div>
           <div className="flex items-center gap-3 text-sm"><ShoppingBag size={18} />ショップ</div>
@@ -83,10 +81,12 @@ export default function App() {
         </div>
       </aside>
 
-      {/* メインコンテンツ */}
+      {/* メイン */}
       <main className={`flex-1 px-6 py-6 transition-all duration-300 ${sidebarOpen ? 'sm:ml-56' : ''}`}>
         <header className="mb-6">
-          <h1 className="text-3xl font-bold mb-4 sm:ml-0 ml-14">ニュースルーム</h1>
+          <h1 className="text-3xl font-bold mb-4 ml-[48px] sm:ml-0">ニュースルーム</h1>
+
+          {/* カテゴリ */}
           <div className="flex flex-wrap gap-2 items-center">
             <button onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -104,7 +104,11 @@ export default function App() {
                 {cat}
               </button>
             ))}
-            <button className="ml-auto px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
+          </div>
+
+          {/* フィルターと並べ替え */}
+          <div className="flex gap-2 mt-4">
+            <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
               <Filter size={16} /> フィルター
             </button>
             <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
@@ -115,16 +119,20 @@ export default function App() {
 
         {/* ヒーロー記事 */}
         <section className="mb-10">
-          <img src={dummyArticles[0].thumbnail} alt="hero" className="w-full rounded-xl shadow-md mb-4" />
+          <img src={dummyArticles[0].thumbnail} alt="hero" className="w-full rounded-xl shadow-md mb-4 aspect-video" />
           <h2 className="text-xl font-semibold mb-1">{dummyArticles[0].title}</h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">{dummyArticles[0].summary}</p>
         </section>
 
         {/* 記事グリッド */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {filteredArticles.slice(1).map((article) => (
             <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md">
-              <img src={article.thumbnail} alt={article.title} className="rounded-md mb-2 w-full object-cover h-40" />
+              <img
+                src={article.thumbnail}
+                alt={article.title}
+                className="rounded-md mb-2 w-full object-cover aspect-square"
+              />
               <h3 className="font-bold text-md mb-1">{article.title}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{article.date}</p>
               <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
