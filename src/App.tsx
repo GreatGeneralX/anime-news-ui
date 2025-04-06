@@ -81,7 +81,12 @@ export default function App() {
       </aside>
 
       {/* メインコンテンツ */}
-      <main className="flex-1 px-6 py-6 sm:ml-56 mx-auto max-w-7xl">
+      <main
+         className={`flex-1 px-6 py-6 transition-all duration-300 max-w-screen-xl mx-auto ${
+          sidebarOpen ? 'sm:ml-56' : ''
+        }`}
+      >
+
 
         <header className="mb-6 sm:pl-2">
           <h1 className="text-3xl font-bold mb-4 sm:pl-10 sm:mt-2 mt-14 sm:mt-0">ニュースルーム</h1>
