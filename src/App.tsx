@@ -10,6 +10,8 @@ import {
   ArrowUpDown,
   Bookmark,
   BookmarkCheck,
+  Menu,
+  X,
 } from 'lucide-react';
 
 interface Article {
@@ -36,6 +38,7 @@ export default function App() {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [selectedCat, setSelectedCat] = useState<string>('すべて');
   const [bookmarks, setBookmarks] = useState<Set<number>>(new Set());
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
@@ -55,8 +58,14 @@ export default function App() {
       : dummyArticles.filter((a) => a.category === selectedCat);
 
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen">
-      <aside className="fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6">
+    <div className="flex min-h-screen bg-white text-black dark:bg-zinc-900 dark:text-white">
+      {/* サイドバー */}
+      <aside
+        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6
+        transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+        md:translate-x-0`}
+      >
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-sm"><Home size={18} />ニュース</div>
           <div className="flex items-center gap-3 text-sm"><ShoppingBag size={18} />ショップ</div>
@@ -65,11 +74,22 @@ export default function App() {
         </div>
       </aside>
 
-      <main className="flex-1 ml-56 px-6 py-6">
+      {/* ハンバーガー & コンテンツ */}
+      <main className="flex-1 md:ml-56 px-6 py-6">
+        {/* モバイル用ハンバーガーボタン */}
+        <button
+          className="md:hidden mb-4 p-2 border rounded-md"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+
         <header className="mb-6">
           <h1 className="text-3xl font-bold mb-4">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
-            <button onClick={() => setDarkMode(!darkMode)}>{darkMode ? <Sun size={18} /> : <Moon size={18} />}</button>
+            <button onClick={() => setDarkMode(!darkMode)}>
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -100,7 +120,7 @@ export default function App() {
 
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.slice(1).map((article) => (
-            <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md">
+            <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md animate-fadeIn">
               <img src={article.thumbnail} alt={article.title} className="rounded-md mb-2 w-full object-cover h-40" />
               <h3 className="font-bold text-md mb-1">{article.title}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{article.date}</p>
