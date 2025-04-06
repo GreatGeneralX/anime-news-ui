@@ -58,11 +58,11 @@ export default function App() {
       : dummyArticles.filter((a) => a.category === selectedCat);
 
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen relative">
+    <div className="flex bg-gundam-white text-black dark:bg-miku-black dark:text-white min-h-screen relative">
 
       {/* ハンバーガー（スマホ用） */}
       <button
-        className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
+        className="fixed top-4 left-4 z-[9999] bg-gundam-white dark:bg-miku-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
@@ -70,9 +70,7 @@ export default function App() {
 
       {/* サイドバー */}
       <aside
-        className={`fixed ${
-          sidebarOpen ? 'top-16' : 'top-0'
-        } left-0 h-full w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transform transition-transform duration-300 ease-in-out
+        className={`fixed top-16 sm:top-0 left-0 h-full w-56 bg-gundam-white dark:bg-miku-black border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
       >
         <div className="space-y-4">
@@ -86,34 +84,32 @@ export default function App() {
       {/* メインコンテンツ */}
       <main className={`flex-1 px-6 py-6 transition-all duration-300 ${sidebarOpen ? 'sm:ml-56' : ''}`}>
         <header className="mb-6">
-          <h1 className="text-3xl font-bold mb-4 pl-12 sm:pl-0">ニュースルーム</h1>
-
+          <h1 className="text-3xl font-bold mb-4">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
-            <button onClick={() => setDarkMode(!darkMode)}>
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="text-gundam-red dark:text-miku-mint"
+            >
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCat(cat)}
                 className={`px-3 py-1 rounded-md text-sm border transition ${
                   selectedCat === cat
-                    ? 'bg-black text-white dark:bg-white dark:text-black'
+                    ? 'bg-gundam-blue text-white dark:bg-miku-blue dark:text-black'
                     : 'border-gray-300 dark:border-gray-600'
                 }`}
               >
                 {cat}
               </button>
             ))}
-          </div>
-
-          {/* フィルターと並べ替えを少し下にずらす */}
-          <div className="flex flex-wrap gap-2 items-center mt-4">
-            <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
+            <div className="w-full h-2 sm:h-0" />
+            <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md bg-gundam-yellow dark:bg-miku-mint text-black">
               <Filter size={16} /> フィルター
             </button>
-            <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
+            <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md bg-gundam-red dark:bg-miku-blue text-white">
               <ArrowUpDown size={16} /> 並べ替え
             </button>
           </div>
@@ -121,30 +117,26 @@ export default function App() {
 
         {/* ヒーロー記事 */}
         <section className="mb-10">
-          <img
-            src={dummyArticles[0].thumbnail}
-            alt="hero"
-            className="w-full rounded-xl shadow-md mb-4"
-          />
+          <img src={dummyArticles[0].thumbnail} alt="hero" className="w-full rounded-xl shadow-md mb-4" />
           <h2 className="text-xl font-semibold mb-1">{dummyArticles[0].title}</h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">{dummyArticles[0].summary}</p>
         </section>
 
         {/* 記事グリッド */}
-        <section className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.slice(1).map((article) => (
             <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md">
               <img
                 src={article.thumbnail}
                 alt={article.title}
-                className="rounded-md mb-2 w-full object-cover aspect-square"
+                className="rounded-md mb-2 w-full object-cover h-[150px]"
               />
               <h3 className="font-bold text-md mb-1">{article.title}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{article.date}</p>
               <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
               <button
                 onClick={() => toggleBookmark(article.id)}
-                className="mt-2 text-gray-500 hover:text-blue-500"
+                className="mt-2 text-gray-500 hover:text-gundam-blue dark:hover:text-miku-mint"
               >
                 {bookmarks.has(article.id) ? <BookmarkCheck size={20} /> : <Bookmark size={20} />}
               </button>
@@ -153,7 +145,7 @@ export default function App() {
         </section>
 
         <div className="mt-10 text-center">
-          <button className="px-4 py-2 border rounded-md">さらに読み込む</button>
+          <button className="px-4 py-2 border rounded-md bg-gundam-blue text-white dark:bg-miku-blue dark:text-black">さらに読み込む</button>
         </div>
       </main>
     </div>
