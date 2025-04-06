@@ -58,9 +58,8 @@ export default function App() {
       : dummyArticles.filter((a) => a.category === selectedCat);
 
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen relative">
-
-      {/* ハンバーガー（スマホ用） */}
+    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen">
+      {/* ハンバーガーメニュー（スマホ用） */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -70,10 +69,10 @@ export default function App() {
 
       {/* サイドバー */}
       <aside
-        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 pt-20 pb-6 space-y-6 transform transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
+        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transition-transform duration-300 ease-in-out
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
       >
-        <div className="space-y-4">
+        <div className="space-y-4 pt-10 sm:pt-0">
           <div className="flex items-center gap-3 text-sm text-gundam-red"><Home size={18} />ニュース</div>
           <div className="flex items-center gap-3 text-sm text-gundam-blue"><ShoppingBag size={18} />ショップ</div>
           <div className="flex items-center gap-3 text-sm text-gundam-yellow"><User size={18} />アカウント</div>
@@ -82,11 +81,9 @@ export default function App() {
       </aside>
 
       {/* メインコンテンツ */}
-      <main className={`flex-1 px-6 py-6 transition-all duration-300 sm:ml-56`}>
-        <header className="mb-6 mt-12 sm:mt-0">
-          <h1 className="text-3xl font-bold mb-4 ml-10 sm:ml-0">ニュースルーム</h1>
-
-          {/* カテゴリ */}
+      <main className="flex-1 sm:ml-56 px-6 py-6">
+        <header className="mb-6 sm:pl-2">
+          <h1 className="text-3xl font-bold mb-4 sm:pl-10 sm:mt-2 mt-14 sm:mt-0">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
             <button onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -105,9 +102,7 @@ export default function App() {
               </button>
             ))}
           </div>
-
-          {/* フィルターエリア */}
-          <div className="flex gap-2 mt-4">
+          <div className="mt-4 flex gap-2">
             <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
               <Filter size={16} /> フィルター
             </button>
@@ -128,11 +123,7 @@ export default function App() {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.slice(1).map((article) => (
             <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md">
-              <img
-                src={article.thumbnail}
-                alt={article.title}
-                className="rounded-md mb-2 w-full object-cover aspect-square"
-              />
+              <img src={article.thumbnail} alt={article.title} className="rounded-md mb-2 w-full object-cover aspect-square" />
               <h3 className="font-bold text-md mb-1">{article.title}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{article.date}</p>
               <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
