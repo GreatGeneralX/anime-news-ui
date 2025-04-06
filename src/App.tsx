@@ -81,7 +81,7 @@ export default function App() {
       </aside>
 
       {/* メインコンテンツ */}
-      <main className="flex-1 py-6 sm:pl-0 pl-0 pr-6">
+      <main className="flex-1 px-6 py-6 sm:pl-0 pl-0 pr-6">
         <header className="mb-6 sm:pl-2">
           <h1 className="text-3xl font-bold mb-4 sm:pl-10 sm:mt-2 mt-14 sm:mt-0">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
