@@ -1,20 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "lib": ["DOM", "DOM.Iterable", "ES2015"], // ←ここにES2015追加！
-    "jsx": "react-jsx", // ←これも追加！
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
+    "target": "es2015",
+    "lib": ["dom", "es2015"],
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "node",
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true
-  },
-  "include": ["src"]
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  }
 }
-
-
