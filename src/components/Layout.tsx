@@ -18,24 +18,23 @@ export default function Layout() {
   }, []);
 
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden">
-      {/* ハンバーガーボタン（スマホ用） */}
+    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen">
+      {/* ハンバーガー */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
-
+  
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} />
-
-      {/* メイン表示部分 */}
-      <main className="flex-1 ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6">
-          <Outlet />
+  
+      {/* メイン */}
+      <main className="ml-0 sm:ml-56 w-full h-full overflow-y-auto px-6 py-6">
+        <Outlet />
       </main>
-
-
     </div>
   );
+  
 }
