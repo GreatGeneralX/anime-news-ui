@@ -5,9 +5,10 @@ export default function Layout() {
   return (
     <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen">
       <Sidebar />
-      <main className="flex-1 h-full overflow-y-auto px-6 py-6">
-        <Outlet />
+      <main className="flex-1 h-full overflow-y-auto px-6 py-6 ml-0 sm:ml-56">
+         <Outlet />
       </main>
+
     </div>
   );
 }
