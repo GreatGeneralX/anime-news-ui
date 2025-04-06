@@ -8,15 +8,12 @@ interface SidebarProps {
 export default function Sidebar({ isOpen }: SidebarProps) {
   return (
     <aside
-       className={`
-        h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 z-50
-        transition-transform duration-300 ease-in-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        fixed sm:relative sm:translate-x-0 sm:block
-        sm:z-auto  // ← これがポイント！！
-      `}
-      
+      className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 
+       border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 z-50 
+       transition-transform duration-300 ease-in-out
+       ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:static`}
     >
+
   
       <div className="space-y-4 pt-10 sm:pt-0">
         <Link to="/" className="flex items-center gap-3 text-sm text-gundam-red w-full">
