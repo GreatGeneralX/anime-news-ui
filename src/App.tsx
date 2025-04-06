@@ -70,22 +70,24 @@ export default function App() {
 
       {/* サイドバー */}
       <aside
-        className={`fixed top-0 left-0 h-full w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 pt-16 sm:pt-6 py-6 space-y-6 transform transition-transform duration-300 ease-in-out
+        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 pt-20 pb-6 space-y-6 transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
       >
         <div className="space-y-4">
-          <div className="flex items-center gap-3 text-sm text-red-500"><Home size={18} />ニュース</div>
-          <div className="flex items-center gap-3 text-sm text-blue-500"><ShoppingBag size={18} />ショップ</div>
-          <div className="flex items-center gap-3 text-sm text-yellow-500"><User size={18} />アカウント</div>
-          <div className="flex items-center gap-3 text-sm text-green-500"><Heart size={18} />お気に入り</div>
+          <div className="flex items-center gap-3 text-sm text-gundam-red"><Home size={18} />ニュース</div>
+          <div className="flex items-center gap-3 text-sm text-gundam-blue"><ShoppingBag size={18} />ショップ</div>
+          <div className="flex items-center gap-3 text-sm text-gundam-yellow"><User size={18} />アカウント</div>
+          <div className="flex items-center gap-3 text-sm text-green-600"><Heart size={18} />お気に入り</div>
         </div>
       </aside>
 
       {/* メインコンテンツ */}
-      <main className={`flex-1 px-6 py-6 transition-all duration-300 ${sidebarOpen ? 'sm:ml-56' : ''}`}>
-        <header className="mb-6">
-          <h1 className="text-3xl font-bold mb-4 pl-12 sm:pl-0">ニュースルーム</h1>
-          <div className="flex flex-wrap gap-2 items-center mb-4">
+      <main className={`flex-1 px-6 py-6 transition-all duration-300 sm:ml-56`}>
+        <header className="mb-6 mt-12 sm:mt-0">
+          <h1 className="text-3xl font-bold mb-4 ml-10 sm:ml-0">ニュースルーム</h1>
+
+          {/* カテゴリ */}
+          <div className="flex flex-wrap gap-2 items-center">
             <button onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -104,7 +106,8 @@ export default function App() {
             ))}
           </div>
 
-          <div className="flex gap-2 mb-6">
+          {/* フィルターエリア */}
+          <div className="flex gap-2 mt-4">
             <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
               <Filter size={16} /> フィルター
             </button>
