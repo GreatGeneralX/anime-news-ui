@@ -32,9 +32,9 @@ export default function Layout() {
 
       {/* メイン表示部分 */}
       <main className="ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6">
-        <div className="max-w-screen-xl mx-auto">
-             <Outlet />
-        </div>
+         <div className="w-full">
+              <Outlet />
+         </div>
       </main>
 
     </div>
