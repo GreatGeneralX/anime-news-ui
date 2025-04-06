@@ -90,7 +90,7 @@ export default function App() {
       </aside>
 
       {/* メイン */}
-      <main className={`ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6`}>
+      <main className="ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6 w-full">
 
         <header className="mb-6 sm:pl-2">
           <h1 className="text-3xl font-bold mb-4 sm:pl-10 sm:mt-2 mt-14 sm:mt-0">ニュースルーム</h1>
