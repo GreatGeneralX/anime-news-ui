@@ -84,7 +84,7 @@ export default function App() {
       {/* メインコンテンツ */}
       <main className={`flex-1 px-6 py-6 transition-all duration-300 ${sidebarOpen ? 'sm:ml-56' : ''}`}>
         <header className="mb-6">
-          <h1 className="text-3xl font-bold mb-4">ニュースルーム</h1>
+          <h1 className="text-3xl font-bold mb-4 sm:ml-0 ml-14">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
             <button onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
