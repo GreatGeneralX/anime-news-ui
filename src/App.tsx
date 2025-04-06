@@ -8,11 +8,10 @@ import {
   Moon,
   Filter,
   ArrowUpDown,
-  Bookmark,
-  BookmarkCheck,
   Menu,
   X,
 } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 interface Article {
   id: number;
@@ -35,10 +34,26 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 }));
 
 export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<NewsRoom />} />
+        <Route path="/favorites" element={<Favorites />} />
+      </Routes>
+    </Router>
+  );
+}
+
+function NewsRoom() {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedCat, setSelectedCat] = useState('すべて');
   const [bookmarks, setBookmarks] = useState<Set<number>>(new Set());
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const filteredArticles =
+    selectedCat === 'すべて'
+      ? dummyArticles
+      : dummyArticles.filter((a) => a.category === selectedCat);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
@@ -52,14 +67,9 @@ export default function App() {
     });
   };
 
-  const filteredArticles =
-    selectedCat === 'すべて'
-      ? dummyArticles
-      : dummyArticles.filter((a) => a.category === selectedCat);
-
   return (
     <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen">
-      {/* ハンバーガーメニュー（スマホ用） */}
+      {/* ハンバーガーメニュー */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -73,21 +83,19 @@ export default function App() {
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
       >
         <div className="space-y-4 pt-10 sm:pt-0">
-          <div className="flex items-center gap-3 text-sm text-gundam-red"><Home size={18} />ニュース</div>
+          <Link to="/" className="flex items-center gap-3 text-sm text-gundam-red">
+            <Home size={18} />ニュース
+          </Link>
           <div className="flex items-center gap-3 text-sm text-gundam-blue"><ShoppingBag size={18} />ショップ</div>
           <div className="flex items-center gap-3 text-sm text-gundam-yellow"><User size={18} />アカウント</div>
-          <div className="flex items-center gap-3 text-sm text-green-600"><Heart size={18} />お気に入り</div>
+          <Link to="/favorites" className="flex items-center gap-3 text-sm text-green-600">
+            <Heart size={18} />お気に入り
+          </Link>
         </div>
       </aside>
 
       {/* メインコンテンツ */}
-      <main
-         className={`flex-1 px-6 py-6 transition-all duration-300 max-w-screen-xl mx-auto ${
-          sidebarOpen ? 'sm:ml-56' : ''
-        }`}
-      >
-
-
+      <main className={`flex-1 px-6 py-6 transition-all duration-300 max-w-screen-xl mx-auto ${sidebarOpen ? 'sm:ml-56' : ''}`}>
         <header className="mb-6 sm:pl-2">
           <h1 className="text-3xl font-bold mb-4 sm:pl-10 sm:mt-2 mt-14 sm:mt-0">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
@@ -135,9 +143,9 @@ export default function App() {
               <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
               <button
                 onClick={() => toggleBookmark(article.id)}
-                className="mt-2 text-gray-500 hover:text-blue-500"
+                className="mt-2 text-gray-500 hover:text-red-500"
               >
-                {bookmarks.has(article.id) ? <BookmarkCheck size={20} /> : <Bookmark size={20} />}
+                <Heart fill={bookmarks.has(article.id) ? 'currentColor' : 'none'} size={20} />
               </button>
             </div>
           ))}
@@ -147,6 +155,15 @@ export default function App() {
           <button className="px-4 py-2 border rounded-md">さらに読み込む</button>
         </div>
       </main>
+    </div>
+  );
+}
+
+// 🔖 お気に入りページ（仮の中身）
+function Favorites() {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <h2 className="text-2xl">お気に入りページ（開発中だよ〜）</h2>
     </div>
   );
 }
