@@ -37,7 +37,7 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedCat, setSelectedCat] = useState('すべて');
-  const [bookmarks, setBookmarks] = useState(new Set<number>());
+  const [bookmarks, setBookmarks] = useState<Set<number>>(new Set());
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -58,8 +58,9 @@ export default function App() {
       : dummyArticles.filter((a) => a.category === selectedCat);
 
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen">
-      {/* ハンバーガー */}
+    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen relative">
+
+      {/* ハンバーガー（スマホ用） */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -72,16 +73,16 @@ export default function App() {
         className={`fixed top-0 left-0 h-full w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
       >
-        <div className="space-y-4 text-sm">
-          <div className="flex items-center gap-3"><Home size={18} />ニュース</div>
-          <div className="flex items-center gap-3"><ShoppingBag size={18} />ショップ</div>
-          <div className="flex items-center gap-3"><User size={18} />アカウント</div>
-          <div className="flex items-center gap-3"><Heart size={18} />お気に入り</div>
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 text-sm"><Home size={18} />ニュース</div>
+          <div className="flex items-center gap-3 text-sm"><ShoppingBag size={18} />ショップ</div>
+          <div className="flex items-center gap-3 text-sm"><User size={18} />アカウント</div>
+          <div className="flex items-center gap-3 text-sm"><Heart size={18} />お気に入り</div>
         </div>
       </aside>
 
-      {/* メイン */}
-      <main className="flex-1 sm:ml-56 px-6 py-6">
+      {/* メインコンテンツ */}
+      <main className={`flex-1 px-6 py-6 transition-all duration-300 ${sidebarOpen ? 'sm:ml-56' : ''}`}>
         <header className="mb-6">
           <h1 className="text-3xl font-bold mb-4">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
@@ -110,15 +111,17 @@ export default function App() {
           </div>
         </header>
 
+        {/* ヒーロー記事 */}
         <section className="mb-10">
           <img src={dummyArticles[0].thumbnail} alt="hero" className="w-full rounded-xl shadow-md mb-4" />
           <h2 className="text-xl font-semibold mb-1">{dummyArticles[0].title}</h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">{dummyArticles[0].summary}</p>
         </section>
 
+        {/* 記事グリッド */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.slice(1).map((article) => (
-            <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md animate-fadeIn">
+            <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md">
               <img src={article.thumbnail} alt={article.title} className="rounded-md mb-2 w-full object-cover h-40" />
               <h3 className="font-bold text-md mb-1">{article.title}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{article.date}</p>
