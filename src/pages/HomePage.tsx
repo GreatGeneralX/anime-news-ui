@@ -53,7 +53,7 @@ export default function HomePage() {
     <>
       {/* ヘッダー */}
       <header className="mb-6 sm:pl-2">
-        <h1 className="text-3xl font-bold mb-4 sm:pl-10 sm:mt-2 mt-14 sm:mt-0">ニュースルーム</h1>
+        <h1 className="text-3xl font-bold mb-4 mt-14 sm:mt-0">ニュースルーム</h1>
         <div className="flex flex-wrap gap-2 items-center">
           <button onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
