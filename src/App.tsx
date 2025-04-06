@@ -8,10 +8,11 @@ import {
   Moon,
   Filter,
   ArrowUpDown,
+  Heart as HeartIcon,
+  HeartCrack,
   Menu,
   X,
 } from 'lucide-react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 interface Article {
   id: number;
@@ -34,26 +35,10 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 }));
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<NewsRoom />} />
-        <Route path="/favorites" element={<Favorites />} />
-      </Routes>
-    </Router>
-  );
-}
-
-function NewsRoom() {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedCat, setSelectedCat] = useState('すべて');
   const [bookmarks, setBookmarks] = useState<Set<number>>(new Set());
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const filteredArticles =
-    selectedCat === 'すべて'
-      ? dummyArticles
-      : dummyArticles.filter((a) => a.category === selectedCat);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
@@ -67,9 +52,14 @@ function NewsRoom() {
     });
   };
 
+  const filteredArticles =
+    selectedCat === 'すべて'
+      ? dummyArticles
+      : dummyArticles.filter((a) => a.category === selectedCat);
+
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white min-h-screen">
-      {/* ハンバーガーメニュー */}
+    <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden">
+      {/* ハンバーガー（スマホ用） */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -79,23 +69,28 @@ function NewsRoom() {
 
       {/* サイドバー */}
       <aside
-        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
+        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 z-50
+        transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}
       >
         <div className="space-y-4 pt-10 sm:pt-0">
-          <Link to="/" className="flex items-center gap-3 text-sm text-gundam-red">
+          <button className="flex items-center gap-3 text-sm text-gundam-red w-full">
             <Home size={18} />ニュース
-          </Link>
-          <div className="flex items-center gap-3 text-sm text-gundam-blue"><ShoppingBag size={18} />ショップ</div>
-          <div className="flex items-center gap-3 text-sm text-gundam-yellow"><User size={18} />アカウント</div>
-          <Link to="/favorites" className="flex items-center gap-3 text-sm text-green-600">
+          </button>
+          <button className="flex items-center gap-3 text-sm text-gundam-blue w-full">
+            <ShoppingBag size={18} />ショップ
+          </button>
+          <button className="flex items-center gap-3 text-sm text-gundam-yellow w-full">
+            <User size={18} />アカウント
+          </button>
+          <button className="flex items-center gap-3 text-sm text-green-600 w-full">
             <Heart size={18} />お気に入り
-          </Link>
+          </button>
         </div>
       </aside>
 
-      {/* メインコンテンツ */}
-      <main className={`flex-1 px-6 py-6 transition-all duration-300 max-w-screen-xl mx-auto ${sidebarOpen ? 'sm:ml-56' : ''}`}>
+      {/* メイン */}
+      <main className="ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6 max-w-screen-xl mx-auto">
         <header className="mb-6 sm:pl-2">
           <h1 className="text-3xl font-bold mb-4 sm:pl-10 sm:mt-2 mt-14 sm:mt-0">ニュースルーム</h1>
           <div className="flex flex-wrap gap-2 items-center">
@@ -145,7 +140,7 @@ function NewsRoom() {
                 onClick={() => toggleBookmark(article.id)}
                 className="mt-2 text-gray-500 hover:text-red-500"
               >
-                <Heart fill={bookmarks.has(article.id) ? 'currentColor' : 'none'} size={20} />
+                {bookmarks.has(article.id) ? <HeartIcon fill="currentColor" size={20} /> : <HeartIcon size={20} />}
               </button>
             </div>
           ))}
@@ -155,15 +150,6 @@ function NewsRoom() {
           <button className="px-4 py-2 border rounded-md">さらに読み込む</button>
         </div>
       </main>
-    </div>
-  );
-}
-
-// 🔖 お気に入りページ（仮の中身）
-function Favorites() {
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <h2 className="text-2xl">お気に入りページ（開発中だよ〜）</h2>
     </div>
   );
 }
