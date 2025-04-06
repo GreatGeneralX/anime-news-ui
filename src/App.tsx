@@ -70,9 +70,11 @@ export default function App() {
 
       {/* サイドバー */}
       <aside
-        className={`fixed top-0 left-0 h-full w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 transform transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
+        className={`fixed top-0 left-0 h-full w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6
+        pt-16 sm:pt-6 transform transition-transform duration-300 ease-in-out
+         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:relative sm:block`}
       >
+
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-sm"><Home size={18} />ニュース</div>
           <div className="flex items-center gap-3 text-sm"><ShoppingBag size={18} />ショップ</div>
