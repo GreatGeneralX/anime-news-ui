@@ -18,7 +18,7 @@ export default function Layout() {
   }, []);
 
   return (
-    <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden">
+    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden">
       {/* ハンバーガーボタン（スマホ用） */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
@@ -31,7 +31,7 @@ export default function Layout() {
       <Sidebar isOpen={sidebarOpen} />
 
       {/* メイン表示部分 */}
-      <main className="ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6 max-w-screen-xl mx-auto">
+      <main className="ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6 w-full">
         <Outlet />
       </main>
     </div>
