@@ -50,7 +50,7 @@ export default function HomePage() {
       : dummyArticles.filter((a) => a.category === selectedCat);
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-stretch">
       {/* ヘッダー */}
       <header className="mb-6 sm:pl-2 w-full">
         <h1 className="text-3xl font-bold mb-4 mt-14 sm:mt-0">ニュースルーム</h1>

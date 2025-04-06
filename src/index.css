@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* index.css */
+#root {
+  max-width: none !important;
+  width: 100% !important;
+}
