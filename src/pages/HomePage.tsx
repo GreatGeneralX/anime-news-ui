@@ -50,10 +50,10 @@ export default function HomePage() {
       : dummyArticles.filter((a) => a.category === selectedCat);
 
   return (
-    <>
+    <div className="w-full">
       {/* ヘッダー */}
-      <header className="mb-6 sm:pl-2">
-      <h1 className="text-3xl font-bold mb-4 mt-14 sm:mt-0">ニュースルーム</h1>
+      <header className="w-full mb-6 sm:pl-2">
+        <h1 className="text-3xl font-bold mb-4 mt-14 sm:mt-0">ニュースルーム</h1>
         <div className="flex flex-wrap gap-2 items-center">
           <button onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -83,7 +83,7 @@ export default function HomePage() {
       </header>
 
       {/* ヒーロー記事 */}
-      <section className="mb-10">
+      <section className="w-full mb-10">
         <img
           src={dummyArticles[0].thumbnail}
           alt="hero"
@@ -96,7 +96,7 @@ export default function HomePage() {
       </section>
 
       {/* 記事グリッド */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredArticles.slice(1).map((article) => (
           <div
             key={article.id}
@@ -129,9 +129,9 @@ export default function HomePage() {
         ))}
       </section>
 
-      <div className="mt-10 text-center">
+      <div className="mt-10 text-center w-full">
         <button className="px-4 py-2 border rounded-md">さらに読み込む</button>
       </div>
-    </>
+    </div>
   );
 }
