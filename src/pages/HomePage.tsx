@@ -59,36 +59,7 @@ export default function App() {
 
   return (
     <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden">
-      {/* ハンバーガー（スマホ用） */}
-      <button
-        className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-      >
-        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-
-      {/* サイドバー */}
-      <aside
-        className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 z-50
-        transform transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}
-      >
-        <div className="space-y-4 pt-10 sm:pt-0">
-          <button className="flex items-center gap-3 text-sm text-gundam-red w-full">
-            <Home size={18} />ニュース
-          </button>
-          <button className="flex items-center gap-3 text-sm text-gundam-blue w-full">
-            <ShoppingBag size={18} />ショップ
-          </button>
-          <button className="flex items-center gap-3 text-sm text-gundam-yellow w-full">
-            <User size={18} />アカウント
-          </button>
-          <button className="flex items-center gap-3 text-sm text-green-600 w-full">
-            <Heart size={18} />お気に入り
-          </button>
-        </div>
-      </aside>
-
+        
       {/* メイン */}
       <main className="ml-0 sm:ml-56 h-full overflow-y-auto px-6 py-6">
 
