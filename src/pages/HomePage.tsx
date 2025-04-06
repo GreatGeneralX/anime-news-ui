@@ -96,7 +96,7 @@ export default function HomePage() {
       </section>
 
       {/* 記事グリッド */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+      <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         {filteredArticles.slice(1).map((article) => (
           <div
             key={article.id}
