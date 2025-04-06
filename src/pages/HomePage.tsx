@@ -138,10 +138,16 @@ export default function App() {
               <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
               <button
                 onClick={() => toggleBookmark(article.id)}
-                className="mt-2 text-gray-500 hover:text-red-500"
+                className={`mt-2 ${
+                      bookmarks.has(article.id) ? 'text-red-400' : 'text-gray-400'
+                        } hover:text-red-500`}
               >
-                {bookmarks.has(article.id) ? <HeartIcon fill="currentColor" size={20} /> : <HeartIcon size={20} />}
-              </button>
+  <HeartIcon
+    size={20}
+    fill={bookmarks.has(article.id) ? 'currentColor' : 'none'}
+  />
+</button>
+
             </div>
           ))}
         </section>
