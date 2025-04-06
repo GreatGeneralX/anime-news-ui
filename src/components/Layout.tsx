@@ -31,7 +31,7 @@ export default function Layout() {
       <Sidebar isOpen={sidebarOpen} />
   
       {/* メイン */}
-      <main className="ml-0 sm:ml-56 w-full h-full overflow-y-auto px-6 py-6">
+      <main className="ml-0 sm:ml-56 w-full h-full overflow-y-auto pr-6 pl-0 py-6">
         <Outlet />
       </main>
     </div>
