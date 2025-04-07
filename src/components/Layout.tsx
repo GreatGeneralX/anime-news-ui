@@ -35,7 +35,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} />
 
-      {/* メインコンテンツ（レスポンシブ対応）*/}
+      {/* メインコンテンツ */}
       <main className="h-full overflow-y-auto pt-6 pr-4 transition-all duration-300 ease-in-out pl-0 sm:pl-[14rem]">
         <Outlet />
       </main>
