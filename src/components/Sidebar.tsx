@@ -29,6 +29,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         >
           <User size={18} /> アカウント
         </Link>
+
         <Link to="/favorites" className="flex items-center gap-3 text-sm text-green-600 w-full">
           <Heart size={18} /> お気に入り
         </Link>

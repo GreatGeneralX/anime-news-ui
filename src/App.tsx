@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
+import AccountOverlay from './pages/AccountOverlay'; // 追加
 import Layout from './components/Layout';
-import AccountOverlay from './pages/AccountOverlay';
 
 export default function App() {
   return (
@@ -18,7 +18,7 @@ function MainRoutes() {
 
   return (
     <>
-      {/* メインルーティング（背景） */}
+      {/* 通常のページたち */}
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -27,12 +27,10 @@ function MainRoutes() {
         </Route>
       </Routes>
 
-      {/* アカウントページだけオーバーレイとしてルーティング */}
-      {state?.backgroundLocation && (
-        <Routes>
-          <Route path="/account" element={<AccountOverlay />} />
-        </Routes>
-      )}
+      {/* アカウントをモーダル的にオーバーレイ表示 */}
+      <Routes>
+        <Route path="/account" element={<AccountOverlay />} />
+      </Routes>
     </>
   );
 }
