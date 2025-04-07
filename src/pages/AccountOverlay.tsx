@@ -1,4 +1,3 @@
-// pages/AccountOverlay.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,45 +13,41 @@ export default function AccountOverlay() {
     setVisible(false);
     setTimeout(() => {
       navigate('/');
-    }, 300);
+    }, 300); // アニメーション終わってから戻る
   };
 
   return (
-    <div
-      className={`
-        fixed inset-0 z-[9998] 
-        pointer-events-none
-      `}
-    >
-      {/* ぼかし用の背景オーバーレイ */}
+    <div className="fixed top-0 left-0 w-full h-full z-[9998] pointer-events-none">
+      {/* 🔹 背景ブラー（クリックで閉じる） */}
       <div
         className={`
-          absolute inset-0 transition-all duration-300 ease-in-out 
-          bg-white/40 dark:bg-zinc-900/40 backdrop-blur-sm
+          absolute inset-0 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md
+          transition-opacity duration-300 ease-in-out
           ${visible ? 'opacity-100' : 'opacity-0'}
+          pointer-events-auto
         `}
+        onClick={handleClose}
       />
 
-      {/* アカウントサイドパネル（サイドバー横に表示） */}
+      {/* 🔸 アカウントパネル本体 */}
       <div
         className={`
-          fixed top-0 left-[14rem] h-full z-[9999]
-          w-[calc(50%-14rem)] bg-white dark:bg-zinc-900 shadow-lg
-          transition-all duration-300 ease-in-out
-          ${visible ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}
-          flex flex-col p-6
+          fixed top-0 right-0 h-full z-[9999] transition-all duration-300 ease-in-out
+          ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+          sm:w-[32rem] ml-56 bg-white dark:bg-zinc-900 shadow-xl p-6 relative
         `}
       >
         {/* 戻るボタン */}
         <button
           onClick={handleClose}
-          className="absolute top-4 left-4 text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md z-[10000]"
+          className="absolute top-4 left-4 text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md z-50"
         >
           &lt;
         </button>
 
-        <h2 className="text-2xl font-bold mb-4 ml-10">アカウントページ</h2>
-        <p className="text-gray-600 dark:text-gray-400 ml-10">
+        {/* 内容 */}
+        <h2 className="text-2xl font-bold mb-4">アカウントページ</h2>
+        <p className="text-gray-600 dark:text-gray-400">
           ここにプロフィールや設定を表示予定！
         </p>
       </div>
