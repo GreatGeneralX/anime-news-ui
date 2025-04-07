@@ -29,3 +29,4 @@ export default function App() {
 }
 
 // この1行で再デプロイできる！
+// 🧼 Force redeploy trigger
