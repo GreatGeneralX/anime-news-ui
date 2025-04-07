@@ -27,7 +27,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
   
       {/* ハンバーガー */}
       <button
-        className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
+        className="fixed top-4 left-4 z-[9990] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}

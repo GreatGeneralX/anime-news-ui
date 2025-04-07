@@ -17,7 +17,8 @@ export default function AccountOverlay() {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full z-[9998] pointer-events-none">
+    <div className="fixed top-0 left-0 w-full h-full z-[9980] pointer-events-none">
+
       {/* 🔹 背景ブラー（クリックで閉じる） */}
       <div
         className={`
@@ -32,7 +33,7 @@ export default function AccountOverlay() {
       {/* 🔸 アカウントパネル本体 */}
       <div
         className={`
-          fixed top-0 right-0 h-full z-[9999] transition-all duration-300 ease-in-out
+          fixed top-0 right-0 h-full z-[9980] transition-all duration-300 ease-in-out
           ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
           sm:w-[32rem] ml-56 bg-white dark:bg-zinc-900 shadow-xl p-6 relative
         `}
