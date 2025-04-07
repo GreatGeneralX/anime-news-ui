@@ -4,10 +4,9 @@ import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
 import AccountOverlay from './pages/AccountOverlay';
 
-function App() {
+export default function App() {
   const location = useLocation();
   const state = location.state as { backgroundLocation?: Location };
-
   const isOverlay = location.pathname === "/account";
 
   return (
@@ -28,5 +27,3 @@ function App() {
     </>
   );
 }
-
-export default App;
