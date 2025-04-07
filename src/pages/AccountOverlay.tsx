@@ -14,12 +14,12 @@ export default function AccountOverlay() {
     setVisible(false);
     setTimeout(() => {
       navigate('/');
-    }, 300); // アニメーション終了後に遷移
+    }, 300);
   };
 
   return (
     <>
-      {/* 背景ぼかし（サイドバーより下にだけ適用） */}
+      {/* 背景ぼかし：サイドバーより後ろにだけ */}
       <div
         className={`
           fixed top-0 left-[14rem] w-[calc(100%-14rem)] h-full z-[5000]
@@ -41,7 +41,7 @@ export default function AccountOverlay() {
         {/* 戻るボタン */}
         <button
           onClick={handleClose}
-          className="absolute top-4 left-4 text-2xl z-50 bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
+          className="absolute top-4 left-4 text-2xl z-[10001] bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
         >
           &lt;
         </button>

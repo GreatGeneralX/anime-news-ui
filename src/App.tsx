@@ -10,7 +10,6 @@ function MainRoutes() {
 
   return (
     <>
-      {/* 通常ルーティング */}
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
