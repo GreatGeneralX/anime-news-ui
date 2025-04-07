@@ -6,6 +6,7 @@ import {
   ArrowUpDown,
   Heart as HeartIcon,
 } from 'lucide-react';
+import Cookies from 'js-cookie';
 
 interface Article {
   id: number;
@@ -32,14 +33,25 @@ export default function HomePage() {
   const [selectedCat, setSelectedCat] = useState('すべて');
   const [bookmarks, setBookmarks] = useState<Set<number>>(new Set());
 
+  // ダークモード切り替え
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
   }, [darkMode]);
 
+  // クッキーからブックマーク読み込み
+  useEffect(() => {
+    const saved = Cookies.get('bookmarks');
+    if (saved) {
+      setBookmarks(new Set(JSON.parse(saved)));
+    }
+  }, []);
+
+  // ブックマークのトグル＆クッキー保存
   const toggleBookmark = (id: number) => {
     setBookmarks((prev) => {
       const newSet = new Set(prev);
       newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+      Cookies.set('bookmarks', JSON.stringify([...newSet]), { expires: 365 });
       return newSet;
     });
   };
