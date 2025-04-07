@@ -27,3 +27,5 @@ export default function App() {
     </>
   );
 }
+
+// この1行で再デプロイできる！
