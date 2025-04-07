@@ -19,12 +19,12 @@ export default function AccountPage() {
   return (
     <div
       className={`
-        fixed top-0
-        left-56 sm:left-[14rem]  // ← Sidebarの幅分ずらす！
+        absolute top-0 left-56 sm:left-56  // ← ピクセル単位でズレないよう sm: 明示！
         h-full z-40 transition-all duration-300 ease-in-out
         bg-white dark:bg-zinc-900 shadow-lg
         ${visible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
-        w-full sm:w-[calc(50%-14rem)]  // ← 全体幅の半分マイナスSidebar分！
+        w-[calc(50%-14rem)]  // ← 14rem = Sidebarの幅！
+        pointer-events-auto
       `}
     >
       {/* 戻るボタン */}
