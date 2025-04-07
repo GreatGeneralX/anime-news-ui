@@ -24,7 +24,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
 
   return (
     <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full max-w-none relative">
-
+  
       {/* ハンバーガー */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
@@ -32,17 +32,18 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       >
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
-
+  
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} />
-
+  
       {/* メイン */}
       <main className="relative h-full overflow-y-auto py-6 w-full max-w-none pl-0">
         <Outlet />
-        {showAccountOverlay && <AccountOverlay />}
       </main>
-
-
+  
+      {/* 🔥 外に出す */}
+      {showAccountOverlay && <AccountOverlay />}
     </div>
   );
+  
 }
