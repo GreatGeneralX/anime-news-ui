@@ -30,3 +30,5 @@ export default function App() {
 
 // この1行で再デプロイできる！
 // 🧼 Force redeploy trigger
+// App.tsx の一番下に1行追加するだけでもOK
+console.log("👾 再デプロイ確認ログ");
