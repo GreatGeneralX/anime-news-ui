@@ -1,10 +1,10 @@
+// Layout.tsx
 import { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { Menu, X } from 'lucide-react';
 import AccountOverlay from '../pages/AccountOverlay';
 
-// ← ここで型を指定してpropsを受け取る
 interface LayoutProps {
   showAccountOverlay?: boolean;
 }
@@ -23,27 +23,25 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
   }, []);
 
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full max-w-none relative">
-  
+    <div className="relative h-screen w-full bg-white dark:bg-zinc-900 text-black dark:text-white">
       {/* ハンバーガー */}
       <button
-        className="fixed top-4 left-4 z-[9990] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
+        className="fixed top-4 left-4 z-[30] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
-  
+
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} />
-  
-      {/* メイン */}
-      <main className="relative h-full overflow-y-auto py-6 w-full max-w-none pl-0">
+
+      {/* メインコンテンツ（サイドバー分 padding）*/}
+      <main className="pl-[14rem] sm:pl-[14rem] h-full overflow-y-auto pt-6 pr-4">
         <Outlet />
       </main>
-  
-      {/* 🔥 外に出す */}
+
+      {/* オーバーレイ */}
       {showAccountOverlay && <AccountOverlay />}
     </div>
   );
-  
 }
