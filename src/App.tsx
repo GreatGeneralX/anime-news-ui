@@ -1,7 +1,7 @@
+// App.tsx
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
-import AccountOverlay from './pages/AccountOverlay'; // 追加
 import Layout from './components/Layout';
 
 export default function App() {
@@ -17,20 +17,16 @@ function MainRoutes() {
   const state = location.state as { backgroundLocation?: Location };
 
   return (
-    <>
-      {/* 通常のページたち */}
-      <Routes location={state?.backgroundLocation || location}>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="favorites" element={<FavoritesPage />} />
-          <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
-        </Route>
-      </Routes>
+    <Routes location={state?.backgroundLocation || location}>
+      {/* 通常レイアウト */}
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="favorites" element={<FavoritesPage />} />
+        <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
+      </Route>
 
-      {/* アカウントをモーダル的にオーバーレイ表示 */}
-      <Routes>
-        <Route path="/account" element={<AccountOverlay />} />
-      </Routes>
-    </>
+      {/* アカウントはオーバーレイ付きのレイアウトで表示 */}
+      <Route path="/account" element={<Layout showAccountOverlay={true} />}></Route>
+    </Routes>
   );
 }
