@@ -14,7 +14,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         fixed top-0 left-0 h-screen w-[14rem]
         bg-white dark:bg-zinc-900
         border-r border-gray-200 dark:border-gray-700
-        px-4 py-6 space-y-6 z-[50]
+        px-4 py-6 space-y-6 z-[9970]
         transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0
       `}
