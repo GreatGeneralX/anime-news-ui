@@ -19,7 +19,7 @@ export default function AccountOverlay() {
 
   return (
     <>
-      {/* 背景ぼかし：サイドバーより後ろにだけ */}
+      {/* 背景ぼかし */}
       <div
         className={`
           fixed top-0 left-[14rem] w-[calc(100%-14rem)] h-full z-[5000]
@@ -29,7 +29,7 @@ export default function AccountOverlay() {
         `}
       />
 
-      {/* アカウントページスライド */}
+      {/* アカウントパネル */}
       <div
         className={`
           fixed top-0 right-0 h-full w-full sm:w-[calc(50%-14rem)] z-[9999]
@@ -38,15 +38,13 @@ export default function AccountOverlay() {
           ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
         `}
       >
-        {/* 戻るボタン */}
         <button
           onClick={handleClose}
-          className="absolute top-4 left-4 text-2xl z-[10001] bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
+          className="absolute top-4 left-4 text-2xl z-50 bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
         >
           &lt;
         </button>
 
-        {/* アカウントページ本体 */}
         <div className="p-6 mt-14">
           <AccountPage />
         </div>
