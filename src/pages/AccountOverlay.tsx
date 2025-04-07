@@ -19,14 +19,15 @@ export default function AccountOverlay() {
 
   return (
     <div
-      className={`
-        fixed top-0 left-0 w-full h-full z-[9999]
-        bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md
-        transition-all duration-300 ease-in-out
-        ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
-        flex justify-end
-      `}
+        className={`
+            fixed top-0 left-[14rem] sm:left-[14rem] h-full z-[9999]
+            w-full sm:w-[calc(100%-14rem)] max-w-[700px]
+            bg-white/90 dark:bg-zinc-900/90 backdrop-blur-lg shadow-xl
+            transition-all duration-300 ease-in-out
+            ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+        `}
     >
+
       <div className="w-full sm:w-[calc(50%-14rem)] bg-white dark:bg-zinc-900 h-full shadow-xl p-6 relative">
         <button
           onClick={handleClose}

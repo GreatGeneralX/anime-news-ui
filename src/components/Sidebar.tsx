@@ -22,9 +22,14 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         <Link to="/shop" className="flex items-center gap-3 text-sm text-gundam-blue w-full">
           <ShoppingBag size={18} /> ショップ
         </Link>
-        <Link to="/account" className="flex items-center gap-3 text-sm text-gundam-yellow w-full">
-          <User size={18} /> アカウント
+        <Link
+            to="/account"
+            state={{ backgroundLocation: location }}
+            className="flex items-center gap-3 text-sm text-gundam-yellow w-full"
+        >
+            <User size={18} /> アカウント
         </Link>
+ 
         <Link to="/favorites" className="flex items-center gap-3 text-sm text-green-600 w-full">
           <Heart size={18} /> お気に入り
         </Link>
