@@ -1,11 +1,13 @@
+import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 interface SidebarProps {
   isOpen: boolean;
 }
 
 export default function Sidebar({ isOpen }: SidebarProps) {
+  const location = useLocation();
+
   return (
     <aside
       className={`fixed top-0 left-0 h-screen w-56 bg-white dark:bg-zinc-900 
@@ -13,8 +15,6 @@ export default function Sidebar({ isOpen }: SidebarProps) {
        transition-transform duration-300 ease-in-out
        ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 sm:static`}
     >
-
-  
       <div className="space-y-4 pt-10 sm:pt-0">
         <Link to="/" className="flex items-center gap-3 text-sm text-gundam-red w-full">
           <Home size={18} /> ニュース
@@ -24,13 +24,11 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         </Link>
         <Link
           to="/account"
-          state={{ backgroundLocation: window.location }}
+          state={{ backgroundLocation: location }}
           className="flex items-center gap-3 text-sm text-gundam-yellow w-full"
         >
           <User size={18} /> アカウント
         </Link>
-
- 
         <Link to="/favorites" className="flex items-center gap-3 text-sm text-green-600 w-full">
           <Heart size={18} /> お気に入り
         </Link>

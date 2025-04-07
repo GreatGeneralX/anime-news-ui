@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
 import Layout from './components/Layout';
+import AccountOverlay from './pages/AccountOverlay';
 
 export default function App() {
   return (
@@ -13,12 +14,11 @@ export default function App() {
 
 function MainRoutes() {
   const location = useLocation();
-
-  // アカウントページをオーバーレイ扱いにするための位置情報を保持
   const state = location.state as { backgroundLocation?: Location };
 
   return (
     <>
+      {/* メインルーティング（背景） */}
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -27,10 +27,12 @@ function MainRoutes() {
         </Route>
       </Routes>
 
-      {/* アカウントページをモーダル風に表示（背景を維持したまま） */}
-      <Routes>
-        <Route path="/account" element={<Layout showAccountOverlay />} />
-      </Routes>
+      {/* アカウントページだけオーバーレイとしてルーティング */}
+      {state?.backgroundLocation && (
+        <Routes>
+          <Route path="/account" element={<AccountOverlay />} />
+        </Routes>
+      )}
     </>
   );
 }
