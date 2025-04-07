@@ -1,47 +1,57 @@
-// Layout.tsx
-import { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import { Menu, X } from 'lucide-react';
-import AccountOverlay from '../pages/AccountOverlay';
+// AccountOverlay.tsx
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-interface LayoutProps {
-  showAccountOverlay?: boolean;
-}
-
-export default function Layout({ showAccountOverlay = false }: LayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export default function AccountOverlay() {
+  const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 640) {
-        setSidebarOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    setVisible(true);
   }, []);
 
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(() => {
+      navigate('/');
+    }, 300);
+  };
+
   return (
-    <div className="relative h-screen w-full bg-white dark:bg-zinc-900 text-black dark:text-white">
-      {/* ハンバーガー */}
-      <button
-        className="fixed top-4 left-4 z-[30] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
+    <div className="fixed top-0 left-0 w-full h-full z-[40] pointer-events-none">
+      {/* 🔹 背景ブラー（クリックで閉じる） */}
+      <div
+        className={`
+          absolute inset-0 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md
+          transition-opacity duration-300 ease-in-out
+          ${visible ? 'opacity-100' : 'opacity-0'}
+          pointer-events-auto
+        `}
+        onClick={handleClose}
+      />
+
+      {/* 🔸 アカウントパネル本体 */}
+      <div
+        className={`
+          fixed top-0 right-0 h-full z-[45] transition-all duration-300 ease-in-out
+          ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+          sm:w-[32rem] bg-white dark:bg-zinc-900 shadow-xl p-6 relative
+        `}
       >
-        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+        {/* 戻るボタン */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 left-4 text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md z-50"
+        >
+          &lt;
+        </button>
 
-      {/* サイドバー */}
-      <Sidebar isOpen={sidebarOpen} />
-
-      {/* メインコンテンツ（レスポンシブ対応）*/}
-      <main className="h-full overflow-y-auto pt-6 pr-4 transition-all duration-300 ease-in-out pl-0 sm:pl-[14rem]">
-        <Outlet />
-      </main>
-
-      {/* アカウントオーバーレイ */}
-      {showAccountOverlay && <AccountOverlay />}
+        {/* 内容 */}
+        <h2 className="text-2xl font-bold mb-4">アカウントページ</h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          ここにプロフィールや設定を表示予定！
+        </p>
+      </div>
     </div>
   );
 }
