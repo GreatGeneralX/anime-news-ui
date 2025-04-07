@@ -35,12 +35,12 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} />
 
-      {/* メインコンテンツ（サイドバー分 padding）*/}
-      <main className="pl-[14rem] sm:pl-[14rem] h-full overflow-y-auto pt-6 pr-4">
+      {/* メインコンテンツ（レスポンシブ対応）*/}
+      <main className="h-full overflow-y-auto pt-6 pr-4 transition-all duration-300 ease-in-out pl-0 sm:pl-[14rem]">
         <Outlet />
       </main>
 
-      {/* オーバーレイ */}
+      {/* アカウントオーバーレイ */}
       {showAccountOverlay && <AccountOverlay />}
     </div>
   );
