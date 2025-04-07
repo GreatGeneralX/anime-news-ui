@@ -31,6 +31,8 @@ function MainRoutes() {
         <Route index element={<HomePage />} />
         <Route path="favorites" element={<FavoritesPage />} />
         <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
+        {/* ダミーでホームを背景にしてアカウント表示 */}
+        <Route path="account" element={<HomePage />} />
       </Route>
     </Routes>
   );
