@@ -10,8 +10,8 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="favorites" element={<FavoritesPage />} />
-          <Route path="shop" element={<div>ショップページだよ🛍️</div>} />
-          <Route path="account" element={<div>アカウントページだよ👤</div>} />
+          <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
+          <Route path="account" element={<div className="mt-16">アカウントページだよ👤</div>} />
         </Route>
       </Routes>
     </BrowserRouter>
