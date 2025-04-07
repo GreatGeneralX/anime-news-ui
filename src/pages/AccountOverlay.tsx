@@ -13,12 +13,12 @@ export default function AccountOverlay() {
     setVisible(false);
     setTimeout(() => {
       navigate('/');
-    }, 300); // アニメーション終わってから戻る
+    }, 300);
   };
 
   return (
     <div className="fixed top-0 left-0 w-full h-full z-[9998] pointer-events-none">
-      {/* 🔹 背景ブラー（クリックで閉じる） */}
+      {/* 背景ブラー */}
       <div
         className={`
           absolute inset-0 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md
@@ -29,12 +29,13 @@ export default function AccountOverlay() {
         onClick={handleClose}
       />
 
-      {/* 🔸 アカウントパネル本体 */}
+      {/* アカウント本体 */}
       <div
         className={`
-          fixed top-0 right-0 h-full z-[9999] transition-all duration-300 ease-in-out
+          fixed top-0 h-full z-[9999] transition-all duration-300 ease-in-out
           ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
-          w-full sm:w-[min(32rem,calc(100%-14rem))] bg-white dark:bg-zinc-900 shadow-xl p-6 relative
+          bg-white dark:bg-zinc-900 shadow-xl p-6 relative
+          w-full sm:w-[32rem] sm:left-56
         `}
       >
         {/* 戻るボタン */}
@@ -45,8 +46,8 @@ export default function AccountOverlay() {
           &lt;
         </button>
 
-        {/* 内容 */}
-        <h2 className="text-2xl font-bold mb-4">アカウントページ</h2>
+        {/* コンテンツ */}
+        <h2 className="text-2xl font-bold mb-4 pl-10">アカウントページ</h2>
         <p className="text-gray-600 dark:text-gray-400">
           ここにプロフィールや設定を表示予定！
         </p>
