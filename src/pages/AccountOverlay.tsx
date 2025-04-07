@@ -1,20 +1,11 @@
 // AccountOverlay.tsx
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function AccountOverlay() {
-  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setVisible(true);
-  }, []);
-
   const handleClose = () => {
-    setVisible(false);
-    setTimeout(() => {
-      navigate('/');
-    }, 300);
+    navigate('/');
   };
 
   return (
@@ -26,23 +17,20 @@ export default function AccountOverlay() {
 
         {/* 右：ブラーかける部分 */}
         <div
-          className={`
-            flex-1 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md
-            transition-opacity duration-300 ease-in-out
-            ${visible ? 'opacity-100' : 'opacity-0'}
-            pointer-events-auto
-          `}
+          className="flex-1 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md
+                     transition-opacity duration-300 ease-in-out opacity-100
+                     pointer-events-auto"
           onClick={handleClose}
         />
       </div>
 
-      {/* 🔸 アカウントパネル本体 */}
+      {/* 🔸 アカウントパネル本体（常に表示） */}
       <div
-        className={`
-          fixed top-0 left-[14rem] h-full z-[9990] transition-all duration-300 ease-in-out
-          ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+        className="
+          fixed top-0 left-[14rem] h-full z-[9990] translate-x-0 opacity-100
+          transition-all duration-300 ease-in-out
           sm:w-[32rem] bg-white dark:bg-zinc-900 shadow-xl p-6 relative
-        `}
+        "
       >
         {/* 戻るボタン */}
         <button
