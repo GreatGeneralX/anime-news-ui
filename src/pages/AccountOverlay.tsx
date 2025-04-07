@@ -39,9 +39,9 @@ export default function AccountOverlay() {
       {/* 🔸 アカウントパネル本体 */}
       <div
         className={`
-          fixed top-0 right-0 h-full z-[9990] transition-all duration-300 ease-in-out
+          fixed top-0 left-[14rem] h-full z-[9990] transition-all duration-300 ease-in-out
           ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
-          sm:w-[32rem] sm:ml-[14rem] bg-white dark:bg-zinc-900 shadow-xl p-6 relative
+          sm:w-[32rem] bg-white dark:bg-zinc-900 shadow-xl p-6 relative
         `}
       >
         {/* 戻るボタン */}
