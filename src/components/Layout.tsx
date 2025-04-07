@@ -37,10 +37,11 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       <Sidebar isOpen={sidebarOpen} />
 
       {/* メイン */}
-      <main className="h-full overflow-y-auto px-6 py-6 w-full max-w-none">
+      <main className="relative z-0 h-full overflow-y-auto px-6 py-6 w-full max-w-none">
         <Outlet />
         {showAccountOverlay && <AccountOverlay />}
       </main>
+
     </div>
   );
 }
