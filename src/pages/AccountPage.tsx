@@ -6,7 +6,6 @@ export default function AccountPage() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // マウント時にスライド表示
     setVisible(true);
   }, []);
 
@@ -14,16 +13,18 @@ export default function AccountPage() {
     setVisible(false);
     setTimeout(() => {
       navigate('/');
-    }, 300); // アニメーション後に戻る
+    }, 300);
   };
 
   return (
     <div
       className={`
-        fixed top-0 left-0 h-full z-40 transition-all duration-300 ease-in-out
+        fixed top-0
+        left-56 sm:left-[14rem]  // ← Sidebarの幅分ずらす！
+        h-full z-40 transition-all duration-300 ease-in-out
         bg-white dark:bg-zinc-900 shadow-lg
         ${visible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
-        w-full sm:w-1/2
+        w-full sm:w-[calc(50%-14rem)]  // ← 全体幅の半分マイナスSidebar分！
       `}
     >
       {/* 戻るボタン */}
