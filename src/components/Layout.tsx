@@ -4,11 +4,14 @@ import Sidebar from './Sidebar';
 import { Menu, X } from 'lucide-react';
 import AccountOverlay from '../pages/AccountOverlay';
 
-export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
+// ← ここで型を指定してpropsを受け取る
+interface LayoutProps {
+  showAccountOverlay?: boolean;
+}
 
-  // 画面サイズ変わったらSidebar自動で閉じる（スマホ→PCとかの時）
+export default function Layout({ showAccountOverlay = false }: LayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 640) {
@@ -19,11 +22,9 @@ export default function Layout() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isAccountPage = location.pathname === '/account';
-
   return (
     <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full max-w-none relative">
-      
+
       {/* ハンバーガー */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
@@ -38,10 +39,8 @@ export default function Layout() {
       {/* メイン */}
       <main className="h-full overflow-y-auto px-6 py-6 w-full max-w-none">
         <Outlet />
+        {showAccountOverlay && <AccountOverlay />}
       </main>
-
-      {/* アカウントページはオーバーレイで出す */}
-      {isAccountPage && <AccountOverlay />}
     </div>
   );
 }
