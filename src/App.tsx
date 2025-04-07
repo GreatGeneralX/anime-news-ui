@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   useLocation,
-  useNavigate,
 } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
@@ -25,16 +24,16 @@ function MainRoutes() {
 
   return (
     <>
-      {/* 背景ページ用のルーティング */}
+      {/* 通常レイアウト */}
       <Routes location={state?.backgroundLocation || location}>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout />}>  
           <Route index element={<HomePage />} />
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
         </Route>
       </Routes>
 
-      {/* オーバーレイ表示用ルート（背景は変えずに重ねる） */}
+      {/* アカウントはオーバーレイ表示のみ追加で */}
       {state?.backgroundLocation && (
         <Routes>
           <Route path="/account" element={<AccountOverlay />} />
