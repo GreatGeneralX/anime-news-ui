@@ -15,7 +15,7 @@ export default function AccountOverlay() {
         <div className="w-[14rem] hidden sm:block" />
         {/* 右側にブラー背景 */}
         <div
-          className="flex-1 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md
+          className="flex-1 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-sm
                      opacity-100 pointer-events-auto"
           onClick={handleClose}
         />
