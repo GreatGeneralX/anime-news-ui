@@ -1,13 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
   onLinkClick?: () => void;
-  currentPath?: string; // ⭐️ 追加
 }
 
-export default function Sidebar({ isOpen, onLinkClick, currentPath }: SidebarProps) {
+export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
+  const location = useLocation();
+
+  // 🎯 オーバーレイでも現在の「元のページ」を取得！
+  const currentPath =
+    location.state?.backgroundLocation?.pathname || location.pathname;
+
   const links = [
     { path: '/', icon: <Home size={18} />, label: 'ニュース', color: 'gundam-red' },
     { path: '/shop', icon: <ShoppingBag size={18} />, label: 'ショップ', color: 'gundam-blue' },
@@ -37,9 +42,10 @@ export default function Sidebar({ isOpen, onLinkClick, currentPath }: SidebarPro
         {links.map(({ path, icon, label, color, isAccount }) => {
           const isActive = currentPath === path;
 
+          // アカウントだけ、モーダルじゃないときだけstateを渡す
           const linkState =
             isAccount && currentPath !== '/account'
-              ? { backgroundLocation: { pathname: currentPath } }
+              ? { backgroundLocation: location }
               : undefined;
 
           return (
@@ -56,6 +62,8 @@ export default function Sidebar({ isOpen, onLinkClick, currentPath }: SidebarPro
             >
               {icon}
               {label}
+
+              {/* ピョコン表示：選択中のみ */}
               {isActive && (
                 <span
                   className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${color} rounded-r`}

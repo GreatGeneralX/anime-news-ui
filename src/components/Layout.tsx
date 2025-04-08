@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { Menu, X } from 'lucide-react';
 import AccountOverlay from '../pages/AccountOverlay';
@@ -11,10 +11,6 @@ interface LayoutProps {
 export default function Layout({ showAccountOverlay = false }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
-
-  const location = useLocation();
-  const background = location.state?.backgroundLocation;
-  const currentPath = background?.pathname || location.pathname;
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,7 +30,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
 
   return (
     <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full relative">
-      {/* ハンバーガー（スマホ） */}
+      {/* ハンバーガーメニュー */}
       <button
         className="fixed top-4 left-4 z-[10000] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -43,24 +39,21 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       </button>
 
       {/* サイドバー */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        onLinkClick={handleLinkClick}
-        currentPath={currentPath} // ⭐️ 追加ポイント
-      />
+      <Sidebar isOpen={sidebarOpen} onLinkClick={handleLinkClick} />
 
-      {/* メイン ＋ アカウントオーバーレイ（PC） */}
+      {/* メインエリア */}
       <div className={`flex h-full transition-all duration-300 ${isDesktop ? 'ml-56' : 'ml-0'}`}>
+        {/* アカウントオーバーレイ（PCのみ） */}
         {isDesktop && showAccountOverlay && <AccountOverlay />}
 
-        <main className="h-full overflow-y-auto flex-1 px-4 sm:px-6 md:px-8">
+        <main className="h-full overflow-y-auto flex-1">
           <div
-            className="
+            className={`
               w-full mx-auto
-              max-w-[calc(100vw-14rem)]
-              sm:max-w-[calc(100vw-16rem)]
+              px-4 sm:px-6 md:px-8
+              ${isDesktop ? 'max-w-[calc(100vw-14rem)]' : 'max-w-screen-md'}
               lg:max-w-[72rem]
-            "
+            `}
           >
             <Outlet />
           </div>
