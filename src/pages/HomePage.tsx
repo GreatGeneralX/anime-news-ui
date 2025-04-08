@@ -46,7 +46,7 @@ export default function HomePage() {
     }
   }, []);
 
-  // ブックマークのトグル＆クッキー保存
+  // ブックマークのトグル＆保存
   const toggleBookmark = (id: number) => {
     setBookmarks((prev) => {
       const newSet = new Set(prev);
@@ -66,6 +66,8 @@ export default function HomePage() {
       {/* ヘッダー */}
       <header className="mb-6 sm:pl-2 w-full">
         <h1 className="text-3xl font-bold mb-4 mt-14 sm:mt-0">ニュースルーム</h1>
+
+        {/* カテゴリ */}
         <div className="flex flex-wrap gap-2 items-center">
           <button onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -84,13 +86,24 @@ export default function HomePage() {
             </button>
           ))}
         </div>
-        <div className="mt-4 flex gap-2">
+
+        {/* 並び替え */}
+        <div className="mt-4 flex gap-2 items-center">
           <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
             <Filter size={16} /> フィルター
           </button>
-          <button className="px-2 py-1 text-sm flex items-center gap-1 border rounded-md">
-            <ArrowUpDown size={16} /> 並べ替え
-          </button>
+          <div className="relative inline-block text-left">
+            <select
+              className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm bg-white dark:bg-zinc-800 text-black dark:text-white"
+              defaultValue="default"
+              onChange={(e) => console.log('並び順:', e.target.value)}
+            >
+              <option value="default">並び替え</option>
+              <option value="new">新着順</option>
+              <option value="popular">人気順</option>
+              <option value="old">古い順</option>
+            </select>
+          </div>
         </div>
       </header>
 
@@ -112,7 +125,8 @@ export default function HomePage() {
         {filteredArticles.slice(1).map((article) => (
           <div
             key={article.id}
-            className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md"
+            className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md
+                       transition-transform transform hover:scale-[1.02] duration-200 ease-in-out"
           >
             <img
               src={article.thumbnail}

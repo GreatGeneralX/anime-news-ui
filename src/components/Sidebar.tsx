@@ -26,29 +26,40 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         <Link
           to="/"
           onClick={onLinkClick}
-          className="flex items-center gap-3 text-sm text-gundam-red w-full"
+          className={`flex items-center gap-3 text-sm text-gundam-red w-full relative
+            ${location.pathname === '/' ? 'font-bold after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:h-5 after:w-1 after:bg-gundam-red' : ''}
+          `}
         >
           <Home size={18} /> ニュース
         </Link>
+
         <Link
           to="/shop"
           onClick={onLinkClick}
-          className="flex items-center gap-3 text-sm text-gundam-blue w-full"
+          className={`flex items-center gap-3 text-sm text-gundam-blue w-full relative
+            ${location.pathname === '/shop' ? 'font-bold after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:h-5 after:w-1 after:bg-gundam-blue' : ''}
+          `}
         >
           <ShoppingBag size={18} /> ショップ
         </Link>
+
         <Link
           to="/account"
           state={{ backgroundLocation: location }}
           onClick={onLinkClick}
-          className="flex items-center gap-3 text-sm text-gundam-yellow w-full"
+          className={`flex items-center gap-3 text-sm text-gundam-yellow w-full relative
+            ${location.pathname === '/account' ? 'font-bold after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:h-5 after:w-1 after:bg-gundam-yellow' : ''}
+          `}
         >
           <User size={18} /> アカウント
         </Link>
+
         <Link
           to="/favorites"
           onClick={onLinkClick}
-          className="flex items-center gap-3 text-sm text-green-600 w-full"
+          className={`flex items-center gap-3 text-sm text-green-600 w-full relative
+            ${location.pathname === '/favorites' ? 'font-bold after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:h-5 after:w-1 after:bg-green-600' : ''}
+          `}
         >
           <Heart size={18} /> お気に入り
         </Link>
