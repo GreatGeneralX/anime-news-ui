@@ -3,9 +3,10 @@ import { Home, ShoppingBag, User, Heart } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
+  onLinkClick?: () => void; // ← リンククリック時に呼ばれる関数を受け取る！
 }
 
-export default function Sidebar({ isOpen }: SidebarProps) {
+export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
 
   return (
@@ -20,20 +21,21 @@ export default function Sidebar({ isOpen }: SidebarProps) {
       `}
     >
       <div className="space-y-4 pt-10 sm:pt-0">
-        <Link to="/" className="flex items-center gap-3 text-sm text-gundam-red w-full">
+        <Link to="/" onClick={onLinkClick} className="flex items-center gap-3 text-sm text-gundam-red w-full">
           <Home size={18} /> ニュース
         </Link>
-        <Link to="/shop" className="flex items-center gap-3 text-sm text-gundam-blue w-full">
+        <Link to="/shop" onClick={onLinkClick} className="flex items-center gap-3 text-sm text-gundam-blue w-full">
           <ShoppingBag size={18} /> ショップ
         </Link>
         <Link
           to="/account"
           state={{ backgroundLocation: location }}
+          onClick={onLinkClick}
           className="flex items-center gap-3 text-sm text-gundam-yellow w-full"
         >
           <User size={18} /> アカウント
         </Link>
-        <Link to="/favorites" className="flex items-center gap-3 text-sm text-green-600 w-full">
+        <Link to="/favorites" onClick={onLinkClick} className="flex items-center gap-3 text-sm text-green-600 w-full">
           <Heart size={18} /> お気に入り
         </Link>
       </div>
