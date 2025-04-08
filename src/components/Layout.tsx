@@ -17,7 +17,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       const isNowDesktop = window.innerWidth >= 640;
       setIsDesktop(isNowDesktop);
       if (isNowDesktop) {
-        setSidebarOpen(false);
+        setSidebarOpen(false); // PCではサイドバーは常に表示状態
       }
     };
     window.addEventListener('resize', handleResize);
@@ -30,7 +30,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
 
   return (
     <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full relative">
-      {/* ハンバーガーメニュー */}
+      {/* ハンバーガーメニュー（スマホ専用） */}
       <button
         className="fixed top-4 left-4 z-[10000] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -41,19 +41,20 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} onLinkClick={handleLinkClick} />
 
-      {/* メインエリア */}
+      {/* メインとオーバーレイ */}
       <div className={`flex h-full transition-all duration-300 ${isDesktop ? 'ml-56' : 'ml-0'}`}>
-        {/* アカウントオーバーレイ（PCのみ） */}
+        {/* アカウントオーバーレイ（PC表示時） */}
         {isDesktop && showAccountOverlay && <AccountOverlay />}
 
-        <main className="h-full overflow-y-auto flex-1">
+        {/* メインコンテンツ */}
+        <main className="h-full overflow-y-auto flex-1 px-4 sm:px-6 md:px-8">
           <div
-            className={`
+            className="
               w-full mx-auto
-              px-4 sm:px-6 md:px-8
-              ${isDesktop ? 'max-w-[calc(100vw-14rem)]' : 'max-w-screen-md'}
+              max-w-[calc(100vw-14rem)]
+              sm:max-w-[calc(100vw-16rem)]
               lg:max-w-[72rem]
-            `}
+            "
           >
             <Outlet />
           </div>

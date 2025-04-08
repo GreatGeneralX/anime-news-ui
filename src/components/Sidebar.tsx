@@ -9,7 +9,7 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
 
-  // 🎯 オーバーレイでも正確に現在のページを取得
+  // 🎯 オーバーレイ表示中でも、元の背景のページで判定できるようにする！
   const currentPath =
     location.state?.backgroundLocation?.pathname || location.pathname;
 
@@ -40,10 +40,14 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
     >
       <div className="space-y-4 pt-10 sm:pt-0">
         {links.map(({ path, icon, label, color, isAccount }) => {
+          // ✨ オーバーレイ対応の現在ページ判定
           const isActive = currentPath === path;
-          const linkState = isAccount && currentPath !== '/account'
-            ? { backgroundLocation: location }
-            : undefined;
+
+          // 🧠 backgroundLocation は「/account以外から来たとき」だけ渡す
+          const linkState =
+            isAccount && location.pathname !== '/account'
+              ? { backgroundLocation: location }
+              : undefined;
 
           return (
             <Link
@@ -59,10 +63,14 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
             >
               {icon}
               {label}
+
               {/* ピョコン（選択中） */}
               {isActive && (
                 <span
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${color} rounded-r`}
+                  className={`
+                    absolute left-0 top-1/2 -translate-y-1/2
+                    h-5 w-1 bg-${color} rounded-r
+                  `}
                 />
               )}
             </Link>
