@@ -29,7 +29,7 @@ export default function AccountOverlay() {
         `}
       />
 
-      {/* アカウントパネル（スマホは全幅） */}
+      {/* アカウントパネル */}
       <div
         className={`
           fixed top-0 left-0 h-full w-full sm:left-[14rem] sm:w-[32rem] z-[9999]
@@ -51,8 +51,8 @@ export default function AccountOverlay() {
           <h2 className="text-2xl font-bold">アカウントページ</h2>
         </div>
 
-        {/* アカウントページ中身 */}
-        <div className="px-6">
+        {/* アカウントページコンテンツ */}
+        <div className="px-6 mt-2 sm:mt-0">
           <AccountPage />
         </div>
       </div>
