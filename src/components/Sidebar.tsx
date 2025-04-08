@@ -3,7 +3,7 @@ import { Home, ShoppingBag, User, Heart } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
-  onLinkClick?: () => void; // ← リンククリック時に呼ばれる関数を受け取る！
+  onLinkClick?: () => void; // ← サイドバーのリンクが押されたとき用
 }
 
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
@@ -15,16 +15,26 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         fixed top-0 left-0 h-screen w-[14rem]
         bg-white dark:bg-zinc-900
         border-r border-gray-200 dark:border-gray-700
-        px-4 py-6 space-y-6 z-[9999]
+        px-4 py-6 space-y-6
+        z-[9998]  /* ← ハンバーガーより下に表示する！ */
         transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0
       `}
     >
+      {/* ナビゲーションリンク */}
       <div className="space-y-4 pt-10 sm:pt-0">
-        <Link to="/" onClick={onLinkClick} className="flex items-center gap-3 text-sm text-gundam-red w-full">
+        <Link
+          to="/"
+          onClick={onLinkClick}
+          className="flex items-center gap-3 text-sm text-gundam-red w-full"
+        >
           <Home size={18} /> ニュース
         </Link>
-        <Link to="/shop" onClick={onLinkClick} className="flex items-center gap-3 text-sm text-gundam-blue w-full">
+        <Link
+          to="/shop"
+          onClick={onLinkClick}
+          className="flex items-center gap-3 text-sm text-gundam-blue w-full"
+        >
           <ShoppingBag size={18} /> ショップ
         </Link>
         <Link
@@ -35,7 +45,11 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         >
           <User size={18} /> アカウント
         </Link>
-        <Link to="/favorites" onClick={onLinkClick} className="flex items-center gap-3 text-sm text-green-600 w-full">
+        <Link
+          to="/favorites"
+          onClick={onLinkClick}
+          className="flex items-center gap-3 text-sm text-green-600 w-full"
+        >
           <Heart size={18} /> お気に入り
         </Link>
       </div>
