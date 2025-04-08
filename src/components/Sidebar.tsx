@@ -8,32 +8,19 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
+  const currentPath = location.pathname;
 
-  const navItems = [
-    {
-      path: '/',
-      baseColor: 'gundam-red',
-      icon: <Home size={18} />,
-      label: 'ニュース',
-    },
-    {
-      path: '/shop',
-      baseColor: 'gundam-blue',
-      icon: <ShoppingBag size={18} />,
-      label: 'ショップ',
-    },
+  const links = [
+    { path: '/', icon: <Home size={18} />, label: 'ニュース', color: 'gundam-red' },
+    { path: '/shop', icon: <ShoppingBag size={18} />, label: 'ショップ', color: 'gundam-blue' },
     {
       path: '/account',
-      baseColor: 'gundam-yellow',
       icon: <User size={18} />,
       label: 'アカウント',
+      color: 'gundam-yellow',
+      isAccount: true,
     },
-    {
-      path: '/favorites',
-      baseColor: 'green-600',
-      icon: <Heart size={18} />,
-      label: 'お気に入り',
-    },
+    { path: '/favorites', icon: <Heart size={18} />, label: 'お気に入り', color: 'green-600' },
   ];
 
   return (
@@ -42,32 +29,38 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         fixed top-0 left-0 h-screen w-[14rem]
         bg-white dark:bg-zinc-900
         border-r border-gray-200 dark:border-gray-700
-        px-4 py-6 space-y-6 z-[9998]
+        px-4 py-6 space-y-6
+        z-[9998]
         transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0
       `}
     >
-      {/* ナビゲーションリンク */}
       <div className="space-y-4 pt-10 sm:pt-0">
-        {navItems.map(({ path, baseColor, icon, label }) => {
-          const isActive = location.pathname === path;
+        {links.map(({ path, icon, label, color, isAccount }) => {
+          const isActive = currentPath === path;
+          const linkState = isAccount ? { backgroundLocation: location } : undefined;
+
           return (
             <Link
               key={path}
               to={path}
               onClick={onLinkClick}
-              state={path === '/account' ? { backgroundLocation: location } : undefined}
+              state={linkState}
               className={`
-                relative flex items-center gap-3 text-sm w-full text-${baseColor}
+                relative flex items-center gap-3 text-sm text-${color} w-full
                 transition-all duration-300 ease-in-out
                 ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}
               `}
             >
-              {icon} {label}
-              {/* 選択中の右装飾バー */}
+              {icon}
+              {label}
+
+              {/* ピョコン装飾（選択中のみ） */}
               {isActive && (
                 <span
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${baseColor} rounded-r`}
+                  className={`
+                    absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${color} rounded-r
+                  `}
                 />
               )}
             </Link>
