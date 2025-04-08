@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart } from 'lucide-react';
-import type { ReactElement } from 'react'; // ← これを追加！
+
 interface SidebarProps {
   isOpen: boolean;
   onLinkClick?: () => void;
@@ -9,12 +9,17 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
 
-  const linkClass = (
-    path: string,
-    baseColor: string,
-    icon: ReactElement, // ← 修正ここ！
-    label: string
-  ) => {
+  const NavLink = ({
+    path,
+    label,
+    icon,
+    baseColor,
+  }: {
+    path: string;
+    label: string;
+    icon: React.ReactNode;
+    baseColor: string;
+  }) => {
     const isActive = location.pathname === path;
 
     return (
@@ -29,10 +34,12 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         `}
       >
         {icon} {label}
-
-        {/* 左の装飾バー（選択中のみ表示） */}
         {isActive && (
-          <span className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${baseColor} rounded-r`} />
+          <span
+            className={`
+              absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${baseColor} rounded-r
+            `}
+          />
         )}
       </Link>
     );
@@ -51,10 +58,10 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       `}
     >
       <div className="space-y-4 pt-10 sm:pt-0">
-        {linkClass('/', 'gundam-red', <Home size={18} />, 'ニュース')}
-        {linkClass('/shop', 'gundam-blue', <ShoppingBag size={18} />, 'ショップ')}
-        {linkClass('/account', 'gundam-yellow', <User size={18} />, 'アカウント')}
-        {linkClass('/favorites', 'green-600', <Heart size={18} />, 'お気に入り')}
+        <NavLink path="/" icon={<Home size={18} />} label="ニュース" baseColor="gundam-red" />
+        <NavLink path="/shop" icon={<ShoppingBag size={18} />} label="ショップ" baseColor="gundam-blue" />
+        <NavLink path="/account" icon={<User size={18} />} label="アカウント" baseColor="gundam-yellow" />
+        <NavLink path="/favorites" icon={<Heart size={18} />} label="お気に入り" baseColor="green-600" />
       </div>
     </aside>
   );
