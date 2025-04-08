@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { Menu, X } from 'lucide-react';
 import AccountOverlay from '../pages/AccountOverlay';
+import DebugLocation from '../DebugLocation';
 
 interface LayoutProps {
   showAccountOverlay?: boolean;
@@ -56,6 +57,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
             `}
           >
             <Outlet />
+            <DebugLocation /> {/* ←ここ！今表示中のURLデバッグ用 */}
           </div>
         </main>
       </div>
