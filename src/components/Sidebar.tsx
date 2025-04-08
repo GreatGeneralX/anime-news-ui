@@ -8,7 +8,10 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
-  const currentPath = location.pathname;
+
+  // 🎯 現在の表示されてるページをちゃんと判定（オーバーレイ対応）
+  const currentPath =
+    location.state?.backgroundLocation?.pathname || location.pathname;
 
   const links = [
     { path: '/', icon: <Home size={18} />, label: 'ニュース', color: 'gundam-red' },
@@ -47,20 +50,17 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               onClick={onLinkClick}
               state={linkState}
               className={`
-                relative flex items-center gap-3 text-sm text-${color} w-full
+                relative flex items-center gap-3 text-sm w-full text-${color}
                 transition-all duration-300 ease-in-out
                 ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}
               `}
             >
               {icon}
               {label}
-
-              {/* ピョコン装飾（選択中のみ） */}
+              {/* ピョコン（選択中） */}
               {isActive && (
                 <span
-                  className={`
-                    absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${color} rounded-r
-                  `}
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${color} rounded-r`}
                 />
               )}
             </Link>
