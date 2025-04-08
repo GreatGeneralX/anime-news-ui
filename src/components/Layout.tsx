@@ -17,7 +17,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       const isNowDesktop = window.innerWidth >= 640;
       setIsDesktop(isNowDesktop);
       if (isNowDesktop) {
-        setSidebarOpen(false);
+        setSidebarOpen(false); // デスクトップでは常にサイドバー開いてるから閉じる処理不要
       }
     };
     window.addEventListener('resize', handleResize);
@@ -48,8 +48,9 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
         <main className="h-full overflow-y-auto flex-1">
           <div
             className="
-              w-full mx-auto px-4 sm:px-6 md:px-8
-              max-w-[calc(100vw-14rem)]
+              w-full mx-auto
+              px-4 sm:px-6 md:px-8
+              max-w-full
               sm:max-w-[calc(100vw-16rem)]
               lg:max-w-[72rem]
             "
