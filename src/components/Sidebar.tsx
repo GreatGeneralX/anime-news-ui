@@ -13,6 +13,9 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
 
   const currentPath = location.pathname;
 
+  // ✅ URLを絶対的に取得（オーバーレイでもズレない）
+  const actualPath = window.location.pathname;
+
   const links = [
     {
       path: '/',
@@ -55,7 +58,8 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
     >
       <div className="space-y-4 pt-10 sm:pt-0">
         {links.map(({ path, icon, label, color, isAccount }) => {
-          const isActive = currentPath === path;
+          // ✅ Sidebarの選択判定は window.location.pathname を使う！
+          const isActive = actualPath === path;
 
           const linkState =
             isAccount && rawLocation.pathname !== '/account'
@@ -69,7 +73,7 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               onClick={onLinkClick}
               state={linkState}
               className={`
-                flex items-center gap-3 text-sm w-full
+                relative flex items-center gap-3 text-sm w-full
                 text-${color}
                 transition-all duration-300 ease-in-out
                 ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}
@@ -77,6 +81,14 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
             >
               {icon}
               {label}
+              {isActive && (
+                <span
+                  className={`
+                    absolute left-0 top-1/2 -translate-y-1/2
+                    h-5 w-1 bg-${color} rounded-r
+                  `}
+                />
+              )}
             </Link>
           );
         })}
