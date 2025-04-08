@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart } from 'lucide-react';
 
 interface SidebarProps {
@@ -7,8 +7,11 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
-  // ✅ URLを直接取得（オーバーレイでも正確）
-  const actualPath = window.location.pathname;
+  const rawLocation = useLocation();
+  const state = rawLocation.state as { backgroundLocation?: Location };
+  const location = state?.backgroundLocation || rawLocation;
+
+  const currentPath = location.pathname;
 
   const links = [
     {
@@ -28,6 +31,7 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       icon: <User size={18} />,
       label: 'アカウント',
       color: 'gundam-yellow',
+      isAccount: true,
     },
     {
       path: '/favorites',
@@ -50,16 +54,22 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       `}
     >
       <div className="space-y-4 pt-10 sm:pt-0">
-        {links.map(({ path, icon, label, color }) => {
-          const isActive = actualPath === path;
+        {links.map(({ path, icon, label, color, isAccount }) => {
+          const isActive = currentPath === path;
+
+          const linkState =
+            isAccount && rawLocation.pathname !== '/account'
+              ? { backgroundLocation: rawLocation }
+              : undefined;
 
           return (
             <Link
               key={path}
               to={path}
               onClick={onLinkClick}
+              state={linkState}
               className={`
-                relative flex items-center gap-3 text-sm w-full
+                flex items-center gap-3 text-sm w-full
                 text-${color}
                 transition-all duration-300 ease-in-out
                 ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}
@@ -67,14 +77,6 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
             >
               {icon}
               {label}
-              {isActive && (
-                <span
-                  className={`
-                    absolute left-0 top-1/2 -translate-y-1/2
-                    h-5 w-1 bg-${color} rounded-r
-                  `}
-                />
-              )}
             </Link>
           );
         })}
