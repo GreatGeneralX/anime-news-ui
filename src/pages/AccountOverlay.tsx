@@ -26,7 +26,7 @@ export default function AccountOverlay() {
         className="
           fixed top-0 left-[14rem] h-full z-[9990]
           sm:w-[32rem] bg-white dark:bg-zinc-900 shadow-xl
-          flex flex-col
+          flex flex-col text-black dark:text-white
         "
       >
         {/* ←ボタンとタイトル横並び */}
