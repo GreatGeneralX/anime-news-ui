@@ -84,7 +84,7 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               {isActive && (
                 <span
                   className={`
-                    absolute left-0 top-1/2 -translate-y-1/2
+                    absolute left-2 top-1/2 -translate-y-1/2
                     h-5 w-1 bg-${color} rounded-r
                   `}
                 />
