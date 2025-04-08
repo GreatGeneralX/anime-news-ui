@@ -40,7 +40,7 @@ export default function AccountOverlay() {
         `}
       >
         {/* ←ボタンとタイトル */}
-        <div className="flex items-center gap-2 pt-4 pb-2 pl-12 sm:pl-4 pr-6">
+        <div className="flex items-center gap-2 pt-4 pb-2 pl-16 sm:pl-4 pr-6">
           {/* ← 戻るボタン（スマホでは非表示） */}
           <button
             onClick={handleClose}
@@ -52,7 +52,7 @@ export default function AccountOverlay() {
         </div>
 
         {/* アカウントページコンテンツ */}
-        <div className="px-6 mt-2 sm:mt-0">
+        <div className="px-6 mt-4 sm:mt-0">
           <AccountPage />
         </div>
       </div>
