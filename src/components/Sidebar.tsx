@@ -7,11 +7,11 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
-  const location = useLocation();
+  const rawLocation = useLocation();
+  const state = rawLocation.state as { backgroundLocation?: Location };
+  const location = state?.backgroundLocation || rawLocation;
 
-  // ✅ オーバーレイ表示中でも /account にいるなら true
-  const isAccountOverlayOpen = location.pathname === '/account';
-  const currentPath = isAccountOverlayOpen ? '/account' : location.pathname;
+  const currentPath = location.pathname;
 
   const links = [
     {
@@ -58,8 +58,8 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
           const isActive = currentPath === path;
 
           const linkState =
-            isAccount && location.pathname !== '/account'
-              ? { backgroundLocation: location }
+            isAccount && rawLocation.pathname !== '/account'
+              ? { backgroundLocation: rawLocation }
               : undefined;
 
           return (
