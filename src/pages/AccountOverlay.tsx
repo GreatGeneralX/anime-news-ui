@@ -32,7 +32,7 @@ export default function AccountOverlay() {
       {/* アカウントパネル */}
       <div
         className={`
-          fixed top-0 right-0 h-full w-full sm:w-[calc(50%-14rem)] z-[9999]
+          fixed top-0 left-[14rem] h-full w-full sm:w-[calc(50%-14rem)] z-[9999]
           bg-white dark:bg-zinc-900 shadow-xl
           transition-all duration-300 ease-in-out
           ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
