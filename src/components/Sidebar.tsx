@@ -9,11 +9,10 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
 
-  // ✅ オーバーレイで /account が出てる場合も currentPath を /account に補正
-  const currentPath =
-    location.state?.backgroundLocation?.pathname === '/account'
-      ? '/account'
-      : location.pathname;
+  // ✅ オーバーレイで /account が表示されていたら「アクティブ」として扱う
+  const isAccountOverlayOpen =
+    location.state?.backgroundLocation?.pathname === '/account';
+  const currentPath = isAccountOverlayOpen ? '/account' : location.pathname;
 
   const links = [
     {
