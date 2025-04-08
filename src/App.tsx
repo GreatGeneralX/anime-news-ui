@@ -3,11 +3,19 @@ import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
 import AccountOverlay from './pages/AccountOverlay';
+import { useEffect } from 'react';
+import { useAccountOverlay } from './pages/AccountOverlayContext';
 
 export default function App() {
   const location = useLocation();
   const state = location.state as { backgroundLocation?: Location };
   const isOverlay = location.pathname === "/account";
+
+  const { setOpen } = useAccountOverlay();
+
+  useEffect(() => {
+    setOpen(isOverlay); // ← オーバーレイ表示状態に合わせて state 更新
+  }, [isOverlay, setOpen]);
 
   return (
     <>
@@ -27,9 +35,3 @@ export default function App() {
     </>
   );
 }
-
-// この1行で再デプロイできる！
-// 🧼 Force redeploy trigger
-
-// App.tsx の一番下に1行追加するだけでもOK
-// App.tsx の一番下に1行追加するだけでもOK

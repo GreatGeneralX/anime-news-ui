@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart } from 'lucide-react';
+import { useAccountOverlay } from '../pages/AccountOverlayContext'; // ← 追加
 
 interface SidebarProps {
   isOpen: boolean;
@@ -8,11 +9,10 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
+  const { isOpen: isAccountOverlayOpen } = useAccountOverlay(); // ← 追加
 
-  // ✅ オーバーレイで /account が表示されていたら「アクティブ」として扱う
-  const isAccountOverlayOpen =
-    location.state?.backgroundLocation?.pathname === '/account';
-  const currentPath = isAccountOverlayOpen ? '/account' : location.pathname;
+  const currentPath =
+    isAccountOverlayOpen ? '/account' : location.pathname;
 
   const links = [
     {
@@ -43,17 +43,7 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   ];
 
   return (
-    <aside
-      className={`
-        fixed top-0 left-0 h-screen w-[14rem]
-        bg-white dark:bg-zinc-900
-        border-r border-gray-200 dark:border-gray-700
-        px-4 py-6 space-y-6
-        z-[9998]
-        transition-transform duration-300 ease-in-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0
-      `}
-    >
+    <aside className={`fixed top-0 left-0 h-screen w-[14rem] bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-gray-700 px-4 py-6 space-y-6 z-[9998] transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}>
       <div className="space-y-4 pt-10 sm:pt-0">
         {links.map(({ path, icon, label, color, isAccount }) => {
           const isActive = currentPath === path;
@@ -69,12 +59,7 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               to={path}
               onClick={onLinkClick}
               state={linkState}
-              className={`
-                flex items-center gap-3 text-sm w-full
-                text-${color}
-                transition-all duration-300 ease-in-out
-                ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}
-              `}
+              className={`flex items-center gap-3 text-sm w-full text-${color} transition-all duration-300 ease-in-out ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}`}
             >
               {icon}
               {label}
