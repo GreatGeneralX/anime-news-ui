@@ -9,7 +9,6 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
 
-  // 🧠 オーバーレイ経由でも現在の画面を正確に取得
   const currentPath =
     location.state?.backgroundLocation?.pathname || location.pathname;
 
@@ -37,7 +36,7 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       path: '/favorites',
       icon: <Heart size={18} />,
       label: 'お気に入り',
-      color: 'green-600',
+      color: 'black',
     },
   ];
 
@@ -57,9 +56,8 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         {links.map(({ path, icon, label, color, isAccount }) => {
           const isActive =
             currentPath === path ||
-            (path === '/account' && location.pathname === '/account'); // ← 修正ポイント！
+            (path === '/account' && location.pathname === '/account');
 
-          // 🧩 アカウントリンクは背景状態を渡す（オーバーレイの時だけ！）
           const linkState =
             isAccount && location.pathname !== '/account'
               ? { backgroundLocation: location }
@@ -80,16 +78,6 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
             >
               {icon}
               {label}
-
-              {/* ピョコン（選択中の左マーカー） */}
-              {isActive && (
-                <span
-                  className={`
-                    absolute left-0 top-1/2 -translate-y-1/2
-                    h-5 w-1 bg-${color} rounded-r
-                  `}
-                />
-              )}
             </Link>
           );
         })}
