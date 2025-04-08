@@ -25,7 +25,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
   }, []);
 
   return (
-    <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full max-w-none relative">
+    <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full max-w-none relative">
       {/* ハンバーガー */}
       <button
         className="fixed top-4 left-4 z-[9999] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
@@ -34,24 +34,25 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      {/* サイドバー */}
+      {/* サイドバー（固定） */}
       <Sidebar isOpen={sidebarOpen} />
 
-      {/* アカウントページ（表示中のみ） */}
-      {isDesktop && showAccountOverlay && (
-        <div className="w-96 border-l border-zinc-300 dark:border-zinc-700 h-full overflow-y-auto z-10">
-          <AccountOverlay />
-        </div>
-      )}
+      {/* 残りの部分（Sidebarの幅を避ける） */}
+      <div className={`flex h-full ml-48 transition-all duration-300`}>
+        {/* アカウントオーバーレイ（中央カラム） */}
+        {isDesktop && showAccountOverlay && (
+          <div className="w-96 border-l border-zinc-300 dark:border-zinc-700 h-full overflow-y-auto z-10">
+            <AccountOverlay />
+          </div>
+        )}
 
-      {/* メインコンテンツ */}
-      <main
-        className={`h-full overflow-y-auto flex-1 transition-all duration-300`}
-      >
-        <div className="max-w-5xl mx-auto px-6 py-6">
-          <Outlet />
-        </div>
-      </main>
+        {/* メインコンテンツ（右側） */}
+        <main className="h-full overflow-y-auto flex-1">
+          <div className="max-w-5xl mx-auto px-6 py-6">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
