@@ -10,10 +10,15 @@ interface LayoutProps {
 
 export default function Layout({ showAccountOverlay = false }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 640) {
+      const isNowDesktop = window.innerWidth >= 640;
+      setIsDesktop(isNowDesktop);
+
+      // PCサイズに戻ったらサイドバー閉じる
+      if (isNowDesktop) {
         setSidebarOpen(false);
       }
     };
@@ -37,7 +42,11 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       <Sidebar isOpen={sidebarOpen} />
 
       {/* メインコンテンツ */}
-      <main className="h-full overflow-y-auto px-6 py-6 w-full max-w-none">
+      <main
+        className={`h-full overflow-y-auto px-6 py-6 w-full transition-all duration-300 ${
+          isDesktop ? 'ml-48' : ''
+        }`}
+      >
         <Outlet />
         {showAccountOverlay && <AccountOverlay />}
       </main>
