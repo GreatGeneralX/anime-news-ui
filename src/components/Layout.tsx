@@ -38,15 +38,22 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      {/* サイドバー（z-indexは9999未満に調整しておく） */}
+      {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} onLinkClick={handleLinkClick} />
 
       {/* メイン */}
       <div className={`flex h-full transition-all duration-300 ${isDesktop ? 'ml-48' : 'ml-0'}`}>
         {isDesktop && showAccountOverlay && <AccountOverlay />}
 
-        <main className="h-full overflow-y-auto flex-1">
-          <div className="max-w-5xl mx-auto px-6 py-6">
+        <main className="h-full overflow-y-auto flex-1 px-4 sm:px-6 md:px-8">
+          <div
+            className="
+              w-full mx-auto
+              max-w-[calc(100vw-14rem)]
+              sm:max-w-[calc(100vw-16rem)]
+              lg:max-w-[72rem]
+            "
+          >
             <Outlet />
           </div>
         </main>
