@@ -7,22 +7,19 @@ import AccountOverlay from './pages/AccountOverlay';
 export default function App() {
   const location = useLocation();
   const state = location.state as { backgroundLocation?: Location };
-
-  const background = state?.backgroundLocation;
+  const isOverlay = location.pathname === "/account";
 
   return (
     <>
-      {/* 通常ページ用のルーティング */}
-      <Routes location={background || location}>
-        <Route path="/" element={<Layout showAccountOverlay={!!background} />}>
+      <Routes location={state?.backgroundLocation || location}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
         </Route>
       </Routes>
 
-      {/* オーバーレイ（アカウント）だけ追加で表示 */}
-      {background && (
+      {(state?.backgroundLocation || isOverlay) && (
         <Routes>
           <Route path="/account" element={<AccountOverlay />} />
         </Routes>
@@ -30,3 +27,9 @@ export default function App() {
     </>
   );
 }
+
+// この1行で再デプロイできる！
+// 🧼 Force redeploy trigger
+
+// App.tsx の一番下に1行追加するだけでもOK
+// App.tsx の一番下に1行追加するだけでもOK
