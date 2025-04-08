@@ -24,8 +24,6 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const location = useLocation();
-
   return (
     <div className="flex bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full max-w-none relative">
       {/* ハンバーガー */}
@@ -39,16 +37,19 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} />
 
+      {/* アカウントページ（表示中のみ） */}
+      {isDesktop && showAccountOverlay && (
+        <div className="w-96 border-l border-zinc-300 dark:border-zinc-700 h-full overflow-y-auto z-10">
+          <AccountOverlay />
+        </div>
+      )}
+
       {/* メインコンテンツ */}
       <main
-        className={`h-full overflow-y-auto w-full transition-all duration-300 ${
-          isDesktop ? 'ml-48' : ''
-        }`}
+        className={`h-full overflow-y-auto flex-1 transition-all duration-300`}
       >
-        {/* 中央寄せ + 最大幅制限 + 余白 */}
         <div className="max-w-5xl mx-auto px-6 py-6">
           <Outlet />
-          {showAccountOverlay && <AccountOverlay />}
         </div>
       </main>
     </div>
