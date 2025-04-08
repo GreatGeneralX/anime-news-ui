@@ -27,7 +27,7 @@ export default function AccountPage() {
       </button> */}
 
       {/* コンテンツエリアだけ残す */}
-      <div className="p-6 mt-14">
+      <div className="p-6 mt-6">
         <h2 className="text-2xl font-bold mb-4">アカウントページ</h2>
         <p className="text-gray-600 dark:text-gray-400">
           ここにプロフィールや設定を表示予定！
