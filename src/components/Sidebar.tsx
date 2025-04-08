@@ -1,3 +1,5 @@
+// Sidebar.tsx（完全修正版）
+
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart } from 'lucide-react';
 
@@ -9,13 +11,23 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = useLocation();
 
-  // 🎯 現在の表示されてるページをちゃんと判定（オーバーレイ対応）
+  // 🧠 オーバーレイ経由でも現在の画面を正確に取得
   const currentPath =
     location.state?.backgroundLocation?.pathname || location.pathname;
 
   const links = [
-    { path: '/', icon: <Home size={18} />, label: 'ニュース', color: 'gundam-red' },
-    { path: '/shop', icon: <ShoppingBag size={18} />, label: 'ショップ', color: 'gundam-blue' },
+    {
+      path: '/',
+      icon: <Home size={18} />,
+      label: 'ニュース',
+      color: 'gundam-red',
+    },
+    {
+      path: '/shop',
+      icon: <ShoppingBag size={18} />,
+      label: 'ショップ',
+      color: 'gundam-blue',
+    },
     {
       path: '/account',
       icon: <User size={18} />,
@@ -23,7 +35,12 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       color: 'gundam-yellow',
       isAccount: true,
     },
-    { path: '/favorites', icon: <Heart size={18} />, label: 'お気に入り', color: 'green-600' },
+    {
+      path: '/favorites',
+      icon: <Heart size={18} />,
+      label: 'お気に入り',
+      color: 'green-600',
+    },
   ];
 
   return (
@@ -40,8 +57,13 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
     >
       <div className="space-y-4 pt-10 sm:pt-0">
         {links.map(({ path, icon, label, color, isAccount }) => {
-         const isActive = location.pathname.startsWith(path);
-          const linkState = isAccount ? { backgroundLocation: location } : undefined;
+          const isActive = location.pathname === path || currentPath === path;
+
+          // 🧩 アカウントリンクは背景状態を渡す（オーバーレイの時だけ！）
+          const linkState =
+            isAccount && location.pathname !== '/account'
+              ? { backgroundLocation: location }
+              : undefined;
 
           return (
             <Link
@@ -50,17 +72,22 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               onClick={onLinkClick}
               state={linkState}
               className={`
-                relative flex items-center gap-3 text-sm w-full text-${color}
+                relative flex items-center gap-3 text-sm w-full
+                text-${color}
                 transition-all duration-300 ease-in-out
                 ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}
               `}
             >
               {icon}
               {label}
-              {/* ピョコン（選択中） */}
+
+              {/* ピョコン（選択中の左マーカー） */}
               {isActive && (
                 <span
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-${color} rounded-r`}
+                  className={`
+                    absolute left-0 top-1/2 -translate-y-1/2
+                    h-5 w-1 bg-${color} rounded-r
+                  `}
                 />
               )}
             </Link>
