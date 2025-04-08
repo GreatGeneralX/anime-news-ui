@@ -4,12 +4,18 @@ import Sidebar from './Sidebar';
 import { Menu, X } from 'lucide-react';
 import AccountOverlay from '../pages/AccountOverlay';
 
-export default function Layout() {
+interface LayoutProps {
+  showAccountOverlay?: boolean;
+}
+
+export default function Layout({ showAccountOverlay }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
-  // オーバーレイ表示かどうか（accountページ）
-  const showAccountOverlay = location.pathname === '/account';
+  const isOverlay = showAccountOverlay || location.pathname === '/account';
+
+  // ...以下同じ（前回送った修正版と同じでOK）
+
 
   // ウィンドウサイズ変化でsidebar閉じる
   useEffect(() => {
