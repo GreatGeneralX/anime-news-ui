@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { Menu, X } from 'lucide-react';
 import AccountOverlay from '../pages/AccountOverlay';
@@ -37,16 +37,12 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       {/* サイドバー（固定） */}
       <Sidebar isOpen={sidebarOpen} />
 
-      {/* 残りの部分（Sidebarの幅を避ける） */}
-      <div className={`flex h-full ml-48 transition-all duration-300`}>
-        {/* アカウントオーバーレイ（中央カラム） */}
-        {isDesktop && showAccountOverlay && (
-          <div className="w-96 border-l border-zinc-300 dark:border-zinc-700 h-full overflow-y-auto z-10">
-            <AccountOverlay />
-          </div>
-        )}
+      {/* コンテンツエリア（Sidebarの横にml-48） */}
+      <div className="flex h-full ml-48 transition-all duration-300">
+        {/* アカウントページ（オーバーレイではなく横に出す） */}
+        {isDesktop && showAccountOverlay && <AccountOverlay />}
 
-        {/* メインコンテンツ（右側） */}
+        {/* メインコンテンツ */}
         <main className="h-full overflow-y-auto flex-1">
           <div className="max-w-5xl mx-auto px-6 py-6">
             <Outlet />
