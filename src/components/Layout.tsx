@@ -16,8 +16,6 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
     const handleResize = () => {
       const isNowDesktop = window.innerWidth >= 640;
       setIsDesktop(isNowDesktop);
-
-      // PCサイズに戻ったらサイドバー閉じる
       if (isNowDesktop) {
         setSidebarOpen(false);
       }
@@ -43,12 +41,15 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
 
       {/* メインコンテンツ */}
       <main
-        className={`h-full overflow-y-auto px-6 py-6 w-full transition-all duration-300 ${
+        className={`h-full overflow-y-auto w-full transition-all duration-300 ${
           isDesktop ? 'ml-48' : ''
         }`}
       >
-        <Outlet />
-        {showAccountOverlay && <AccountOverlay />}
+        {/* 中央寄せ + 最大幅制限 + 余白 */}
+        <div className="max-w-5xl mx-auto px-6 py-6">
+          <Outlet />
+          {showAccountOverlay && <AccountOverlay />}
+        </div>
       </main>
     </div>
   );
