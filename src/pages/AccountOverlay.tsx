@@ -36,16 +36,21 @@ export default function AccountOverlay() {
           bg-white dark:bg-zinc-900 shadow-xl
           transition-all duration-300 ease-in-out
           ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+          flex flex-col
         `}
       >
-        <button
-          onClick={handleClose}
-          className="absolute top-4 left-4 text-2xl z-50 bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
-        >
-          &lt;
-        </button>
+        {/* ← 戻るボタン */}
+        <div className="p-4">
+          <button
+            onClick={handleClose}
+            className="text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
+          >
+            &lt;
+          </button>
+        </div>
 
-        <div className="p-6 mt-14">
+        {/* アカウントページコンテンツ */}
+        <div className="p-6 pt-0">
           <AccountPage />
         </div>
       </div>

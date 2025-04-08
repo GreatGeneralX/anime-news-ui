@@ -1,9 +1,10 @@
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AccountPage from './AccountPage';
 
-export default function AccountPage() {
-  const navigate = useNavigate();
+export default function AccountOverlay() {
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setVisible(true);
@@ -18,20 +19,40 @@ export default function AccountPage() {
 
   return (
     <>
-      {/* 戻るボタン（こっちでは非表示でもOKなら消してもOK！） */}
-      {/* <button
-        onClick={handleClose}
-        className="absolute top-4 left-4 text-2xl z-50 bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
-      >
-        &lt;
-      </button> */}
+      {/* 背景ぼかし */}
+      <div
+        className={`
+          fixed top-0 left-[14rem] w-[calc(100%-14rem)] h-full z-[5000]
+          bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm
+          transition-opacity duration-300 ease-in-out
+          ${visible ? 'opacity-100' : 'opacity-0'}
+        `}
+      />
 
-      {/* コンテンツエリアだけ残す */}
-      <div className="p-6 mt-1">
-        <h2 className="text-2xl font-bold mb-4">アカウントページ</h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          ここにプロフィールや設定を表示予定！
-        </p>
+      {/* アカウントパネル */}
+      <div
+        className={`
+          fixed top-0 left-[14rem] h-full w-full sm:w-[calc(50%-14rem)] z-[9999]
+          bg-white dark:bg-zinc-900 shadow-xl
+          transition-all duration-300 ease-in-out
+          ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
+          flex flex-col
+        `}
+      >
+        {/* ← 戻るボタン */}
+        <div className="p-4">
+          <button
+            onClick={handleClose}
+            className="text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
+          >
+            &lt;
+          </button>
+        </div>
+
+        {/* アカウントページコンテンツ */}
+        <div className="p-6 pt-0">
+          <AccountPage />
+        </div>
       </div>
     </>
   );
