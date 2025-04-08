@@ -22,35 +22,37 @@ export default function AccountOverlay() {
       {/* 背景ぼかし */}
       <div
         className={`
-          fixed top-0 left-[14rem] w-[calc(100%-14rem)] h-full z-[5000]
+          fixed top-0 left-0 w-full h-full z-[5000]
           bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm
           transition-opacity duration-300 ease-in-out
           ${visible ? 'opacity-100' : 'opacity-0'}
         `}
       />
 
-      {/* アカウントパネル */}
+      {/* アカウントパネル（スマホは全幅） */}
       <div
         className={`
-          fixed top-0 left-[14rem] h-full w-full sm:w-[calc(50%-14rem)] z-[9999]
+          fixed top-0 left-0 h-full w-full sm:left-[14rem] sm:w-[32rem] z-[9999]
           bg-white dark:bg-zinc-900 shadow-xl
           transition-all duration-300 ease-in-out
           ${visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
-          flex flex-col
+          flex flex-col text-black dark:text-white
         `}
       >
-        {/* ← 戻るボタン */}
-        <div className="p-4">
+        {/* ←ボタンとタイトル */}
+        <div className="flex items-center gap-2 pt-4 pb-2 pl-12 sm:pl-4 pr-6">
+          {/* ← 戻るボタン（スマホでは非表示） */}
           <button
             onClick={handleClose}
-            className="text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
+            className="hidden sm:block text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md"
           >
             &lt;
           </button>
+          <h2 className="text-2xl font-bold">アカウントページ</h2>
         </div>
 
-        {/* アカウントページコンテンツ */}
-        <div className="p-6 pt-0">
+        {/* アカウントページ中身 */}
+        <div className="px-6">
           <AccountPage />
         </div>
       </div>
