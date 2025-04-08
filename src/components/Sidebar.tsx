@@ -1,5 +1,3 @@
-// Sidebar.tsx（完全修正版）
-
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart } from 'lucide-react';
 
@@ -57,7 +55,9 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
     >
       <div className="space-y-4 pt-10 sm:pt-0">
         {links.map(({ path, icon, label, color, isAccount }) => {
-          const isActive = location.pathname === path || currentPath === path;
+          const isActive =
+            currentPath === path ||
+            (path === '/account' && location.pathname === '/account'); // ← 修正ポイント！
 
           // 🧩 アカウントリンクは背景状態を渡す（オーバーレイの時だけ！）
           const linkState =

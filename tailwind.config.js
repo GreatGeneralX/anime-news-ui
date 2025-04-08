@@ -25,4 +25,13 @@ module.exports = {
   },
   darkMode: 'class',
   plugins: [],
+  safelist: [
+    // Sidebarで使ってるクラスだけ追加（gundam系）
+    'text-gundam-red',
+    'text-gundam-blue',
+    'text-gundam-yellow',
+    'bg-gundam-red',
+    'bg-gundam-blue',
+    'bg-gundam-yellow',
+  ],
 };
