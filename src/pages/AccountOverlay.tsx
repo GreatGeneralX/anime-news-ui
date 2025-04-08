@@ -9,8 +9,9 @@ export default function AccountOverlay() {
 
   return (
     <>
-      {/* 背景ブラー（右半分のみ） */}
+      {/* 背景ブラー（右半分 or 全体） */}
       <div className="fixed top-0 left-0 w-full h-full z-[9980] pointer-events-none flex">
+        {/* デスクトップだけ左側にスペース */}
         <div className="w-[14rem] hidden sm:block" />
         <div
           className="flex-1 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-sm
@@ -19,7 +20,7 @@ export default function AccountOverlay() {
         />
       </div>
 
-      {/* アカウントパネル本体 */}
+      {/* アカウントパネル */}
       <div
         className={`
           fixed top-0 left-0 h-full z-[9990]
@@ -28,8 +29,15 @@ export default function AccountOverlay() {
           flex flex-col text-black dark:text-white
         `}
       >
-        {/* ←ボタンとタイトル（←はsm以上で表示） */}
-        <div className="flex items-center gap-2 pt-4 pb-2 px-6 sm:px-4 sm:pt-4 sm:pb-2 sm:pl-4">
+        {/* タイトル行 */}
+        <div
+          className="
+            flex items-center gap-2 
+            pt-16 pb-2 px-6 
+            sm:pt-4 sm:pl-4 sm:pr-4 sm:pb-2
+          "
+        >
+          {/* 戻るボタンはsm以上のみ表示 */}
           <button
             onClick={handleClose}
             className="hidden sm:block text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md z-50"
@@ -39,8 +47,8 @@ export default function AccountOverlay() {
           <h2 className="text-2xl font-bold">アカウントページ</h2>
         </div>
 
-        {/* 本文コンテンツ */}
-        <div className="px-6">
+        {/* コンテンツ */}
+        <div className="px-6 mt-2 sm:mt-0">
           <p className="text-gray-600 dark:text-gray-400">
             ここにプロフィールや設定を表示予定！
           </p>
