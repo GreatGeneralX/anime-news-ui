@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart, Settings } from 'lucide-react';
+import { useState } from 'react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -78,23 +79,27 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               ? { backgroundLocation: rawLocation }
               : undefined;
 
+          const [isHovered, setIsHovered] = useState(false);
+
           return (
             <Link
               key={path}
               to={path}
               onClick={onLinkClick}
               state={linkState}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
               className={`
                 relative flex items-center gap-3 text-sm w-full
                 text-${color}
-                ${
-                  isActive
-                    ? 'translate-x-2 font-bold transition-transform duration-100 ease-out'
-                    : 'hover:translate-x-3 transition-transform duration-700 ease-in'
-                }
+                transition-transform
+                ${isActive
+                  ? 'translate-x-2 font-bold duration-500 ease-out'
+                  : isHovered
+                  ? 'translate-x-3 duration-100 ease-out'
+                  : 'translate-x-0 duration-700 ease-in'}
               `}
             >
-
               {icon}
               {label}
               {isActive && (
