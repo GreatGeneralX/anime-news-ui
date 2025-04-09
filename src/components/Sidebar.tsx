@@ -87,9 +87,9 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               className={`
                 relative flex items-center gap-3 text-sm w-full
                 text-${color}
-                transition-all duration-300 ease-in-out
-                ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-1'}
-              `}
+                transition-transform duration-500 ease-out
+                ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-2'}
+              `}              
             >
               {icon}
               {label}
