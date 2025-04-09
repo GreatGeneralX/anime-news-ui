@@ -85,23 +85,14 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
               onClick={onLinkClick}
               state={linkState}
               className={`
-                relative flex items-center text-sm w-full
-                transition-all duration-500 ease-out
-              `}
+                relative flex items-center gap-3 text-sm w-full
+                text-${color}
+                transition-transform duration-700 ease-out
+                ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-3'}
+              `}              
             >
-              {/* ← ここをスライドさせる */}
-              <span
-                className={`
-                  flex items-center gap-3
-                  ${isActive ? 'translate-x-2 font-bold' : 'hover:translate-x-2'}
-                  transition-transform duration-500 ease-out
-                `}
-              >
-                {icon}
-                {label}
-              </span>
-            
-              {/* 左ぴょこん棒 */}
+              {icon}
+              {label}
               {isActive && (
                 <span
                   className={`
