@@ -12,8 +12,6 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const location = state?.backgroundLocation || rawLocation;
 
   const currentPath = location.pathname;
-
-  // ✅ URLを絶対的に取得（オーバーレイでもズレない）
   const actualPath = window.location.pathname;
 
   const links = [
@@ -22,18 +20,21 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       icon: <Home size={18} />,
       label: 'ニュース',
       color: 'gundam-red',
+      bgColor: 'bg-gundam-red',
     },
     {
       path: '/shop',
       icon: <ShoppingBag size={18} />,
       label: 'ショップ',
       color: 'gundam-blue',
+      bgColor: 'bg-gundam-blue',
     },
     {
       path: '/account',
       icon: <User size={18} />,
       label: 'アカウント',
       color: 'gundam-yellow',
+      bgColor: 'bg-gundam-yellow',
       isAccount: true,
     },
     {
@@ -41,14 +42,15 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       icon: <Heart size={18} />,
       label: 'お気に入り',
       color: 'black',
+      bgColor: 'bg-black',
     },
     {
       path: '/settings',
-      icon: <Settings size={18} />, // lucide-reactのアイコンを使う場合
+      icon: <Settings size={18} />,
       label: '設定',
       color: 'gray-500',
-    }
-    
+      bgColor: 'bg-gray-500',
+    },
   ];
 
   return (
@@ -63,15 +65,12 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         transform
         ${isOpen
           ? 'translate-x-0 translate-y-0 opacity-100'
-          : '-translate-x-full translate-y-4 opacity-0'} 
+          : '-translate-x-full translate-y-4 opacity-0'}
         sm:translate-x-0 sm:translate-y-0 sm:opacity-100
       `}
     >
-
-
       <div className="space-y-4 pt-10 sm:pt-0">
-        {links.map(({ path, icon, label, color, isAccount }) => {
-          // ✅ Sidebarの選択判定は window.location.pathname を使う！
+        {links.map(({ path, icon, label, color, isAccount, bgColor }) => {
           const isActive = actualPath === path;
 
           const linkState =
@@ -98,7 +97,8 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
                 <span
                   className={`
                     absolute -left-2 top-1/2 -translate-y-1/2
-                    h-5 w-1 bg-${color} rounded-r
+                    h-5 w-1 rounded-r
+                    ${bgColor}
                   `}
                 />
               )}
