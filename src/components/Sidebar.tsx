@@ -94,9 +94,9 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
                 text-${color}
                 transition-transform
                 ${isActive
-                  ? 'translate-x-2 font-bold duration-500 ease-out'
+                  ? 'translate-x-5 font-bold duration-500 ease-out'
                   : isHovered
-                  ? 'translate-x-3 duration-100 ease-out'
+                  ? 'translate-x-5 duration-100 ease-out'
                   : 'translate-x-0 duration-700 ease-in'}
               `}
             >
