@@ -37,7 +37,8 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       >
         {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
-
+      {/* 誤タップ防止ゾーン（×ボタン周辺） */}
+      <div className="fixed top-0 left-0 w-16 h-16 z-[9999] pointer-events-none" />
       {/* 背景オーバーレイ（スマホ時のみ） */}
       {sidebarOpen && !isDesktop && (
         <div
