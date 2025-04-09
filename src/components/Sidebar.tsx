@@ -52,10 +52,15 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
         border-r border-gray-200 dark:border-gray-700
         px-4 py-6 space-y-6
         z-[9998]
-        transition-transform duration-300 ease-in-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0
+        transition-all duration-300 ease-out
+        transform
+        ${isOpen
+          ? 'translate-x-0 translate-y-0 opacity-100'
+          : '-translate-x-full translate-y-2 opacity-0'} 
+        sm:translate-x-0 sm:translate-y-0 sm:opacity-100
       `}
     >
+
       <div className="space-y-4 pt-10 sm:pt-0">
         {links.map(({ path, icon, label, color, isAccount }) => {
           // ✅ Sidebarの選択判定は window.location.pathname を使う！
