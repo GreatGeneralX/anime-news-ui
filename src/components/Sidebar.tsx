@@ -89,7 +89,7 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
                 text-${color}
                 ${
                   isActive
-                    ? 'translate-x-2 font-bold transition-transform duration-300 ease-out'
+                    ? 'translate-x-2 font-bold transition-transform duration-100 ease-out'
                     : 'hover:translate-x-3 transition-transform duration-700 ease-in'
                 }
               `}
