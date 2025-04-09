@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
 import AccountOverlay from './pages/AccountOverlay';
 import SettingsPage from './pages/SettingsPage';
+import ShopPage from './pages/ShopPage';
 
 export default function App() {
   const location = useLocation();
@@ -16,8 +17,8 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="favorites" element={<FavoritesPage />} />
-          <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
-          <Route path="settings" element={<SettingsPage />} />
+          <Route path="shop" element={<ShopPage />} />
+          <Route path="settings" element={<SettingsPage />} />     
         </Route>
       </Routes>
 
