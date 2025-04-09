@@ -33,7 +33,7 @@ export default function FavoritesPage() {
   }, []);
 
   return (
-    <div className="mt-16">
+    <div className="mt-16 sm:mt-0 px-4">
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {bookmarked.length === 0 && <p>まだお気に入りがありません🥲</p>}

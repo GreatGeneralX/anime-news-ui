@@ -1,6 +1,7 @@
 export default function SettingsPage() {
     return (
-      <div className="mt-16 px-4">
+        <div className="mt-16 sm:mt-0 px-4">
+
         <h1 className="text-2xl font-bold mb-4">設定</h1>
   
         <section>
