@@ -41,6 +41,13 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
 
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} onLinkClick={handleLinkClick} />
+      {/* ←ここに追加！ */}
+      {!isDesktop && sidebarOpen && (
+        <div
+          className="fixed inset-0 z-[9997] bg-black/30 backdrop-blur-sm transition-opacity duration-300 sm:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* メインエリア */}
       <div className={`flex h-full transition-all duration-300 ${isDesktop ? 'ml-56' : 'ml-0'}`}>
