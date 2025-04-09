@@ -10,7 +10,8 @@ interface LayoutProps {
 
 export default function Layout({ showAccountOverlay = false }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 640);
+  const [isDesktop, setIsDesktop] = useState(false); // ←初期値 false に
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,9 +21,12 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
         setSidebarOpen(false);
       }
     };
+  
+    handleResize(); // ← 初回マウント時にも即チェック！
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  
 
   const handleLinkClick = () => {
     if (!isDesktop) setSidebarOpen(false);
