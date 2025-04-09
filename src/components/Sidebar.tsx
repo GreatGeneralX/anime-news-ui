@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ShoppingBag, User, Heart } from 'lucide-react';
+import { Home, ShoppingBag, User, Heart, Settings } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -42,6 +42,13 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       label: 'お気に入り',
       color: 'black',
     },
+    {
+      path: '/settings',
+      icon: <Settings size={18} />, // lucide-reactのアイコンを使う場合
+      label: '設定',
+      color: 'gray-500',
+    }
+    
   ];
 
   return (

@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
 import AccountOverlay from './pages/AccountOverlay';
+import SettingsPage from './pages/SettingsPage';
 
 export default function App() {
   const location = useLocation();
@@ -16,6 +17,7 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="shop" element={<div className="mt-16">ショップページだよ🛍️</div>} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>
 
