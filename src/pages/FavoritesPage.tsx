@@ -109,14 +109,16 @@ export default function FavoritesPage() {
   };
 
   const ArticleCard = ({ article }: { article: Article }) => {
-    const [, dragRef] = useDrag({
+    const [, dragRef] = useDrag(() => ({
       type: 'ARTICLE',
       item: { id: article.id },
-    });
+    }));
 
     return (
       <div
-        ref={dragRef}
+        ref={(node) => {
+          if (node) dragRef(node);
+        }}
         className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative"
       >
         {deleteMode && (
@@ -138,7 +140,7 @@ export default function FavoritesPage() {
   };
 
   const FolderCard = ({ folder }: { folder: FolderItem }) => {
-    const [{ isOver }, dropRef] = useDrop({
+    const [{ isOver }, dropRef] = useDrop(() => ({
       accept: 'ARTICLE',
       drop: (item: { id: number }) => {
         if (!folder.items?.includes(item.id)) {
@@ -154,11 +156,13 @@ export default function FavoritesPage() {
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
-    });
+    }));
 
     return (
       <div
-        ref={dropRef}
+        ref={(node) => {
+          if (node) dropRef(node);
+        }}
         className={`bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative transition-colors ${
           isOver ? 'border-2 border-blue-400' : ''
         }`}
