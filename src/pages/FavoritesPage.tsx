@@ -28,7 +28,7 @@ interface FolderItem {
   description: string;
   color?: string;
   isEditing?: boolean;
-  items?: number[]; // article IDs
+  items?: number[]; // 追加：記事IDの配列
 }
 
 const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
@@ -109,6 +109,7 @@ export default function FavoritesPage() {
     }
   };
 
+  // ArticleCard（ドラッグ可能）
   const ArticleCard = ({ article }: { article: Article }) => {
     const [, dragRef] = useDrag({
       type: 'ARTICLE',
@@ -140,6 +141,7 @@ export default function FavoritesPage() {
     );
   };
 
+  // FolderCard（ドロップ可能）
   const FolderCard = ({ folder }: { folder: FolderItem }) => {
     const [, dropRef] = useDrop({
       accept: 'ARTICLE',
