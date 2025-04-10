@@ -1,4 +1,3 @@
-// src/pages/ActionSettingsPage.tsx
 import { useActionSettings } from '../stores/useActionSettings';
 
 const toggleItems = [
