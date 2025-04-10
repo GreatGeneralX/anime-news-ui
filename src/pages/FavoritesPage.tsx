@@ -57,7 +57,7 @@ export default function FavoritesPage() {
 
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {bookmarked.length === 0 && <p>まだお気に入りがありません🥲</p>}
         {bookmarked.map((article) => (
           <div
