@@ -41,7 +41,7 @@ export default function FolderCard({ id, name, description, color, onUpdate }: F
       {editMode ? (
         <>
           {/* 保存・キャンセルボタン */}
-          <div className="absolute top-1 right-2 flex gap-1 z-10">
+          <div className="absolute top-2 right-2 flex gap-1 z-10">
             <button onClick={handleCancel} className="text-gray-400 hover:text-red-400">
               <X size={18} />
             </button>
