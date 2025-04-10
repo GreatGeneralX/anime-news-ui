@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import {
-  Edit3,
   Check,
   X,
   Folder,
   FolderPlus,
-  Trash2,
 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -65,14 +63,6 @@ export default function FavoritesPage() {
     );
   };
 
-  const handleStartEdit = (id: number) => {
-    setFolders((prev) =>
-      prev.map((f) =>
-        f.id === id ? { ...f, isEditing: true } : f
-      )
-    );
-  };
-
   const handleAddFolder = () => {
     const newId = folders.length + 1;
     setFolders((prev) => [
@@ -111,19 +101,20 @@ export default function FavoritesPage() {
       {/* 編集・追加ボタン */}
       <div className="absolute top-4 right-4 flex gap-4 z-20">
         <button onClick={toggleDeleteMode}>
-        <Trash2
-          className={clsx(
-            'w-5 h-5',
-            deleteMode ? 'text-red-500' : 'text-gray-400',
-            'hover:text-red-600 transition-colors duration-300'
-          )}
-        />
+          <span
+            className={clsx(
+              'text-xl',
+              deleteMode ? 'text-red-500' : 'text-gray-400',
+              'hover:text-red-600 transition-colors duration-300'
+            )}
+          >
+            🗑️
+          </span>
         </button>
         <button onClick={handleAddFolder}>
           <FolderPlus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
         </button>
       </div>
-
 
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 
