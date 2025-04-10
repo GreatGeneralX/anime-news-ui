@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import FavoritesPage from './pages/FavoritesPage';
+import FolderPage from './pages/FolderPage';
 import AccountOverlay from './pages/AccountOverlay';
 import SettingsPage from './pages/SettingsPage';
 import ShopPage from './pages/ShopPage';
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="favorites/folder/:id" element={<FolderPage />} />
           <Route path="shop" element={<ShopPage />} />
           <Route path="settings" element={<SettingsPage />} />     
         </Route>
