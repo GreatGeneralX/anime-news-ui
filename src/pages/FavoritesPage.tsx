@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {
   Check,
@@ -41,17 +42,11 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 
 const colorOptions = ['#9ca3af', '#ef4444', '#10b981', '#3b82f6', '#facc15'];
 
-const MiniArticleCard = ({ article }: { article: Article }) => (
-  <div className="bg-white border p-2 rounded mb-2 text-xs shadow-sm">
-    <div className="font-bold truncate">{article.title}</div>
-    <div className="text-gray-500">{article.date}</div>
-  </div>
-);
-
 export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>([]);
   const [folders, setFolders] = useState<FolderItem[]>([]);
   const [deleteMode, setDeleteMode] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const saved = Cookies.get('bookmarks');
@@ -124,9 +119,8 @@ export default function FavoritesPage() {
         ref={(node) => {
           if (node) dragRef(node);
         }}
-        className="..."
+        className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative"
       >
-
         {deleteMode && (
           <button
             onClick={() => handleRemoveBookmark(article.id)}
@@ -168,13 +162,7 @@ export default function FavoritesPage() {
     }));
 
     return (
-      <div
-        ref={(node) => {
-          if (node) dropRef(node);
-        }}
-        className="..."
-      >
-
+      <div className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative">
         {folder.isEditing ? (
           <>
             <div className="absolute top-2 right-2 flex gap-1 z-10">
@@ -191,7 +179,19 @@ export default function FavoritesPage() {
                 <Check size={18} />
               </button>
             </div>
-            <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color }} />
+            <div
+              ref={(node) => {
+                if (node) dropRef(node);
+              }}
+              onClick={() => navigate(`/favorites/folder/${folder.id}`)}
+              className="cursor-pointer"
+            >
+              <Folder
+                className="w-full h-[160px] mb-2"
+                style={{ color: folder.color }}
+              />
+            </div>
+
             <input
               type="text"
               placeholder="フォルダー名"
@@ -224,7 +224,12 @@ export default function FavoritesPage() {
           </>
         ) : (
           <>
-            <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color ?? '#9ca3af' }} />
+            <div ref={(node) => { if (node) dropRef(node); }} onClick={() => navigate(`/favorites/folder/${folder.id}`)} className="cursor-pointer">
+              <Folder
+                className="w-full h-[160px] mb-2"
+                style={{ color: folder.color ?? '#9ca3af' }}
+              />
+            </div>
             <div className="absolute top-2 right-2 flex gap-1 z-10">
               {deleteMode ? (
                 <button
@@ -251,20 +256,6 @@ export default function FavoritesPage() {
             )}
           </>
         )}
-
-        {/* ドロップスペースと記事表示 */}
-        <div className="min-h-[100px] mt-3 p-2 rounded-md bg-gray-100">
-          {folder.items && folder.items.length > 0 ? (
-            folder.items.map((id) => {
-              const article = bookmarked.find((a) => a.id === id);
-              return article ? <MiniArticleCard key={id} article={article} /> : null;
-            })
-          ) : (
-            <div className="text-sm text-gray-400 text-center">
-              {isOver ? 'ここにドロップ！' : '記事はまだありません'}
-            </div>
-          )}
-        </div>
       </div>
     );
   };
