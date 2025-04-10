@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart, Settings } from 'lucide-react';
 import { useState } from 'react';
+import { useActionSettings } from '../stores/useActionSettings'; // ✅ 追加
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,12 +16,14 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
   const currentPath = location.pathname;
   const actualPath = window.location.pathname;
 
+  const { sidebarHoverEffect } = useActionSettings(); // ✅ 状態を取得
+
   const links = [
     {
       path: '/',
       icon: <Home size={18} />,
       label: 'ニュース',
-      color: 'black dark:text-white', // ✅ ダークモード白、ライトモード黒
+      color: 'black dark:text-white',
       bgColor: 'bg-black dark:bg-white',
     },
     {
@@ -49,11 +52,10 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       path: '/settings',
       icon: <Settings size={18} />,
       label: '設定',
-      color: 'gray-400', // ✅ 少し明るくして視認性UP
+      color: 'gray-400',
       bgColor: 'bg-gray-400',
     },
   ];
-  
 
   return (
     <aside
@@ -94,11 +96,13 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
                 relative flex items-center gap-3 text-sm w-full
                 text-${color}
                 transition-transform
-                ${isActive
-                  ? 'translate-x-5 font-bold duration-500 ease-out'
-                  : isHovered
-                  ? 'translate-x-5 duration-100 ease-out'
-                  : 'translate-x-0 duration-700 ease-in'}
+                ${
+                  isActive
+                    ? 'translate-x-5 font-bold duration-500 ease-out'
+                    : sidebarHoverEffect && isHovered
+                    ? 'translate-x-5 duration-100 ease-out'
+                    : 'translate-x-0 duration-700 ease-in'
+                }
               `}
             >
               {icon}
