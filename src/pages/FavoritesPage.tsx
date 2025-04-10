@@ -7,6 +7,7 @@ import {
   FolderPlus,
   Trash2,
   Trash,
+  Edit3,
 } from 'lucide-react';
 
 interface Article {
@@ -65,6 +66,12 @@ export default function FavoritesPage() {
     );
   };
 
+  const handleStartEdit = (id: number) => {
+    setFolders((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, isEditing: true } : f))
+    );
+  };
+
   const handleAddFolder = () => {
     const newId = folders.length + 1;
     setFolders((prev) => [
@@ -99,7 +106,6 @@ export default function FavoritesPage() {
 
   return (
     <div className="mt-16 sm:mt-0 px-4 relative">
-      {/* 編集・追加ボタン */}
       <div className="absolute top-4 right-4 flex gap-4 z-20">
         <button onClick={toggleDeleteMode}>
           {deleteMode ? (
@@ -116,7 +122,6 @@ export default function FavoritesPage() {
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {/* フォルダー表示 */}
         {folders.map((folder) => (
           <div
             key={`folder-${folder.id}`}
@@ -175,14 +180,17 @@ export default function FavoritesPage() {
             ) : (
               <>
                 <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color ?? '#9ca3af' }} />
-                {deleteMode && (
-                  <button
-                    onClick={() => handleDeleteFolder(folder.id)}
-                    className="absolute top-2 right-2 text-red-400 hover:text-red-600"
-                  >
-                    <X size={18} />
-                  </button>
-                )}
+                <div className="absolute top-2 right-2 flex gap-1 z-10">
+                  {deleteMode ? (
+                    <button onClick={() => handleDeleteFolder(folder.id)} className="text-red-400 hover:text-red-600">
+                      <X size={18} />
+                    </button>
+                  ) : (
+                    <button onClick={() => handleStartEdit(folder.id)} className="text-gray-400 hover:text-gray-600">
+                      <Edit3 size={18} />
+                    </button>
+                  )}
+                </div>
                 <h2 className="font-bold mb-1">{folder.title || '新しいフォルダー'}</h2>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
                   {folder.description || 'ここにフォルダーの説明が入ります。'}
@@ -192,7 +200,6 @@ export default function FavoritesPage() {
           </div>
         ))}
 
-        {/* 記事表示 */}
         {bookmarked.map((article) => (
           <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative">
             {deleteMode && (
