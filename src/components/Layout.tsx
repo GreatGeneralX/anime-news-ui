@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { Menu, X } from 'lucide-react';
 import AccountOverlay from '../pages/AccountOverlay';
+import { Menu, ChevronRight, X } from 'lucide-react';
+
 
 interface LayoutProps {
   showAccountOverlay?: boolean;
@@ -39,7 +40,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
         className="fixed top-4 left-4 z-[10000] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
-        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        {sidebarOpen ? <X size={24} /> : <ChevronRight size={24} />}
       </button>
       {/* 誤タップ防止ゾーン（×ボタン周辺） */}
       <div className="fixed top-0 left-0 w-16 h-16 z-[9999] pointer-events-none" />
