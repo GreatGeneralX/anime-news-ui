@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Edit3, Save } from 'lucide-react';
+import { Edit3, Check, X } from 'lucide-react';
 
 interface FolderCardProps {
   id: number;
@@ -26,24 +26,31 @@ export default function FolderCard({ id, name, description, color, onUpdate }: F
     setEditMode(false);
   };
 
+  const handleCancel = () => {
+    setNewName(name);
+    setNewDesc(description);
+    setNewColor(color);
+    setEditMode(false);
+  };
+
   return (
     <div
       className={`bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative border-l-4`}
       style={{ borderColor: colorOptions.find((c) => c.label === newColor)?.color || '#ccc' }}
     >
       {editMode ? (
-        <div className="space-y-2">
+        <div className="space-y-3 pt-2">
           <input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            className="w-full px-2 py-1 border rounded text-black dark:text-white"
             placeholder="フォルダー名"
+            className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder-opacity-50 placeholder-gray-500"
           />
           <textarea
             value={newDesc}
             onChange={(e) => setNewDesc(e.target.value)}
-            className="w-full px-2 py-1 border rounded text-black dark:text-white"
-            placeholder="説明"
+            placeholder="説明を追加"
+            className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder-opacity-50 placeholder-gray-500"
           />
           <div className="flex gap-2 mt-1">
             {colorOptions.map((c) => (
@@ -57,14 +64,21 @@ export default function FolderCard({ id, name, description, color, onUpdate }: F
               />
             ))}
           </div>
-          <button onClick={handleSave} className="absolute top-2 right-2 text-green-500">
-            <Save size={20} />
-          </button>
+
+          {/* 保存＆キャンセルアイコン */}
+          <div className="absolute top-2 right-2 flex gap-2">
+            <button onClick={handleCancel} className="text-gray-400 hover:text-red-400">
+              <X size={18} />
+            </button>
+            <button onClick={handleSave} className="text-green-500 hover:text-green-600">
+              <Check size={18} />
+            </button>
+          </div>
         </div>
       ) : (
         <div>
-          <h2 className="font-bold text-lg mb-1">{newName}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300">{newDesc}</p>
+          <h2 className="font-bold text-lg mb-1">{name}</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300">{description}</p>
           <button
             onClick={() => setEditMode(true)}
             className="absolute top-2 right-2 text-gray-400 dark:text-gray-300"
