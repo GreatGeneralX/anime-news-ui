@@ -37,7 +37,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
     <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full relative">
       {/* ハンバーガーボタン */}
       <button
-        className="fixed top-4 left-4 z-[10000] bg-white dark:bg-black p-2 rounded-md shadow-md sm:hidden"
+        className="fixed top-4 left-4 z-[10000] sm:hidden text-black dark:text-white p-0 m-0 bg-transparent shadow-none border-none rounded-none"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X size={24} /> : <ChevronRight size={24} />}
