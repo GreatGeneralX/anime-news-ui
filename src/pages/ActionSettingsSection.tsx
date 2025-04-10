@@ -13,7 +13,7 @@ export default function ActionSettingsSection() {
   const settings = useActionSettings();
 
   return (
-    <div className="mt-20 px-6 max-w-xl mx-auto">
+    <div className="mt-20 sm:mt-0 px-4">
       <h2 className="text-2xl font-bold mb-2">アクション設定</h2>
       <p className="text-gray-500 text-sm mb-6">
         以下のUX演出を個別に切り替えできます。
