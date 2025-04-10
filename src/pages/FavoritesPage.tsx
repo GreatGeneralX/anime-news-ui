@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { Edit3, X } from 'lucide-react'; // ← 追加！
+import { Edit3, FolderPlus, Folder } from 'lucide-react';
 
 interface Article {
   id: number;
@@ -9,6 +9,12 @@ interface Article {
   date: string;
   summary: string;
   thumbnail: string;
+}
+
+interface FolderItem {
+  id: number;
+  title: string;
+  description: string;
 }
 
 const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
@@ -22,6 +28,7 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 
 export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>([]);
+  const [folders, setFolders] = useState<FolderItem[]>([]);
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
@@ -33,52 +40,54 @@ export default function FavoritesPage() {
     }
   }, []);
 
-  const toggleBookmark = (id: number) => {
-    const saved = Cookies.get('bookmarks');
-    if (!saved) return;
-
-    const ids = new Set<number>(JSON.parse(saved));
-    ids.delete(id);
-    Cookies.set('bookmarks', JSON.stringify(Array.from(ids)));
-
-    setBookmarked((prev) => prev.filter((a) => a.id !== id));
+  const handleAddFolder = () => {
+    const newId = folders.length + 1;
+    const newFolder: FolderItem = {
+      id: newId,
+      title: `新しいフォルダー ${newId}`,
+      description: 'ここにフォルダーの説明が入ります。',
+    };
+    setFolders((prev) => [...prev, newFolder]);
   };
 
   return (
     <div className="mt-16 sm:mt-0 px-4 relative">
-      {/* 編集ボタン */}
+      {/* 編集・フォルダー作成ボタン */}
       <button
-        className="absolute top-4 right-4 z-10 hover:text-gray-500 transition-colors"
         onClick={() => setEditMode(!editMode)}
+        className="absolute top-4 right-12 z-10 text-gray-400 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
       >
-        <Edit3 size={20} className="text-gray-400 dark:text-gray-300" />
+        <Edit3 size={20} />
       </button>
 
+      <button
+        onClick={handleAddFolder}
+        className="absolute top-4 right-4 z-10 text-gray-400 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
+      >
+        <FolderPlus size={22} />
+      </button>
 
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {folders.map((folder) => (
+          <div
+            key={`folder-${folder.id}`}
+            className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md flex flex-col items-start"
+          >
+            <Folder className="w-full h-[160px] text-gray-400 mb-2" />
+            <h2 className="font-bold mb-1">{folder.title}</h2>
+            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{folder.description}</p>
+          </div>
+        ))}
+
         {bookmarked.length === 0 && <p>まだお気に入りがありません🥲</p>}
         {bookmarked.map((article) => (
-          <div
-            key={article.id}
-            className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative"
-          >
-            {/* 編集モード時のみ ✕ ボタン表示 */}
-            {editMode && (
-              <button
-                onClick={() => toggleBookmark(article.id)}
-                className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
-              >
-                <X size={16} />
-              </button>
-            )}
+          <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md">
             <img src={article.thumbnail} className="w-full rounded-md mb-2" />
             <h2 className="font-bold mb-1">{article.title}</h2>
             <p className="text-xs text-gray-500 mb-1">{article.date}</p>
-            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
-              {article.summary}
-            </p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
           </div>
         ))}
       </div>
