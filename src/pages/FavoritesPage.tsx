@@ -1,4 +1,3 @@
-// pages/FavoritesPage.tsx
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import {
@@ -28,7 +27,7 @@ interface FolderItem {
   description: string;
   color?: string;
   isEditing?: boolean;
-  items?: number[]; // 追加：記事IDの配列
+  items?: number[];
 }
 
 const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
@@ -109,7 +108,6 @@ export default function FavoritesPage() {
     }
   };
 
-  // ArticleCard（ドラッグ可能）
   const ArticleCard = ({ article }: { article: Article }) => {
     const [, dragRef] = useDrag({
       type: 'ARTICLE',
@@ -118,9 +116,7 @@ export default function FavoritesPage() {
 
     return (
       <div
-        ref={(node) => {
-          dragRef(node);
-        }}
+        ref={dragRef}
         className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative"
       >
         {deleteMode && (
@@ -141,9 +137,8 @@ export default function FavoritesPage() {
     );
   };
 
-  // FolderCard（ドロップ可能）
   const FolderCard = ({ folder }: { folder: FolderItem }) => {
-    const [, dropRef] = useDrop({
+    const [{ isOver }, dropRef] = useDrop({
       accept: 'ARTICLE',
       drop: (item: { id: number }) => {
         if (!folder.items?.includes(item.id)) {
@@ -156,14 +151,17 @@ export default function FavoritesPage() {
           );
         }
       },
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+      }),
     });
 
     return (
       <div
-        ref={(node) => {
-          dropRef(node);
-        }}
-        className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative"
+        ref={dropRef}
+        className={`bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative transition-colors ${
+          isOver ? 'border-2 border-blue-400' : ''
+        }`}
       >
         {folder.isEditing ? (
           <>
@@ -217,7 +215,9 @@ export default function FavoritesPage() {
           </>
         ) : (
           <>
-            <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color ?? '#9ca3af' }} />
+            <div className="border-2 border-dashed border-gray-300 rounded-md h-[100px] mb-2 flex items-center justify-center text-sm text-gray-400">
+              {isOver ? 'ドロップして追加！' : 'ここに記事をドロップ'}
+            </div>
             <div className="absolute top-2 right-2 flex gap-1 z-10">
               {deleteMode ? (
                 <button onClick={() => handleDeleteFolder(folder.id)} className="text-red-400 hover:text-red-600">
