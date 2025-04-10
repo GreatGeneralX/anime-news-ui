@@ -62,7 +62,8 @@ export default function HomePage() {
       : dummyArticles.filter((a) => a.category === selectedCat);
 
   return (
-     <div className="mt-16 sm:mt-0 px-4">
+    <div className="mt-12 sm:mt-20 px-6">
+
       {/* ヘッダー */}
       <header className="mb-6 sm:pl-2 w-full">
         <h1 className="text-3xl font-bold mb-4 mt-14 sm:mt-0">ニュースルーム</h1>

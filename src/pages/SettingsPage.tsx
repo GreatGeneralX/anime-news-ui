@@ -2,7 +2,7 @@ import ActionSettingsSection from './ActionSettingsSection';
 
 export default function SettingsPage() {
   return (
-    <div className="px-6 mt-4 sm:mt-0">
+   <div className="mt-12 sm:mt-20 px-6">
 
       <h1 className="text-2xl font-bold mb-4">設定</h1>
 

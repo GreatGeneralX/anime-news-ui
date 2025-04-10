@@ -281,7 +281,8 @@ export default function FavoritesPage() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="mt-16 sm:mt-0 px-4 relative">
+      <div className="mt-12 sm:mt-20 px-6">
+
         <div className="absolute top-4 right-4 flex gap-4 z-20">
           <button onClick={toggleDeleteMode}>
             {deleteMode ? (
