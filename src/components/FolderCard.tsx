@@ -39,34 +39,9 @@ export default function FolderCard({ id, name, description, color, onUpdate }: F
       style={{ borderColor: colorOptions.find((c) => c.label === newColor)?.color || '#ccc' }}
     >
       {editMode ? (
-        <div className="space-y-3 pt-2">
-          <input
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="フォルダー名"
-            className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder-opacity-50 placeholder-gray-500"
-          />
-          <textarea
-            value={newDesc}
-            onChange={(e) => setNewDesc(e.target.value)}
-            placeholder="説明を追加"
-            className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder-opacity-50 placeholder-gray-500"
-          />
-          <div className="flex gap-2 mt-1">
-            {colorOptions.map((c) => (
-              <button
-                key={c.label}
-                onClick={() => setNewColor(c.label)}
-                className={`w-6 h-6 rounded-full border-2 ${
-                  newColor === c.label ? 'border-black dark:border-white' : 'border-transparent'
-                }`}
-                style={{ backgroundColor: c.color }}
-              />
-            ))}
-          </div>
-
-          {/* 保存＆キャンセルアイコン */}
-          <div className="absolute top-2 right-2 flex gap-2">
+        <>
+          {/* 保存・キャンセルボタン */}
+          <div className="absolute top-1 right-2 flex gap-1 z-10">
             <button onClick={handleCancel} className="text-gray-400 hover:text-red-400">
               <X size={18} />
             </button>
@@ -74,7 +49,34 @@ export default function FolderCard({ id, name, description, color, onUpdate }: F
               <Check size={18} />
             </button>
           </div>
-        </div>
+
+          <div className="space-y-3 pt-6">
+            <input
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="フォルダー名"
+              className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder:text-gray-500 placeholder-opacity-50"
+            />
+            <textarea
+              value={newDesc}
+              onChange={(e) => setNewDesc(e.target.value)}
+              placeholder="説明を追加"
+              className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder:text-gray-500 placeholder-opacity-50"
+            />
+            <div className="flex gap-2">
+              {colorOptions.map((c) => (
+                <button
+                  key={c.label}
+                  onClick={() => setNewColor(c.label)}
+                  className={`w-6 h-6 rounded-full border-2 ${
+                    newColor === c.label ? 'border-black dark:border-white' : 'border-transparent'
+                  }`}
+                  style={{ backgroundColor: c.color }}
+                />
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <div>
           <h2 className="font-bold text-lg mb-1">{name}</h2>
