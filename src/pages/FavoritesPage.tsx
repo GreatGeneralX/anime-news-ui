@@ -41,6 +41,13 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 
 const colorOptions = ['#9ca3af', '#ef4444', '#10b981', '#3b82f6', '#facc15'];
 
+const MiniArticleCard = ({ article }: { article: Article }) => (
+  <div className="bg-white border p-2 rounded mb-2 text-xs shadow-sm">
+    <div className="font-bold truncate">{article.title}</div>
+    <div className="text-gray-500">{article.date}</div>
+  </div>
+);
+
 export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>([]);
   const [folders, setFolders] = useState<FolderItem[]>([]);
@@ -57,9 +64,7 @@ export default function FavoritesPage() {
 
   const handleUpdateFolder = (id: number, title: string, description: string) => {
     setFolders((prev) =>
-      prev.map((f) =>
-        f.id === id ? { ...f, title, description, isEditing: false } : f
-      )
+      prev.map((f) => (f.id === id ? { ...f, title, description, isEditing: false } : f))
     );
   };
 
@@ -76,7 +81,7 @@ export default function FavoritesPage() {
   };
 
   const handleAddFolder = () => {
-    const newId = folders.length + 1;
+    const newId = Date.now();
     setFolders((prev) => [
       ...prev,
       {
@@ -119,8 +124,9 @@ export default function FavoritesPage() {
         ref={(node) => {
           if (node) dragRef(node);
         }}
-        className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative"
+        className="..."
       >
+
         {deleteMode && (
           <button
             onClick={() => handleRemoveBookmark(article.id)}
@@ -140,6 +146,9 @@ export default function FavoritesPage() {
   };
 
   const FolderCard = ({ folder }: { folder: FolderItem }) => {
+    const [tempTitle, setTempTitle] = useState(folder.title);
+    const [tempDescription, setTempDescription] = useState(folder.description);
+
     const [{ isOver }, dropRef] = useDrop(() => ({
       accept: 'ARTICLE',
       drop: (item: { id: number }) => {
@@ -163,18 +172,20 @@ export default function FavoritesPage() {
         ref={(node) => {
           if (node) dropRef(node);
         }}
-        className={`bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative transition-colors ${
-          isOver ? 'border-2 border-blue-400' : ''
-        }`}
+        className="..."
       >
+
         {folder.isEditing ? (
           <>
             <div className="absolute top-2 right-2 flex gap-1 z-10">
-              <button onClick={() => handleCancelEdit(folder.id)} className="text-gray-400 hover:text-red-400">
+              <button
+                onClick={() => handleCancelEdit(folder.id)}
+                className="text-gray-400 hover:text-red-400"
+              >
                 <X size={18} />
               </button>
               <button
-                onClick={() => handleUpdateFolder(folder.id, folder.title, folder.description)}
+                onClick={() => handleUpdateFolder(folder.id, tempTitle, tempDescription)}
                 className="text-green-500 hover:text-green-600"
               >
                 <Check size={18} />
@@ -184,23 +195,15 @@ export default function FavoritesPage() {
             <input
               type="text"
               placeholder="フォルダー名"
-              value={folder.title}
-              onChange={(e) =>
-                setFolders((prev) =>
-                  prev.map((f) => (f.id === folder.id ? { ...f, title: e.target.value } : f))
-                )
-              }
-              className="w-full mb-1 p-2 rounded-md border bg-white dark:bg-zinc-900 text-black dark:text-white"
+              value={tempTitle}
+              onChange={(e) => setTempTitle(e.target.value)}
+              className="w-full mb-1 p-2 rounded-md border"
             />
             <textarea
               placeholder="説明を追加"
-              value={folder.description}
-              onChange={(e) =>
-                setFolders((prev) =>
-                  prev.map((f) => (f.id === folder.id ? { ...f, description: e.target.value } : f))
-                )
-              }
-              className="w-full p-2 rounded-md border bg-white dark:bg-zinc-900 text-black dark:text-white"
+              value={tempDescription}
+              onChange={(e) => setTempDescription(e.target.value)}
+              className="w-full p-2 rounded-md border"
             />
             <div className="flex gap-2 mt-2">
               {colorOptions.map((color) => (
@@ -208,7 +211,9 @@ export default function FavoritesPage() {
                   key={color}
                   onClick={() =>
                     setFolders((prev) =>
-                      prev.map((f) => (f.id === folder.id ? { ...f, color } : f))
+                      prev.map((f) =>
+                        f.id === folder.id ? { ...f, color } : f
+                      )
                     )
                   }
                   className="w-5 h-5 rounded-full border"
@@ -219,16 +224,20 @@ export default function FavoritesPage() {
           </>
         ) : (
           <>
-            <div className="border-2 border-dashed border-gray-300 rounded-md h-[100px] mb-2 flex items-center justify-center text-sm text-gray-400">
-              {isOver ? 'ドロップして追加！' : 'ここに記事をドロップ'}
-            </div>
+            <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color ?? '#9ca3af' }} />
             <div className="absolute top-2 right-2 flex gap-1 z-10">
               {deleteMode ? (
-                <button onClick={() => handleDeleteFolder(folder.id)} className="text-red-400 hover:text-red-600">
+                <button
+                  onClick={() => handleDeleteFolder(folder.id)}
+                  className="text-red-400 hover:text-red-600"
+                >
                   <X size={18} />
                 </button>
               ) : (
-                <button onClick={() => handleStartEdit(folder.id)} className="text-gray-400 hover:text-gray-600">
+                <button
+                  onClick={() => handleStartEdit(folder.id)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
                   <Edit3 size={18} />
                 </button>
               )}
@@ -242,6 +251,20 @@ export default function FavoritesPage() {
             )}
           </>
         )}
+
+        {/* ドロップスペースと記事表示 */}
+        <div className="min-h-[100px] mt-3 p-2 rounded-md bg-gray-100">
+          {folder.items && folder.items.length > 0 ? (
+            folder.items.map((id) => {
+              const article = bookmarked.find((a) => a.id === id);
+              return article ? <MiniArticleCard key={id} article={article} /> : null;
+            })
+          ) : (
+            <div className="text-sm text-gray-400 text-center">
+              {isOver ? 'ここにドロップ！' : '記事はまだありません'}
+            </div>
+          )}
+        </div>
       </div>
     );
   };
