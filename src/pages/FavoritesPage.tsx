@@ -120,9 +120,12 @@ export default function FavoritesPage() {
 
     return (
       <div
-        ref={(node: HTMLDivElement | null) => dragRef(node)}
+        ref={(node: HTMLDivElement | null) => {
+          dragRef(node); // ← return はしない！
+        }}
         className="..."
       >
+
 
 
         {deleteMode && (
@@ -161,12 +164,12 @@ export default function FavoritesPage() {
 
     return (
       <div
-        ref={(node: HTMLDivElement | null) => dropRef(node)}
+        ref={(node: HTMLDivElement | null) => {
+          dropRef(node); // ← return しない
+        }}
         className="..."
       >
-
-    
-
+        
         {folder.isEditing ? (
           <>
             <div className="absolute top-2 right-2 flex gap-1 z-10">
