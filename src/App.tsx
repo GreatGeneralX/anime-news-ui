@@ -20,11 +20,13 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="favorites/folder/:id" element={<FavoritesPage />} />
           <Route path="favorites/folder/:id" element={<FolderPage />} />
           <Route path="shop" element={<ShopPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>
+
 
       {(state?.backgroundLocation || isOverlay) && (
         <Routes>

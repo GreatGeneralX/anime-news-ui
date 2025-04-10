@@ -40,10 +40,11 @@ export default function AccountOverlay() {
           {/* 戻るボタンはsm以上のみ表示 */}
           <button
             onClick={handleClose}
-            className="hidden sm:block text-2xl bg-white dark:bg-black rounded-full px-3 py-1 shadow-md z-50"
+            className="hidden sm:block text-2xl px-1"
           >
             &lt;
           </button>
+
           <h2 className="text-2xl font-bold">アカウントページ</h2>
         </div>
 

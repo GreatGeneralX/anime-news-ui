@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Check,
   X,
@@ -12,24 +11,9 @@ import {
 } from 'lucide-react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
-interface Article {
-  id: number;
-  category: string;
-  title: string;
-  date: string;
-  summary: string;
-  thumbnail: string;
-}
-
-interface FolderItem {
-  id: number;
-  title: string;
-  description: string;
-  color?: string;
-  isEditing?: boolean;
-  items?: number[];
-}
+import { useFolders } from '../stores/useFolders';
+import Cookies from 'js-cookie';
+import type { FolderItem, Article } from '../types';
 
 const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
   id: i + 1,
@@ -43,69 +27,50 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 const colorOptions = ['#9ca3af', '#ef4444', '#10b981', '#3b82f6', '#facc15'];
 
 export default function FavoritesPage() {
-  const [bookmarked, setBookmarked] = useState<Article[]>([]);
-  const [folders, setFolders] = useState<FolderItem[]>([]);
-  const [deleteMode, setDeleteMode] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
+  const [bookmarked, setBookmarked] = useState<Article[]>(() => {
     const saved = Cookies.get('bookmarks');
     if (saved) {
       const ids = new Set(JSON.parse(saved));
-      const filtered = dummyArticles.filter((a) => ids.has(a.id));
-      setBookmarked(filtered);
+      return dummyArticles.filter((a) => ids.has(a.id));
     }
+    return [];
+  });
 
-    // Cookieからフォルダーを読み込む
-    const savedFolders = Cookies.get('folders');
-    if (savedFolders) {
-      setFolders(JSON.parse(savedFolders));
-    }
-  }, []);
-
-  // フォルダーの変更をCookieに保存
-  useEffect(() => {
-    Cookies.set('folders', JSON.stringify(folders), { expires: 365 });
-  }, [folders]);
+  const { folders, updateFolder, addFolder, removeFolder } = useFolders();
+  const [deleteMode, setDeleteMode] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const folderId = id ? parseInt(id, 10) : null;
 
   const handleUpdateFolder = (id: number, title: string, description: string) => {
-    setFolders((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, title, description, isEditing: false } : f))
-    );
+    updateFolder(id, { title, description, isEditing: false });
   };
 
   const handleCancelEdit = (id: number) => {
-    setFolders((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, isEditing: false } : f))
-    );
+    updateFolder(id, { isEditing: false });
   };
 
   const handleStartEdit = (id: number) => {
-    setFolders((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, isEditing: true } : f))
-    );
+    updateFolder(id, { isEditing: true });
   };
 
   const handleAddFolder = () => {
     const newId = Date.now();
-    setFolders((prev) => [
-      ...prev,
-      {
-        id: newId,
-        title: '',
-        description: '',
-        color: '#9ca3af',
-        isEditing: true,
-        items: [],
-      },
-    ]);
+    addFolder({
+      id: newId,
+      title: '',
+      description: '',
+      color: '#9ca3af',
+      isEditing: true,
+      items: [],
+    });
   };
 
   const toggleDeleteMode = () => setDeleteMode((prev) => !prev);
 
   const handleDeleteFolder = (id: number) => {
     if (confirm('本当にこのフォルダーを削除しますか？')) {
-      setFolders((prev) => prev.filter((f) => f.id !== id));
+      removeFolder(id);
     }
   };
 
@@ -158,14 +123,9 @@ export default function FavoritesPage() {
       accept: 'ARTICLE',
       drop: (item: { id: number }) => {
         if (!folder.items?.includes(item.id)) {
-          setFolders((prev) =>
-            prev.map((f) =>
-              f.id === folder.id
-                ? { ...f, items: [...(f.items || []), item.id] }
-                : f
-            )
-          );
-          // ドロップされた記事をbookmarkedから除外
+          updateFolder(folder.id, {
+            items: [...(folder.items || []), item.id],
+          });
           setBookmarked((prev) => prev.filter((a) => a.id !== item.id));
         }
       },
@@ -186,7 +146,9 @@ export default function FavoritesPage() {
                 <X size={18} />
               </button>
               <button
-                onClick={() => handleUpdateFolder(folder.id, tempTitle, tempDescription)}
+                onClick={() =>
+                  handleUpdateFolder(folder.id, tempTitle, tempDescription)
+                }
                 className="text-green-500 hover:text-green-600"
               >
                 <Check size={18} />
@@ -204,7 +166,6 @@ export default function FavoritesPage() {
                 style={{ color: folder.color }}
               />
             </div>
-
             <input
               type="text"
               placeholder="フォルダー名"
@@ -223,11 +184,7 @@ export default function FavoritesPage() {
                 <button
                   key={color}
                   onClick={() =>
-                    setFolders((prev) =>
-                      prev.map((f) =>
-                        f.id === folder.id ? { ...f, color } : f
-                      )
-                    )
+                    updateFolder(folder.id, { color: color })
                   }
                   className="w-5 h-5 rounded-full border"
                   style={{ backgroundColor: color }}
@@ -281,8 +238,7 @@ export default function FavoritesPage() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-     <div className="mt-20 sm:mt-4 px-6">
-
+      <div className="mt-2 sm:mt-4 px-6">
         <div className="absolute top-4 right-4 flex gap-4 z-20">
           <button onClick={toggleDeleteMode}>
             {deleteMode ? (
@@ -296,15 +252,41 @@ export default function FavoritesPage() {
           </button>
         </div>
 
-        <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
+        {folderId && (
+          <div className="pt-4 pl-4 sm:pt-0 sm:pl-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="text-2xl px-1"
+            >
+              &lt;
+            </button>
+          </div>
+        )}
+
+        <h1 className="text-2xl font-bold mb-4 px-6">
+          {folderId ? '' : 'お気に入り記事'}
+        </h1>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {folders.map((folder) => (
-            <FolderCard key={folder.id} folder={folder} />
-          ))}
-          {bookmarked.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
+          {folderId
+            ? folders
+                .filter((f) => f.id === folderId)
+                .flatMap((folder) =>
+                  (folder.items ?? []).map((id) => {
+                    const article = dummyArticles.find((a) => a.id === id);
+                    return article ? (
+                      <ArticleCard key={article.id} article={article} />
+                    ) : null;
+                  })
+                )
+            : [
+                ...folders.map((folder) => (
+                  <FolderCard key={folder.id} folder={folder} />
+                )),
+                ...bookmarked.map((article) => (
+                  <ArticleCard key={article.id} article={article} />
+                )),
+              ]}
         </div>
       </div>
     </DndProvider>
