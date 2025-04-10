@@ -6,6 +6,7 @@ import FolderPage from './pages/FolderPage';
 import AccountOverlay from './pages/AccountOverlay';
 import SettingsPage from './pages/SettingsPage';
 import ShopPage from './pages/ShopPage';
+import ActionSettingsPage from './pages/ActionSettingsPage';
 
 export default function App() {
   const location = useLocation();
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="favorites/folder/:id" element={<FolderPage />} />
           <Route path="shop" element={<ShopPage />} />
           <Route path="settings" element={<SettingsPage />} />     
+          <Route path="/action-settings" element={<ActionSettingsPage />} />
         </Route>
       </Routes>
 
