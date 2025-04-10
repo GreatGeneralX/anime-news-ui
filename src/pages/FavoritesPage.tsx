@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import {
-  Edit3,
   Check,
   X,
   Folder,
@@ -65,14 +64,6 @@ export default function FavoritesPage() {
     );
   };
 
-  const handleStartEdit = (id: number) => {
-    setFolders((prev) =>
-      prev.map((f) =>
-        f.id === id ? { ...f, isEditing: true } : f
-      )
-    );
-  };
-
   const handleAddFolder = () => {
     const newId = folders.length + 1;
     setFolders((prev) => [
@@ -86,8 +77,9 @@ export default function FavoritesPage() {
     ]);
   };
 
-  const toggleDeleteMode = () => {
+  const toggleDeleteMode = (e?: React.MouseEvent<HTMLButtonElement>) => {
     setDeleteMode((prev) => !prev);
+    if (e) e.currentTarget.blur(); // フォーカス外して色が残らないように
   };
 
   const handleDeleteFolder = (id: number) => {
@@ -110,7 +102,11 @@ export default function FavoritesPage() {
     <div className="mt-16 sm:mt-0 px-4 relative">
       {/* 編集・追加ボタン */}
       <div className="absolute top-4 right-4 flex gap-4 z-20">
-        <button key={deleteMode ? 'on' : 'off'} onClick={toggleDeleteMode}>
+        <button
+          type="button"
+          onClick={(e) => toggleDeleteMode(e)}
+          className="focus:outline-none"
+        >
           <Trash2
             className={clsx(
               'w-5 h-5',
@@ -123,8 +119,6 @@ export default function FavoritesPage() {
           <FolderPlus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
         </button>
       </div>
-
-
 
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 
