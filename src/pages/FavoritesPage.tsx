@@ -8,6 +8,7 @@ import {
   FolderPlus,
   Trash2,
 } from 'lucide-react';
+import clsx from 'clsx';
 
 interface Article {
   id: number;
@@ -110,11 +111,13 @@ export default function FavoritesPage() {
       {/* 編集・追加ボタン */}
       <div className="absolute top-4 right-4 flex gap-4 z-20">
         <button onClick={toggleDeleteMode}>
-          <Trash2
-            className={`w-5 h-5 ${
-              deleteMode ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-red-600'
-            }`}
-          />
+        <Trash2
+          className={clsx(
+            'w-5 h-5',
+            deleteMode ? 'text-red-500' : 'text-gray-400',
+            'hover:text-red-600 transition-colors duration-300'
+          )}
+        />
         </button>
         <button onClick={handleAddFolder}>
           <FolderPlus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
