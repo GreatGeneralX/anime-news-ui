@@ -1,20 +1,24 @@
+// src/pages/ActionSettingsPage.tsx
 import { useActionSettings } from '../stores/useActionSettings';
 
 const toggleItems = [
-  { key: 'sidebarHoverEffect', label: 'サイドバーのホバー演出' },
-  { key: 'hamburgerBounce', label: 'ハンバーガーのポヨン演出' },
-  { key: 'dragParticleEffect', label: '記事ドロップ時のパーティクル演出' },
-  { key: 'folderOpenEffect', label: 'フォルダー展開時のページ割れ演出' },
-  { key: 'filterJumpEffect', label: '検索時のぴょん演出' },
-  { key: 'fullStatePersistence', label: '状態の永続保存（フォルダ・記事）' },
+  { key: 'sidebarHoverEffect', label: '🧭 サイドバーのホバー演出' },
+  { key: 'hamburgerBounce', label: '🍔 ハンバーガーのポヨン演出' },
+  { key: 'dragParticleEffect', label: '🎉 記事ドラッグ時のパーティクル演出' },
+  { key: 'folderOpenEffect', label: '🗂️ フォルダー展開時のページ割れ演出' },
+  { key: 'filterJumpEffect', label: '🔍 検索時のぴょんっ演出' },
+  { key: 'fullStatePersistence', label: '💾 状態の永続保存（フォルダ・記事）' },
 ] as const;
 
 export default function ActionSettingsPage() {
-  const settings = useActionSettings(); // Zustandの状態を使う
+  const settings = useActionSettings();
 
   return (
     <div className="mt-20 px-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">アクション設定</h1>
+      <h1 className="text-2xl font-bold mb-4">アクション設定</h1>
+      <p className="text-gray-500 text-sm mb-6">
+        以下のUX演出を個別に切り替えできます。
+      </p>
 
       <div className="space-y-4">
         {toggleItems.map((item) => (
