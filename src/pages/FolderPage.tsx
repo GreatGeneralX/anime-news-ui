@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import { ArrowLeft } from 'lucide-react';
 
 interface Article {
@@ -28,26 +29,26 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
   thumbnail: `https://placehold.co/600x400?text=Article${i + 1}`,
 }));
 
-// 仮のフォルダーデータ（本来は状態管理やContextで渡されるべき）
-const dummyFolders: FolderItem[] = [
-  {
-    id: 1,
-    title: 'アニメ系フォルダー',
-    description: 'アニメ関連のお気に入り',
-    color: '#3b82f6',
-    items: [2, 3],
-  },
-];
-
 export default function FolderPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const folderId = Number(id);
 
-  const folder = dummyFolders.find((f) => f.id === folderId);
+  const [folders, setFolders] = useState<FolderItem[]>([]);
+
+  useEffect(() => {
+    const saved = Cookies.get('folders');
+    if (saved) {
+      setFolders(JSON.parse(saved));
+    }
+  }, []);
+
+  const folder = folders.find((f) => f.id === folderId);
   const articles = dummyArticles.filter((a) => folder?.items?.includes(a.id));
 
-  if (!folder) return <div className="p-4">フォルダーが見つかりませんでした。</div>;
+  if (!folder) {
+    return <div className="p-4 text-red-500">フォルダーが見つかりませんでした。</div>;
+  }
 
   return (
     <div className="mt-16 sm:mt-0 px-4">

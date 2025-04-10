@@ -55,7 +55,18 @@ export default function FavoritesPage() {
       const filtered = dummyArticles.filter((a) => ids.has(a.id));
       setBookmarked(filtered);
     }
+
+    // Cookieからフォルダーを読み込む
+    const savedFolders = Cookies.get('folders');
+    if (savedFolders) {
+      setFolders(JSON.parse(savedFolders));
+    }
   }, []);
+
+  // フォルダーの変更をCookieに保存
+  useEffect(() => {
+    Cookies.set('folders', JSON.stringify(folders), { expires: 365 });
+  }, [folders]);
 
   const handleUpdateFolder = (id: number, title: string, description: string) => {
     setFolders((prev) =>
@@ -154,6 +165,8 @@ export default function FavoritesPage() {
                 : f
             )
           );
+          // ドロップされた記事をbookmarkedから除外
+          setBookmarked((prev) => prev.filter((a) => a.id !== item.id));
         }
       },
       collect: (monitor) => ({
@@ -224,7 +237,13 @@ export default function FavoritesPage() {
           </>
         ) : (
           <>
-            <div ref={(node) => { if (node) dropRef(node); }} onClick={() => navigate(`/favorites/folder/${folder.id}`)} className="cursor-pointer">
+            <div
+              ref={(node) => {
+                if (node) dropRef(node);
+              }}
+              onClick={() => navigate(`/favorites/folder/${folder.id}`)}
+              className="cursor-pointer"
+            >
               <Folder
                 className="w-full h-[160px] mb-2"
                 style={{ color: folder.color ?? '#9ca3af' }}
