@@ -37,7 +37,6 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>([]);
   const [folders, setFolders] = useState<FolderItem[]>([]);
-  const [editAllMode, setEditAllMode] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
 
   useEffect(() => {
@@ -86,9 +85,8 @@ export default function FavoritesPage() {
     ]);
   };
 
-  const toggleEditAll = () => {
+  const toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
-    setEditAllMode(false); // 編集と削除は同時に使わない
   };
 
   const handleDeleteFolder = (id: number) => {
@@ -97,11 +95,21 @@ export default function FavoritesPage() {
     }
   };
 
+  const handleRemoveBookmark = (id: number) => {
+    if (confirm('この記事をお気に入りから削除しますか？')) {
+      const updated = bookmarked.filter((a) => a.id !== id);
+      setBookmarked(updated);
+      Cookies.set('bookmarks', JSON.stringify(updated.map((a) => a.id)), {
+        expires: 365,
+      });
+    }
+  };
+
   return (
     <div className="mt-16 sm:mt-0 px-4 relative">
       {/* 編集・追加ボタン */}
       <div className="absolute top-4 right-4 flex gap-4 z-20">
-        <button onClick={toggleEditAll}>
+        <button onClick={toggleDeleteMode}>
           <Trash2 className={`w-5 h-5 ${deleteMode ? 'text-red-500' : 'text-gray-400'} hover:text-red-600`} />
         </button>
         <button onClick={handleAddFolder}>
@@ -112,6 +120,7 @@ export default function FavoritesPage() {
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {/* フォルダー表示 */}
         {folders.map((folder) => (
           <div
             key={`folder-${folder.id}`}
@@ -128,11 +137,7 @@ export default function FavoritesPage() {
                   </button>
                   <button
                     onClick={() =>
-                      handleUpdateFolder(
-                        folder.id,
-                        folder.title,
-                        folder.description
-                      )
+                      handleUpdateFolder(folder.id, folder.title, folder.description)
                     }
                     className="text-green-500 hover:text-green-600"
                   >
@@ -147,9 +152,7 @@ export default function FavoritesPage() {
                   onChange={(e) =>
                     setFolders((prev) =>
                       prev.map((f) =>
-                        f.id === folder.id
-                          ? { ...f, title: e.target.value }
-                          : f
+                        f.id === folder.id ? { ...f, title: e.target.value } : f
                       )
                     )
                   }
@@ -161,9 +164,7 @@ export default function FavoritesPage() {
                   onChange={(e) =>
                     setFolders((prev) =>
                       prev.map((f) =>
-                        f.id === folder.id
-                          ? { ...f, description: e.target.value }
-                          : f
+                        f.id === folder.id ? { ...f, description: e.target.value } : f
                       )
                     )
                   }
@@ -181,9 +182,7 @@ export default function FavoritesPage() {
                     <X size={18} />
                   </button>
                 )}
-                <h2 className="font-bold mb-1">
-                  {folder.title || '新しいフォルダー'}
-                </h2>
+                <h2 className="font-bold mb-1">{folder.title || '新しいフォルダー'}</h2>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
                   {folder.description || 'ここにフォルダーの説明が入ります。'}
                 </p>
@@ -192,12 +191,23 @@ export default function FavoritesPage() {
           </div>
         ))}
 
+        {/* 記事表示 */}
         {bookmarked.map((article) => (
-          <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md">
+          <div key={article.id} className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative">
+            {deleteMode && (
+              <button
+                onClick={() => handleRemoveBookmark(article.id)}
+                className="absolute top-2 right-2 text-red-400 hover:text-red-600 z-10"
+              >
+                <X size={18} />
+              </button>
+            )}
             <img src={article.thumbnail} className="w-full rounded-md mb-2" />
             <h2 className="font-bold mb-1">{article.title}</h2>
             <p className="text-xs text-gray-500 mb-1">{article.date}</p>
-            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
+              {article.summary}
+            </p>
           </div>
         ))}
       </div>
