@@ -1,92 +1,93 @@
-import { useState } from 'react';
-import { Edit3, Check, X } from 'lucide-react';
+import { useState } from "react";
+import { Pencil, Check, X } from "lucide-react";
 
 interface FolderCardProps {
-  id: number;
-  name: string;
+  title: string;
   description: string;
   color: string;
-  onUpdate: (id: number, name: string, description: string, color: string) => void;
+  onUpdate: (data: { title: string; description: string; color: string }) => void;
 }
 
-const colorOptions = [
-  { label: 'gundam-red', color: '#e63946' },
-  { label: 'gundam-blue', color: '#457b9d' },
-  { label: 'gundam-yellow', color: '#f4a261' },
+const colors = [
+  { name: "red", hex: "#ef4444" },
+  { name: "blue", hex: "#3b82f6" },
+  { name: "yellow", hex: "#f59e0b" },
 ];
 
-export default function FolderCard({ id, name, description, color, onUpdate }: FolderCardProps) {
-  const [editMode, setEditMode] = useState(false);
-  const [newName, setNewName] = useState(name);
-  const [newDesc, setNewDesc] = useState(description);
-  const [newColor, setNewColor] = useState(color);
+export default function FolderCard({ title, description, color, onUpdate }: FolderCardProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempTitle, setTempTitle] = useState(title);
+  const [tempDescription, setTempDescription] = useState(description);
+  const [tempColor, setTempColor] = useState(color);
 
   const handleSave = () => {
-    onUpdate(id, newName, newDesc, newColor);
-    setEditMode(false);
+    onUpdate({
+      title: tempTitle,
+      description: tempDescription,
+      color: tempColor,
+    });
+    setIsEditing(false);
   };
 
   const handleCancel = () => {
-    setNewName(name);
-    setNewDesc(description);
-    setNewColor(color);
-    setEditMode(false);
+    setTempTitle(title);
+    setTempDescription(description);
+    setTempColor(color);
+    setIsEditing(false);
   };
 
   return (
     <div
-      className={`bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative border-l-4`}
-      style={{ borderColor: colorOptions.find((c) => c.label === newColor)?.color || '#ccc' }}
+      className={`relative w-[280px] p-4 rounded-xl shadow-md ${
+        isEditing ? "border" : ""
+      }`}
+      style={{ borderLeft: `8px solid ${colors.find(c => c.name === color)?.hex || "#000"}` }}
     >
-      {editMode ? (
-        <>
-          {/* 保存・キャンセルボタン */}
-          <div className="absolute top-2 right-2 flex gap-1 z-10">
-            <button onClick={handleCancel} className="text-gray-400 hover:text-red-400">
-              <X size={18} />
-            </button>
-            <button onClick={handleSave} className="text-green-500 hover:text-green-600">
-              <Check size={18} />
-            </button>
-          </div>
+      {/* 編集ボタン or チェック・キャンセル */}
+      <div className="absolute top-2 right-2 flex gap-2">
+        {isEditing ? (
+          <>
+            <X className="w-5 h-5 text-gray-400 hover:text-red-500 cursor-pointer" onClick={handleCancel} />
+            <Check className="w-5 h-5 text-gray-400 hover:text-green-500 cursor-pointer" onClick={handleSave} />
+          </>
+        ) : (
+          <Pencil className="w-5 h-5 text-gray-400 hover:text-gray-600 cursor-pointer" onClick={() => setIsEditing(true)} />
+        )}
+      </div>
 
-          <div className="space-y-3 pt-6">
-            <input
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              placeholder="フォルダー名"
-              className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder:text-gray-500 placeholder-opacity-50"
-            />
-            <textarea
-              value={newDesc}
-              onChange={(e) => setNewDesc(e.target.value)}
-              placeholder="説明を追加"
-              className="w-full px-2 py-1 border rounded text-black dark:text-white placeholder:text-gray-500 placeholder-opacity-50"
-            />
-            <div className="flex gap-2">
-              {colorOptions.map((c) => (
-                <button
-                  key={c.label}
-                  onClick={() => setNewColor(c.label)}
-                  className={`w-6 h-6 rounded-full border-2 ${
-                    newColor === c.label ? 'border-black dark:border-white' : 'border-transparent'
-                  }`}
-                  style={{ backgroundColor: c.color }}
-                />
-              ))}
-            </div>
+      {/* 内容 */}
+      {isEditing ? (
+        <div className="space-y-2 mt-4">
+          <input
+            type="text"
+            value={tempTitle}
+            onChange={(e) => setTempTitle(e.target.value)}
+            placeholder="フォルダー名"
+            className="w-full p-2 rounded border"
+          />
+          <textarea
+            value={tempDescription}
+            onChange={(e) => setTempDescription(e.target.value)}
+            placeholder="説明を追加"
+            className="w-full p-2 rounded border"
+          />
+          <div className="flex gap-3 mt-2">
+            {colors.map((c) => (
+              <div
+                key={c.name}
+                className={`w-6 h-6 rounded-full cursor-pointer border-2 ${
+                  tempColor === c.name ? "border-black" : "border-transparent"
+                }`}
+                style={{ backgroundColor: c.hex }}
+                onClick={() => setTempColor(c.name)}
+              />
+            ))}
           </div>
-        </>
+        </div>
       ) : (
-        <div>
-          <h2 className="font-bold text-lg mb-1">{name}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300">{description}</p>
-          <button
-            onClick={() => setEditMode(true)}
-            className="absolute top-2 right-2 text-gray-400 dark:text-gray-300"
-          >
-            <Edit3 size={20} />
-          </button>
+        <div className="mt-6">
+          <div className="text-lg font-semibold">{title}</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">{description}</div>
         </div>
       )}
     </div>

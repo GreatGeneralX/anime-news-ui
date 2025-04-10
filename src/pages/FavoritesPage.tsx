@@ -87,13 +87,12 @@ export default function FavoritesPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {folders.map((folder) => (
             <FolderCard
-              key={folder.id}
-              id={folder.id}
-              name={folder.name}
-              description={folder.description}
-              color={folder.color}
-              onUpdate={handleUpdateFolder}
-            />
+            key={folder.id}
+            title={folder.name}
+            description={folder.description}
+            color={folder.color}
+            onUpdate={(data) => handleUpdateFolder(folder.id, data.title, data.description, data.color)}
+          />
           ))}
         </div>
       )}
