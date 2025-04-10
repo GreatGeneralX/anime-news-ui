@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import {
-  Edit3,
   Check,
   X,
   Folder,
   FolderPlus,
   Trash2,
-  Trash, // ← 追加
+  Trash,
 } from 'lucide-react';
 
 interface Article {
@@ -23,6 +22,7 @@ interface FolderItem {
   id: number;
   title: string;
   description: string;
+  color?: string;
   isEditing?: boolean;
 }
 
@@ -34,6 +34,8 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
   summary: 'これはダミー記事の要約です。',
   thumbnail: `https://placehold.co/600x400?text=Article${i + 1}`,
 }));
+
+const colorOptions = ['#9ca3af', '#ef4444', '#10b981', '#3b82f6', '#facc15'];
 
 export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>([]);
@@ -59,17 +61,7 @@ export default function FavoritesPage() {
 
   const handleCancelEdit = (id: number) => {
     setFolders((prev) =>
-      prev.map((f) =>
-        f.id === id ? { ...f, isEditing: false } : f
-      )
-    );
-  };
-
-  const handleStartEdit = (id: number) => {
-    setFolders((prev) =>
-      prev.map((f) =>
-        f.id === id ? { ...f, isEditing: true } : f
-      )
+      prev.map((f) => (f.id === id ? { ...f, isEditing: false } : f))
     );
   };
 
@@ -81,14 +73,13 @@ export default function FavoritesPage() {
         id: newId,
         title: '',
         description: '',
+        color: '#9ca3af',
         isEditing: true,
       },
     ]);
   };
 
-  const toggleDeleteMode = () => {
-    setDeleteMode((prev) => !prev);
-  };
+  const toggleDeleteMode = () => setDeleteMode((prev) => !prev);
 
   const handleDeleteFolder = (id: number) => {
     if (confirm('本当にこのフォルダーを削除しますか？')) {
@@ -134,51 +125,56 @@ export default function FavoritesPage() {
             {folder.isEditing ? (
               <>
                 <div className="absolute top-2 right-2 flex gap-1 z-10">
-                  <button
-                    onClick={() => handleCancelEdit(folder.id)}
-                    className="text-gray-400 hover:text-red-400"
-                  >
+                  <button onClick={() => handleCancelEdit(folder.id)} className="text-gray-400 hover:text-red-400">
                     <X size={18} />
                   </button>
                   <button
-                    onClick={() =>
-                      handleUpdateFolder(folder.id, folder.title, folder.description)
-                    }
+                    onClick={() => handleUpdateFolder(folder.id, folder.title, folder.description)}
                     className="text-green-500 hover:text-green-600"
                   >
                     <Check size={18} />
                   </button>
                 </div>
-                <Folder className="w-full h-[160px] text-gray-400 mb-2" />
+                <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color }} />
                 <input
                   type="text"
                   placeholder="フォルダー名"
                   value={folder.title}
                   onChange={(e) =>
                     setFolders((prev) =>
-                      prev.map((f) =>
-                        f.id === folder.id ? { ...f, title: e.target.value } : f
-                      )
+                      prev.map((f) => (f.id === folder.id ? { ...f, title: e.target.value } : f))
                     )
                   }
-                  className="w-full mb-1 p-2 rounded-md border bg-white dark:bg-zinc-900 text-black dark:text-white placeholder-opacity-50 placeholder-gray-500"
+                  className="w-full mb-1 p-2 rounded-md border bg-white dark:bg-zinc-900 text-black dark:text-white"
                 />
                 <textarea
                   placeholder="説明を追加"
                   value={folder.description}
                   onChange={(e) =>
                     setFolders((prev) =>
-                      prev.map((f) =>
-                        f.id === folder.id ? { ...f, description: e.target.value } : f
-                      )
+                      prev.map((f) => (f.id === folder.id ? { ...f, description: e.target.value } : f))
                     )
                   }
-                  className="w-full p-2 rounded-md border bg-white dark:bg-zinc-900 text-black dark:text-white placeholder-opacity-50 placeholder-gray-500"
+                  className="w-full p-2 rounded-md border bg-white dark:bg-zinc-900 text-black dark:text-white"
                 />
+                <div className="flex gap-2 mt-2">
+                  {colorOptions.map((color) => (
+                    <button
+                      key={color}
+                      onClick={() =>
+                        setFolders((prev) =>
+                          prev.map((f) => (f.id === folder.id ? { ...f, color } : f))
+                        )
+                      }
+                      className="w-5 h-5 rounded-full border"
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                </div>
               </>
             ) : (
               <>
-                <Folder className="w-full h-[160px] text-gray-400 mb-2" />
+                <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color ?? '#9ca3af' }} />
                 {deleteMode && (
                   <button
                     onClick={() => handleDeleteFolder(folder.id)}
@@ -210,9 +206,7 @@ export default function FavoritesPage() {
             <img src={article.thumbnail} className="w-full rounded-md mb-2" />
             <h2 className="font-bold mb-1">{article.title}</h2>
             <p className="text-xs text-gray-500 mb-1">{article.date}</p>
-            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
-              {article.summary}
-            </p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{article.summary}</p>
           </div>
         ))}
       </div>
