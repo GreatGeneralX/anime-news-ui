@@ -48,11 +48,12 @@ export default function FavoritesPage() {
     <div className="mt-16 sm:mt-0 px-4 relative">
       {/* 編集ボタン */}
       <button
-        className="absolute top-4 right-4 z-10 text-gray-600 hover:text-black transition-colors"
+        className="absolute top-4 right-4 z-10 hover:text-gray-500 transition-colors"
         onClick={() => setEditMode(!editMode)}
       >
-        <Edit3 size={20} />
+        <Edit3 size={20} className="text-gray-400 dark:text-gray-300" />
       </button>
+
 
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 

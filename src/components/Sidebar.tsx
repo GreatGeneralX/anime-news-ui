@@ -20,8 +20,8 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       path: '/',
       icon: <Home size={18} />,
       label: 'ニュース',
-      color: 'gundam-red',
-      bgColor: 'bg-gundam-red',
+      color: 'black dark:text-white', // ✅ ダークモード白、ライトモード黒
+      bgColor: 'bg-black dark:bg-white',
     },
     {
       path: '/shop',
@@ -42,17 +42,18 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
       path: '/favorites',
       icon: <Heart size={18} />,
       label: 'お気に入り',
-      color: 'black',
-      bgColor: 'bg-black',
+      color: 'gundam-red',
+      bgColor: 'bg-gundam-red',
     },
     {
       path: '/settings',
       icon: <Settings size={18} />,
       label: '設定',
-      color: 'gray-500',
-      bgColor: 'bg-gray-500',
+      color: 'gray-400', // ✅ 少し明るくして視認性UP
+      bgColor: 'bg-gray-400',
     },
   ];
+  
 
   return (
     <aside
