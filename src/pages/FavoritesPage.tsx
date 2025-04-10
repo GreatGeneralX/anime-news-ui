@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { Edit3, Check, X, Folder, FolderPlus } from 'lucide-react';
+import {
+  Edit3,
+  Check,
+  X,
+  Folder,
+  FolderPlus,
+  Trash2,
+} from 'lucide-react';
 
 interface Article {
   id: number;
@@ -31,6 +38,7 @@ export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>([]);
   const [folders, setFolders] = useState<FolderItem[]>([]);
   const [editAllMode, setEditAllMode] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
 
   useEffect(() => {
     const saved = Cookies.get('bookmarks');
@@ -65,13 +73,6 @@ export default function FavoritesPage() {
     );
   };
 
-  const toggleEditAll = () => {
-    setEditAllMode((prev) => !prev);
-    setFolders((prev) =>
-      prev.map((f) => ({ ...f, isEditing: !editAllMode }))
-    );
-  };
-
   const handleAddFolder = () => {
     const newId = folders.length + 1;
     setFolders((prev) => [
@@ -83,15 +84,25 @@ export default function FavoritesPage() {
         isEditing: true,
       },
     ]);
-    setEditAllMode(true);
+  };
+
+  const toggleEditAll = () => {
+    setDeleteMode((prev) => !prev);
+    setEditAllMode(false); // 編集と削除は同時に使わない
+  };
+
+  const handleDeleteFolder = (id: number) => {
+    if (confirm('本当にこのフォルダーを削除しますか？')) {
+      setFolders((prev) => prev.filter((f) => f.id !== id));
+    }
   };
 
   return (
     <div className="mt-16 sm:mt-0 px-4 relative">
-      {/* ✎＆➕のボタンを右上に */}
+      {/* 編集・追加ボタン */}
       <div className="absolute top-4 right-4 flex gap-4 z-20">
         <button onClick={toggleEditAll}>
-          <Edit3 className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+          <Trash2 className={`w-5 h-5 ${deleteMode ? 'text-red-500' : 'text-gray-400'} hover:text-red-600`} />
         </button>
         <button onClick={handleAddFolder}>
           <FolderPlus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
@@ -162,12 +173,14 @@ export default function FavoritesPage() {
             ) : (
               <>
                 <Folder className="w-full h-[160px] text-gray-400 mb-2" />
-                <button
-                  onClick={() => handleStartEdit(folder.id)}
-                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
-                >
-                  <Edit3 size={18} />
-                </button>
+                {deleteMode && (
+                  <button
+                    onClick={() => handleDeleteFolder(folder.id)}
+                    className="absolute top-2 right-2 text-red-400 hover:text-red-600"
+                  >
+                    <X size={18} />
+                  </button>
+                )}
                 <h2 className="font-bold mb-1">
                   {folder.title || '新しいフォルダー'}
                 </h2>
