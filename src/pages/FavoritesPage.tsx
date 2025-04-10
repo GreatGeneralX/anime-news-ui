@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { Edit3, Check, X, Folder } from 'lucide-react';
+import { Edit3, Check, X, Folder, FolderPlus } from 'lucide-react';
 
 interface Article {
   id: number;
@@ -29,14 +29,8 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 
 export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>([]);
-  const [folders, setFolders] = useState<FolderItem[]>([
-    {
-      id: 1,
-      title: '',
-      description: '',
-      isEditing: true,
-    },
-  ]);
+  const [folders, setFolders] = useState<FolderItem[]>([]);
+  const [editAllMode, setEditAllMode] = useState(false);
 
   useEffect(() => {
     const saved = Cookies.get('bookmarks');
@@ -71,8 +65,39 @@ export default function FavoritesPage() {
     );
   };
 
+  const toggleEditAll = () => {
+    setEditAllMode((prev) => !prev);
+    setFolders((prev) =>
+      prev.map((f) => ({ ...f, isEditing: !editAllMode }))
+    );
+  };
+
+  const handleAddFolder = () => {
+    const newId = folders.length + 1;
+    setFolders((prev) => [
+      ...prev,
+      {
+        id: newId,
+        title: '',
+        description: '',
+        isEditing: true,
+      },
+    ]);
+    setEditAllMode(true);
+  };
+
   return (
     <div className="mt-16 sm:mt-0 px-4 relative">
+      {/* ✎＆➕のボタンを右上に */}
+      <div className="absolute top-4 right-4 flex gap-4 z-20">
+        <button onClick={toggleEditAll}>
+          <Edit3 className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+        </button>
+        <button onClick={handleAddFolder}>
+          <FolderPlus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+        </button>
+      </div>
+
       <h1 className="text-2xl font-bold mb-4">お気に入り記事</h1>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -85,9 +110,7 @@ export default function FavoritesPage() {
               <>
                 <div className="absolute top-2 right-2 flex gap-1 z-10">
                   <button
-                    onClick={() =>
-                      handleCancelEdit(folder.id)
-                    }
+                    onClick={() => handleCancelEdit(folder.id)}
                     className="text-gray-400 hover:text-red-400"
                   >
                     <X size={18} />
