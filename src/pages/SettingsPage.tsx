@@ -2,7 +2,8 @@ import ActionSettingsSection from './ActionSettingsSection';
 
 export default function SettingsPage() {
   return (
-    <div className="mt-16 sm:mt-0 px-4">
+    <div className="px-6 mt-4 sm:mt-0">
+
       <h1 className="text-2xl font-bold mb-4">設定</h1>
 
       {/* グレーの仕切り線（ライト＆ダーク対応） */}
