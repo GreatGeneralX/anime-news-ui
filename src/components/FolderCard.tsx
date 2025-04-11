@@ -1,3 +1,5 @@
+//src/components/FolderCard.tsx
+//ここからコード
 import { useState } from "react";
 import { Pencil, Check, X } from "lucide-react";
 
@@ -93,3 +95,5 @@ export default function FolderCard({ title, description, color, onUpdate }: Fold
     </div>
   );
 }
+
+//ここまでコード

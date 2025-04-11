@@ -1,4 +1,5 @@
-// useFolders.ts
+//src/stores/useFolders.ts
+// ←ここからコード
 import { create } from 'zustand';
 import Cookies from 'js-cookie';
 import type { FolderItem } from '../types';
@@ -6,12 +7,14 @@ import type { FolderItem } from '../types';
 const saved = Cookies.get('folders');
 const initialFolders: FolderItem[] = saved ? JSON.parse(saved) : [];
 
+
 interface FolderStore {
   folders: FolderItem[];
   addFolder: (folder: FolderItem) => void;
   updateFolder: (id: number, data: Partial<FolderItem>) => void;
   removeFolder: (id: number) => void;
 }
+
 
 export const useFolders = create<FolderStore>((set, get) => ({
   folders: initialFolders,
@@ -36,3 +39,4 @@ export const useFolders = create<FolderStore>((set, get) => ({
     set({ folders: updated });
   },
 }));
+// ←ここまでコード

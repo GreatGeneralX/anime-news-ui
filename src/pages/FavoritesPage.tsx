@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+// src/pages/FavoritesPage.tsx
+import { useEffect, useState, useRef, useMemo } from 'react';
 import {
   Check,
   X,
@@ -7,14 +8,13 @@ import {
   Trash2,
   Trash,
   Edit3,
-  Move,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDrag, useDrop } from 'react-dnd';
 import { useFolders } from '../stores/useFolders';
+import { useBookmarks } from '../stores/useBookmarks';
 import Cookies from 'js-cookie';
-import type { FolderItem, Article } from '../types';
+import type { Article, FolderItem } from '../types';
 
 const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
   id: i + 1,
@@ -28,28 +28,33 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
 const colorOptions = ['#9ca3af', '#ef4444', '#10b981', '#3b82f6', '#facc15'];
 
 export default function FavoritesPage() {
-  const [bookmarked, setBookmarked] = useState<Article[]>(() => {
-    console.log("📍 FavoritesPage rendered");
-    const saved = Cookies.get('bookmarks');
-    if (saved) {
-      const ids = new Set(JSON.parse(saved));
-      return dummyArticles.filter((a) => ids.has(a.id));
-    }
-    return [];
-  });
-
+  const { bookmarks, remove, initialize, add } = useBookmarks();
   const { folders, updateFolder, addFolder, removeFolder } = useFolders();
   const [deleteMode, setDeleteMode] = useState(false);
   const navigate = useNavigate();
 
+  const initialized = useRef(false);
+  useEffect(() => {
+    if (!initialized.current) {
+      const saved = Cookies.get('bookmarks');
+      if (saved) {
+        const ids = new Set(JSON.parse(saved));
+        const updated = dummyArticles.filter((a) => ids.has(a.id));
+        initialize(updated);
+        initialized.current = true;
+      }
+    }
+  }, [initialize]);
+
+  const visibleArticles = useMemo(() => {
+    return bookmarks.filter((article) =>
+      folders.every((folder) => !(folder.items ?? []).includes(article.id))
+    );
+  }, [bookmarks, folders]);
+
   const handleUpdateFolder = (id: number, title: string, description: string) => {
     updateFolder(id, { title, description, isEditing: false });
   };
-  // 表示する記事一覧
-  const visibleArticles = bookmarked.filter((article) =>
-    folders.every((folder) => !(folder.items ?? []).includes(article.id))
-  );
-
 
   const handleCancelEdit = (id: number) => {
     updateFolder(id, { isEditing: false });
@@ -81,11 +86,7 @@ export default function FavoritesPage() {
 
   const handleRemoveBookmark = (id: number) => {
     if (confirm('この記事をお気に入りから削除しますか？')) {
-      const updated = bookmarked.filter((a) => a.id !== id);
-      setBookmarked(updated);
-      Cookies.set('bookmarks', JSON.stringify(updated.map((a) => a.id)), {
-        expires: 365,
-      });
+      remove(id);
     }
   };
 
@@ -131,17 +132,17 @@ export default function FavoritesPage() {
           updateFolder(folder.id, {
             items: [...(folder.items || []), item.id],
           });
-          setBookmarked((prev) => prev.filter((a) => a.id !== item.id));
+          remove(item.id);
         }
       },
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
     }));
+
     useEffect(() => {
       Cookies.set('folders', JSON.stringify(folders), { expires: 365 });
     }, [folders]);
-    
 
     return (
       <div className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative">
@@ -155,9 +156,7 @@ export default function FavoritesPage() {
                 <X size={18} />
               </button>
               <button
-                onClick={() =>
-                  handleUpdateFolder(folder.id, tempTitle, tempDescription)
-                }
+                onClick={() => handleUpdateFolder(folder.id, tempTitle, tempDescription)}
                 className="text-green-500 hover:text-green-600"
               >
                 <Check size={18} />
@@ -170,10 +169,7 @@ export default function FavoritesPage() {
               onClick={() => navigate(`/favorites/folder/${folder.id}`)}
               className="cursor-pointer"
             >
-              <Folder
-                className="w-full h-[160px] mb-2"
-                style={{ color: folder.color }}
-              />
+              <Folder className="w-full h-[160px] mb-2" style={{ color: folder.color }} />
             </div>
             <input
               type="text"
@@ -192,9 +188,7 @@ export default function FavoritesPage() {
               {colorOptions.map((color) => (
                 <button
                   key={color}
-                  onClick={() =>
-                    updateFolder(folder.id, { color: color })
-                  }
+                  onClick={() => updateFolder(folder.id, { color })}
                   className="w-5 h-5 rounded-full border"
                   style={{ backgroundColor: color }}
                 />
@@ -246,36 +240,30 @@ export default function FavoritesPage() {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="mt-2 sm:mt-4 px-6">
-        <div className="absolute top-4 right-4 flex gap-4 z-20">
-          <button onClick={toggleDeleteMode}>
-            {deleteMode ? (
-              <Trash className="w-5 h-5 text-red-500 hover:text-red-600 transition-colors duration-300" />
-            ) : (
-              <Trash2 className="w-5 h-5 text-gray-400 hover:text-red-600 transition-colors duration-300" />
-            )}
-          </button>
-          <button onClick={handleAddFolder}>
-            <FolderPlus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
-          </button>
-        </div>
-
-        <h1 className="text-2xl font-bold mb-4 px-6">お気に入り記事</h1>
-
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {[
-          ...folders.map((folder) => (
-            <FolderCardInternal key={folder.id} folder={folder} />
-          )),
-
-          ...visibleArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          )),
-        ]}
+    <div className="mt-2 sm:mt-4 px-6">
+      <div className="absolute top-4 right-4 flex gap-4 z-20">
+        <button onClick={toggleDeleteMode}>
+          {deleteMode ? (
+            <Trash className="w-5 h-5 text-red-500 hover:text-red-600 transition-colors duration-300" />
+          ) : (
+            <Trash2 className="w-5 h-5 text-gray-400 hover:text-red-600 transition-colors duration-300" />
+          )}
+        </button>
+        <button onClick={handleAddFolder}>
+          <FolderPlus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+        </button>
       </div>
 
+      <h1 className="text-2xl font-bold mb-4 px-6">お気に入り記事</h1>
+
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {folders.map((folder) => (
+          <FolderCardInternal key={`folder-${folder.id}`} folder={folder} />
+        ))}
+        {visibleArticles.map((article, index) => (
+          <ArticleCard key={`article-${article.id}-${index}`} article={article} />
+        ))}
       </div>
-    </DndProvider>
+    </div>
   );
 }

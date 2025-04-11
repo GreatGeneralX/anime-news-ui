@@ -1,3 +1,5 @@
+//src/components/DraggableArticle.tsx
+//ここからコード
 import { useDrag } from 'react-dnd';
 
 interface DraggableArticleProps {
@@ -37,3 +39,4 @@ export default function DraggableArticle({ article }: DraggableArticleProps) {
     </div>
   );
 }
+//ここまでコード

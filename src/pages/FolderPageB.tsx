@@ -1,5 +1,5 @@
-{/*// src/pages/FolderPage.tsx
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+// src/pages/FolderPageB.tsx
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { ChevronLeft, FolderOpen } from 'lucide-react';
 import { useDrop } from 'react-dnd';
@@ -25,12 +25,9 @@ const dummyArticles: Article[] = Array.from({ length: 9 }, (_, i) => ({
   thumbnail: `https://placehold.co/600x400?text=Article${i + 1}`,
 }));
 
-export default function FolderPage() {
+export default function FolderPageB() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const view = new URLSearchParams(location.search).get('view') || '1';
-
   const folderId = Number(id);
   const { folders, updateFolder } = useFolders();
   const { add } = useBookmarks();
@@ -67,8 +64,8 @@ export default function FolderPage() {
       }
     }
 
-    const nextView = view === '1' ? '2' : '1';
-    navigate(`/favorites/folder/${folderId}?view=${nextView}`, { replace: true });
+    // B -> A に切り替え
+    navigate(`/favorites/folder/${folderId}/a`, { replace: true });
   };
 
   const [{ isOver }, dropToExitRef] = useDrop(() => ({
@@ -82,7 +79,7 @@ export default function FolderPage() {
   }));
 
   return (
-    <div className="mt-16 sm:mt-0 px-4" key={view}>
+    <div className="mt-16 sm:mt-0 px-4">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 text-black dark:text-white sm:text-base"
@@ -90,7 +87,7 @@ export default function FolderPage() {
         <ChevronLeft size={24} />
       </button>
 
-      <h1 className="text-2xl font-bold mb-1">{folder.title || '未命名フォルダー'}</h1>
+      <h1 className="text-2xl font-bold mb-1">[B] {folder.title || '未命名フォルダー'}</h1>
       <p className="text-gray-600 mb-4">{folder.description || 'フォルダーの説明がありません。'}</p>
 
       {articles.length === 0 ? (
@@ -104,26 +101,15 @@ export default function FolderPage() {
       )}
 
       <div
-        className={`
-          fixed bottom-6
-          left-1/2 sm:left-[calc(50%+7rem)]
-          transform -translate-x-1/2
-          z-50
-          transition-all duration-300
-          ${isOver ? 'scale-110 bg-gray-200 dark:bg-zinc-700' : ''}
-        `}
+        className={
+          `fixed bottom-6 left-1/2 sm:left-[calc(50%+7rem)] transform -translate-x-1/2 z-50 transition-all duration-300 ${isOver ? 'scale-110 bg-gray-200 dark:bg-zinc-700' : ''}`
+        }
       >
         <div
           ref={(node) => {
             if (node) dropToExitRef(node);
           }}
-          className={`
-            w-16 h-16 rounded-full bg-white dark:bg-zinc-800 shadow-md
-            flex items-center justify-center
-            border border-gray-300 dark:border-zinc-700
-            hover:bg-gray-100 dark:hover:bg-zinc-700
-            transition
-          `}
+          className="w-16 h-16 rounded-full bg-white dark:bg-zinc-800 shadow-md flex items-center justify-center border border-gray-300 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-700 transition"
         >
           <FolderOpen size={32} className="text-gray-700 dark:text-white" />
         </div>
@@ -131,4 +117,4 @@ export default function FolderPage() {
     </div>
   );
 }
-  */}
+//ここまでコード

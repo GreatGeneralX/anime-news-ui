@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, User, Heart, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { useActionSettings } from '../stores/useActionSettings'; // ✅ 追加
+import { FlaskConical } from 'lucide-react'; //実験用
 
 interface SidebarProps {
   isOpen: boolean;
@@ -117,9 +118,19 @@ export default function Sidebar({ isOpen, onLinkClick }: SidebarProps) {
                 />
               )}
             </Link>
+            
           );
         })}
       </div>
+        {/* Sidebar.tsx */}
+        <Link
+          to="/experiment/folder/1744285519333" // ✅ ここを修正
+          className="flex items-center gap-2 text-gray-400 hover:text-purple-500"
+        >
+          <FlaskConical size={18} />
+          <span>テスト空間</span>
+        </Link>
+
     </aside>
   );
 }
