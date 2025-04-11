@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import {
   Check,
   X,
@@ -8,7 +7,9 @@ import {
   Trash2,
   Trash,
   Edit3,
+  Move,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useFolders } from '../stores/useFolders';
@@ -28,6 +29,7 @@ const colorOptions = ['#9ca3af', '#ef4444', '#10b981', '#3b82f6', '#facc15'];
 
 export default function FavoritesPage() {
   const [bookmarked, setBookmarked] = useState<Article[]>(() => {
+    console.log("📍 FavoritesPage rendered");
     const saved = Cookies.get('bookmarks');
     if (saved) {
       const ids = new Set(JSON.parse(saved));
@@ -39,12 +41,15 @@ export default function FavoritesPage() {
   const { folders, updateFolder, addFolder, removeFolder } = useFolders();
   const [deleteMode, setDeleteMode] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
-  const folderId = id ? parseInt(id, 10) : null;
 
   const handleUpdateFolder = (id: number, title: string, description: string) => {
     updateFolder(id, { title, description, isEditing: false });
   };
+  // 表示する記事一覧
+  const visibleArticles = bookmarked.filter((article) =>
+    folders.every((folder) => !(folder.items ?? []).includes(article.id))
+  );
+
 
   const handleCancelEdit = (id: number) => {
     updateFolder(id, { isEditing: false });
@@ -115,7 +120,7 @@ export default function FavoritesPage() {
     );
   };
 
-  const FolderCard = ({ folder }: { folder: FolderItem }) => {
+  const FolderCardInternal = ({ folder }: { folder: FolderItem }) => {
     const [tempTitle, setTempTitle] = useState(folder.title);
     const [tempDescription, setTempDescription] = useState(folder.description);
 
@@ -133,6 +138,10 @@ export default function FavoritesPage() {
         isOver: monitor.isOver(),
       }),
     }));
+    useEffect(() => {
+      Cookies.set('folders', JSON.stringify(folders), { expires: 365 });
+    }, [folders]);
+    
 
     return (
       <div className="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-md relative">
@@ -252,42 +261,20 @@ export default function FavoritesPage() {
           </button>
         </div>
 
-        {folderId && (
-          <div className="pt-4 pl-4 sm:pt-0 sm:pl-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="text-2xl px-1"
-            >
-              &lt;
-            </button>
-          </div>
-        )}
-
-        <h1 className="text-2xl font-bold mb-4 px-6">
-          {folderId ? '' : 'お気に入り記事'}
-        </h1>
+        <h1 className="text-2xl font-bold mb-4 px-6">お気に入り記事</h1>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {folderId
-            ? folders
-                .filter((f) => f.id === folderId)
-                .flatMap((folder) =>
-                  (folder.items ?? []).map((id) => {
-                    const article = dummyArticles.find((a) => a.id === id);
-                    return article ? (
-                      <ArticleCard key={article.id} article={article} />
-                    ) : null;
-                  })
-                )
-            : [
-                ...folders.map((folder) => (
-                  <FolderCard key={folder.id} folder={folder} />
-                )),
-                ...bookmarked.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                )),
-              ]}
-        </div>
+        {[
+          ...folders.map((folder) => (
+            <FolderCardInternal key={folder.id} folder={folder} />
+          )),
+
+          ...visibleArticles.map((article) => (
+            <ArticleCard key={article.id} article={article} />
+          )),
+        ]}
+      </div>
+
       </div>
     </DndProvider>
   );

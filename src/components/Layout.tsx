@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import AccountOverlay from '../pages/AccountOverlay';
-import { Menu, ChevronRight, X } from 'lucide-react';
-
+import { ChevronRight, X } from 'lucide-react';
 
 interface LayoutProps {
   showAccountOverlay?: boolean;
@@ -11,8 +10,7 @@ interface LayoutProps {
 
 export default function Layout({ showAccountOverlay = false }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false); // ←初期値 false に
-
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,12 +20,11 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
         setSidebarOpen(false);
       }
     };
-  
-    handleResize(); // ← 初回マウント時にも即チェック！
+
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
 
   const handleLinkClick = () => {
     if (!isDesktop) setSidebarOpen(false);
@@ -37,14 +34,16 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
     <div className="bg-white text-black dark:bg-zinc-900 dark:text-white h-screen overflow-hidden w-full relative">
       {/* ハンバーガーボタン */}
       <button
-        className="fixed top-4 left-4 z-[10000] sm:hidden text-black dark:text-white p-0 m-0 bg-transparent shadow-none border-none rounded-none"
+        className="fixed top-4 left-4 z-[10000] sm:hidden text-black dark:text-white"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         {sidebarOpen ? <X size={24} /> : <ChevronRight size={24} />}
       </button>
-      {/* 誤タップ防止ゾーン（×ボタン周辺） */}
+
+      {/* 誤タップ防止 */}
       <div className="fixed top-0 left-0 w-16 h-16 z-[9999] pointer-events-none" />
-      {/* 背景オーバーレイ（スマホ時のみ） */}
+
+      {/* 背景オーバーレイ（スマホ） */}
       {sidebarOpen && !isDesktop && (
         <div
           className="fixed inset-0 bg-black/30 z-[9997]"
@@ -55,7 +54,7 @@ export default function Layout({ showAccountOverlay = false }: LayoutProps) {
       {/* サイドバー */}
       <Sidebar isOpen={sidebarOpen} onLinkClick={handleLinkClick} />
 
-      {/* メインエリア */}
+      {/* メイン */}
       <div className={`flex h-full transition-all duration-300 ${isDesktop ? 'ml-56' : 'ml-0'}`}>
         {isDesktop && showAccountOverlay && <AccountOverlay />}
 

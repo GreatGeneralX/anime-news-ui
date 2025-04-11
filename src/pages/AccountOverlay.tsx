@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+import { ChevronLeft } from 'lucide-react';
 
 export default function AccountOverlay() {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    navigate('/');
+    navigate(-1); // ← 「前のページに戻る」＝オーバーレイを閉じるだけ
   };
 
   return (
@@ -37,15 +38,15 @@ export default function AccountOverlay() {
             sm:pt-4 sm:pl-4 sm:pr-4 sm:pb-2
           "
         >
-          {/* 戻るボタンはsm以上のみ表示 */}
+          {/* 戻るボタン（Lucide） */}
           <button
             onClick={handleClose}
-            className="hidden sm:block text-2xl px-1"
+            className="hidden sm:block text-black dark:text-white"
           >
-            &lt;
+            <ChevronLeft size={24} />
           </button>
 
-          <h2 className="text-2xl font-bold">アカウントページ</h2>
+          <h1 className="text-2xl font-bold">アカウントページ</h1>
         </div>
 
         {/* コンテンツ */}

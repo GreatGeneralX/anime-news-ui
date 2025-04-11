@@ -1,46 +1,38 @@
-// src/stores/useFolders.ts
+// useFolders.ts
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import Cookies from 'js-cookie';
+import type { FolderItem } from '../types';
 
-interface FolderItem {
-  id: number;
-  title: string;
-  description: string;
-  color?: string;
-  isEditing?: boolean;
-  items?: number[];
-}
+const saved = Cookies.get('folders');
+const initialFolders: FolderItem[] = saved ? JSON.parse(saved) : [];
 
-interface FolderState {
+interface FolderStore {
   folders: FolderItem[];
-  setFolders: (folders: FolderItem[]) => void;
-  updateFolder: (id: number, update: Partial<FolderItem>) => void;
   addFolder: (folder: FolderItem) => void;
+  updateFolder: (id: number, data: Partial<FolderItem>) => void;
   removeFolder: (id: number) => void;
 }
 
-export const useFolders = create<FolderState>()(
-  persist(
-    (set) => ({
-      folders: [],
-      setFolders: (folders) => set({ folders }),
-      updateFolder: (id, update) =>
-        set((state) => ({
-          folders: state.folders.map((f) =>
-            f.id === id ? { ...f, ...update } : f
-          ),
-        })),
-      addFolder: (folder) =>
-        set((state) => ({
-          folders: [...state.folders, folder],
-        })),
-      removeFolder: (id) =>
-        set((state) => ({
-          folders: state.folders.filter((f) => f.id !== id),
-        })),
-    }),
-    {
-      name: 'folders-storage', // localStorageのキー
-    }
-  )
-);
+export const useFolders = create<FolderStore>((set, get) => ({
+  folders: initialFolders,
+
+  addFolder: (folder) => {
+    const updated = [...get().folders, folder];
+    Cookies.set('folders', JSON.stringify(updated), { expires: 365 });
+    set({ folders: updated });
+  },
+
+  updateFolder: (id, data) => {
+    const updated = get().folders.map((f) =>
+      f.id === id ? { ...f, ...data } : f
+    );
+    Cookies.set('folders', JSON.stringify(updated), { expires: 365 });
+    set({ folders: updated });
+  },
+
+  removeFolder: (id) => {
+    const updated = get().folders.filter((f) => f.id !== id);
+    Cookies.set('folders', JSON.stringify(updated), { expires: 365 });
+    set({ folders: updated });
+  },
+}));
